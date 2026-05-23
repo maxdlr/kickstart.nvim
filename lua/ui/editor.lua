@@ -16,4 +16,4 @@ vim.keymap.set('n', '<leader>ul', function()
     vim.o.number = true
     vim.o.relativenumber = true
   end
-end, { desc = 'Toggle line number' })
+end, { desc = 'Line numbers' })
