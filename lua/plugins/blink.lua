@@ -1,10 +1,10 @@
 local blink_deps = {
-  Gh "xzbdmw/colorful-menu.nvim",
-  Gh "nvim-tree/nvim-web-devicons",
-  Gh "bydlw98/blink-cmp-env",
-  Gh "moyiz/blink-emoji.nvim",
-  Gh "marcoSven/blink-cmp-yanky",
-  Gh "mikavilpas/blink-ripgrep.nvim",
+  Gh 'xzbdmw/colorful-menu.nvim',
+  Gh 'nvim-tree/nvim-web-devicons',
+  Gh 'bydlw98/blink-cmp-env',
+  Gh 'moyiz/blink-emoji.nvim',
+  Gh 'marcoSven/blink-cmp-yanky',
+  Gh 'mikavilpas/blink-ripgrep.nvim',
 }
 
 vim.pack.add(blink_deps)
@@ -66,7 +66,7 @@ require('blink.cmp').setup {
     -- The list of items in the menu
     list = {
       selection = {
-        preselect = true,   -- Automatically highlight the first item
+        preselect = true, -- Automatically highlight the first item
         auto_insert = true, -- Insert the text as you cycle (like VS Code)
       },
     },
@@ -81,7 +81,7 @@ require('blink.cmp').setup {
         if ctx == nil or item == nil then return { 's', 'n' } end
 
         local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
-        local is_multi_line = item_text:find('\n') ~= nil
+        local is_multi_line = item_text:find '\n' ~= nil
 
         -- after showing the menu upwards, we want to maintain that direction
         -- until we re-open the menu, so store the context id in a global variable
@@ -94,21 +94,20 @@ require('blink.cmp').setup {
       enabled = true,
       min_width = 15,
       max_height = 10,
-      border = "rounded", -- Options: "none", "single", "double", "rounded", "solid", "shadow"
-      winblend = 0,       -- Transparency (0-100)
+      border = 'rounded', -- Options: "none", "single", "double", "rounded", "solid", "shadow"
+      winblend = 0, -- Transparency (0-100)
 
       -- Color highlighting
-      winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
+      winhighlight = 'Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None',
 
       draw = {
         gap = 1,
         padding = 1,
         columns = {
-          { "kind_icon" },
-          { "label",    "label_description", gap = 1 },
-          { "kind" },
+          { 'kind_icon' },
+          { 'label', 'label_description', gap = 1 },
+          { 'kind' },
         },
-
 
         components = {
           kind_icon = {
@@ -116,29 +115,21 @@ require('blink.cmp').setup {
             text = function(ctx)
               -- local lspkind = require("lspkind")
               local icon = ctx.kind_icon
-              if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                if dev_icon then
-                  icon = dev_icon
-                end
-                local ok, lspkind = pcall(require, "lspkind")
-                if ok then
-                  icon = lspkind.symbolic(ctx.kind, { mode = "symbol" })
-                end
+              if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_icon then icon = dev_icon end
+                local ok, lspkind = pcall(require, 'lspkind')
+                if ok then icon = lspkind.symbolic(ctx.kind, { mode = 'symbol' }) end
               else
               end
-
 
               return icon .. ctx.icon_gap
             end,
             highlight = function(ctx)
-              local hl = "BlinkCmpKind" .. ctx.kind
-                  or require("blink.cmp.completion.windows.render.tailwind").get_hl(ctx)
-              if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                if dev_icon then
-                  hl = dev_hl
-                end
+              local hl = 'BlinkCmpKind' .. ctx.kind or require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx)
+              if vim.tbl_contains({ 'Path' }, ctx.source_name) then
+                local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_icon then hl = dev_hl end
               end
               return hl
             end,
@@ -150,16 +141,12 @@ require('blink.cmp').setup {
           -- },
           label = {
             width = { fill = true, max = 60 },
-            text = function(ctx)
-              return require("colorful-menu").blink_components_text(ctx)
-            end,
-            highlight = function(ctx)
-              return require("colorful-menu").blink_components_highlight(ctx)
-            end,
+            text = function(ctx) return require('colorful-menu').blink_components_text(ctx) end,
+            highlight = function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end,
           },
           kind = {
-            text = function(ctx) return "(" .. " " .. ctx.kind .. " " .. ")" end,
-            highlight = "BlinkCmpKind",
+            text = function(ctx) return '(' .. ' ' .. ctx.kind .. ' ' .. ')' end,
+            highlight = 'BlinkCmpKind',
           },
         },
       },
@@ -170,8 +157,8 @@ require('blink.cmp').setup {
       auto_show = true, -- Set to false if you only want it when you ask for it
       auto_show_delay_ms = 500,
       window = {
-        border = "rounded",
-        winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None",
+        border = 'rounded',
+        winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
       },
     },
   },
@@ -181,42 +168,38 @@ require('blink.cmp').setup {
       buffer = {
         opts = {
           get_bufnrs = function()
-            return vim.tbl_filter(function(bufnr)
-              return vim.bo[bufnr].buftype == ""
-            end, vim.api.nvim_list_bufs())
+            return vim.tbl_filter(function(bufnr) return vim.bo[bufnr].buftype == '' end, vim.api.nvim_list_bufs())
           end,
         },
       },
 
       emoji = {
-        module = "blink-emoji",
-        name = "Emoji",
+        module = 'blink-emoji',
+        name = 'Emoji',
         score_offset = -10, -- Tune by preference
         opts = {
-          insert = true,    -- Insert emoji (default) or complete its name
+          insert = true, -- Insert emoji (default) or complete its name
           ---@type string|table|fun():table
-          trigger = ":",
-          kind_icon = "󰅍"
+          trigger = ':',
+          kind_icon = '󰅍',
         },
       },
 
       yank = {
-        name = "yank",
-        module = "blink-yanky",
+        name = 'yank',
+        module = 'blink-yanky',
         score_offset = -10, -- Tune by preference
         opts = {
           minLength = 10,
           onlyCurrentFiletype = true,
           trigger_characters = { '.' },
-          kind_icon = "󰅍",
+          kind_icon = '󰅍',
         },
       },
 
-
-
       ripgrep = {
-        module = "blink-ripgrep",
-        name = "Ripgrep",
+        module = 'blink-ripgrep',
+        name = 'Ripgrep',
         score_offset = -15, -- Tune by preference
         -- see the full configuration below for all available options
         ---@module "blink-ripgrep"
@@ -226,16 +209,20 @@ require('blink.cmp').setup {
           for _, item in ipairs(items) do
             -- example: append a description to easily distinguish rg results
             item.labelDetails = {
-              description = "(rg)",
+              description = '(rg)',
             }
           end
           return items
         end,
       },
-
-
     },
-    default = { "lsp", "path", "snippets", "buffer", "emoji", "yank",
+    default = {
+      'lsp',
+      'path',
+      'snippets',
+      'buffer',
+      'emoji',
+      'yank',
       -- "ripgrep"
     },
   },

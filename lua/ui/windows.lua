@@ -8,8 +8,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- -- Splits
-vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Vertical split' })
-vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Horizontal split' })
+vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Split Vertical' })
+vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Split horizontal' })
 
 -- Closing
 vim.keymap.set('n', '<leader>wd', '<C-w>q', { desc = 'Close window' })

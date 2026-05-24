@@ -1,4 +1,4 @@
-vim.pack.add({ Gh 'dmtrKovalenko/fff.nvim' })
+vim.pack.add { Gh 'dmtrKovalenko/fff.nvim' }
 
 vim.g.fff = {
   lazy_sync = true,
@@ -40,7 +40,7 @@ vim.g.fff = {
   layout = {
     height = 0.9,
     width = 0.8,
-    prompt_position = 'top',    -- or 'top'
+    prompt_position = 'top', -- or 'top'
     preview_position = 'right', -- 'left' | 'right' | 'top' | 'bottom'
     preview_size = 0.6,
     flex = { size = 130, wrap = 'top' },
@@ -62,5 +62,4 @@ vim.keymap.set('n', '<leader><leader>', function() require('fff').find_files() e
 
 vim.keymap.set('n', '<leader>/', function() require('fff').live_grep() end, { desc = 'FFFind files' })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() require('fff').live_grep({ query = vim.fn.expand("<cword>") }) end,
-  { desc = '[S]earch current [W]ord' })
+vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() require('fff').live_grep { query = vim.fn.expand '<cword>' } end, { desc = '[S]earch current [W]ord' })

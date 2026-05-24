@@ -8,13 +8,29 @@ vim.pack.add { Gh 'nvim-mini/mini.nvim' }
 --  - va)  - [V]isually select [A]round [)]paren
 --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
 --  - ci'  - [C]hange [I]nside [']quote
-require('mini.ai').setup {
-  -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
-  mappings = {
-    around_next = 'aa',
-    inside_next = 'ii',
-  },
+local ai = require('mini.ai');
+ai.setup {
   n_lines = 500,
+      custom_textobjects = {
+        o = ai.gen_spec.treesitter({ -- code block
+          a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+          i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+        }),
+        f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+        c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+        t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+        d = { "%f[%d]%d+" }, -- digits
+        e = { -- Word with case
+          { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+          "^().*()$",
+        },
+        u = ai.gen_spec.function_call(), -- u for "Usage"
+        U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+      },
+  -- mappings = {
+  --   around_next = 'aa',
+  --   inside_next = 'ii',
+  -- },
 }
 
 -- Add/delete/replace surroundings (brackets, quotes, etc.)
