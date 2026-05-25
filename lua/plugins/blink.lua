@@ -168,7 +168,10 @@ require('blink.cmp').setup {
       buffer = {
         opts = {
           get_bufnrs = function()
-            return vim.tbl_filter(function(bufnr) return vim.bo[bufnr].buftype == '' end, vim.api.nvim_list_bufs())
+            return vim.iter(vim.api.nvim_list_wins())
+              :map(vim.api.nvim_win_get_buf)
+              :filter(function(buf) return vim.bo[buf].buftype == '' end)
+              :totable()
           end,
         },
       },
@@ -216,14 +219,15 @@ require('blink.cmp').setup {
         end,
       },
     },
+    
     default = {
       'lsp',
       'path',
       'snippets',
       'buffer',
       'emoji',
-      'yank',
-      -- "ripgrep"
+      -- 'yank',
+      "ripgrep"
     },
   },
 
@@ -236,7 +240,7 @@ require('blink.cmp').setup {
   -- the rust implementation via `'prefer_rust_with_warning'`
   --
   -- See `:help blink-cmp-config-fuzzy` for more information
-  fuzzy = { implementation = 'lua' },
+  fuzzy = { implementation = 'prefer_rust_with_warning' },
 
   -- Shows a signature help window while you type arguments for a function
   signature = { enabled = true },
