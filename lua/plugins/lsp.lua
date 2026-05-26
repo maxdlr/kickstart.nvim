@@ -206,3 +206,7 @@ for name, server in pairs(servers) do
   vim.lsp.config(name, server)
   vim.lsp.enable(name)
 end
+
+-- vim.api.nvim_set_hl(0, 'LspReferenceText', { underline = false, bg = '#3a3a4a' })
+-- vim.api.nvim_set_hl(0, 'LspReferenceRead', { underline = false, bg = '#3a3a4a' })
+-- vim.api.nvim_set_hl(0, 'LspReferenceWrite', { underline = false, bg = '#3a3a4a' })

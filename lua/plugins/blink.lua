@@ -105,48 +105,49 @@ require('blink.cmp').setup {
         padding = 1,
         columns = {
           { 'kind_icon' },
-          { 'label', 'label_description', gap = 1 },
+          { 'label', gap = 1 },
+          { 'label_description' },
           { 'kind' },
+          { 'source_name' },
         },
 
         components = {
           kind_icon = {
             ellipsis = false,
             text = function(ctx)
-              -- local lspkind = require("lspkind")
               local icon = ctx.kind_icon
               if vim.tbl_contains({ 'Path' }, ctx.source_name) then
                 local dev_icon, _ = require('nvim-web-devicons').get_icon(ctx.label)
                 if dev_icon then icon = dev_icon end
-                local ok, lspkind = pcall(require, 'lspkind')
-                if ok then icon = lspkind.symbolic(ctx.kind, { mode = 'symbol' }) end
-              else
               end
-
               return icon .. ctx.icon_gap
             end,
             highlight = function(ctx)
-              local hl = 'BlinkCmpKind' .. ctx.kind or require('blink.cmp.completion.windows.render.tailwind').get_hl(ctx)
+              local hl = 'BlinkCmpKind' .. ctx.kind
               if vim.tbl_contains({ 'Path' }, ctx.source_name) then
-                local dev_icon, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
-                if dev_icon then hl = dev_hl end
+                local _, dev_hl = require('nvim-web-devicons').get_icon(ctx.label)
+                if dev_hl then hl = dev_hl end
               end
               return hl
             end,
           },
-          -- kind_icon = {
-          --   ellipsis = false,
-          --   text = function(ctx) return ctx.kind_icon .. ctx.icon_gap end,
-          --   highlight = function(ctx) return "BlinkCmpKind" .. ctx.kind end,
-          -- },
           label = {
             width = { fill = true, max = 60 },
             text = function(ctx) return require('colorful-menu').blink_components_text(ctx) end,
             highlight = function(ctx) return require('colorful-menu').blink_components_highlight(ctx) end,
           },
+          label_description = {
+            width = { max = 30 },
+            text = function(ctx) return ctx.label_description or '' end,
+            highlight = 'BlinkCmpLabelDescription',
+          },
           kind = {
-            text = function(ctx) return '(' .. ' ' .. ctx.kind .. ' ' .. ')' end,
+            text = function(ctx) return '(' .. ctx.kind .. ')' end,
             highlight = 'BlinkCmpKind',
+          },
+          source_name = {
+            text = function(ctx) return '[' .. ctx.source_name .. ']' end,
+            highlight = 'BlinkCmpSource',
           },
         },
       },
@@ -166,12 +167,10 @@ require('blink.cmp').setup {
   sources = {
     providers = {
       buffer = {
+        score_offset = -10, -- Tune by preference
         opts = {
           get_bufnrs = function()
-            return vim.iter(vim.api.nvim_list_wins())
-              :map(vim.api.nvim_win_get_buf)
-              :filter(function(buf) return vim.bo[buf].buftype == '' end)
-              :totable()
+            return vim.iter(vim.api.nvim_list_wins()):map(vim.api.nvim_win_get_buf):filter(function(buf) return vim.bo[buf].buftype == '' end):totable()
           end,
         },
       },
@@ -184,42 +183,44 @@ require('blink.cmp').setup {
           insert = true, -- Insert emoji (default) or complete its name
           ---@type string|table|fun():table
           trigger = ':',
-          kind_icon = '󰅍',
         },
       },
 
-      yank = {
-        name = 'yank',
-        module = 'blink-yanky',
-        score_offset = -10, -- Tune by preference
-        opts = {
-          minLength = 10,
-          onlyCurrentFiletype = true,
-          trigger_characters = { '.' },
-          kind_icon = '󰅍',
-        },
-      },
+      -- yank = {
+      --   name = 'yank',
+      --   module = 'blink-yanky',
+      --   score_offset = -15, -- Tune by preference
+      --   opts = {
+      --     minLength = 10,
+      --     onlyCurrentFiletype = true,
+      --     -- trigger_characters = { '.' },
+      --     kind_icon = '󰅍',
+      --   },
+      -- },
 
-      ripgrep = {
-        module = 'blink-ripgrep',
-        name = 'Ripgrep',
-        score_offset = -15, -- Tune by preference
-        -- see the full configuration below for all available options
-        ---@module "blink-ripgrep"
-        ---@type blink-ripgrep.Options
-        opts = { prefix_min_len = 4 },
-        transform_items = function(_, items)
-          for _, item in ipairs(items) do
-            -- example: append a description to easily distinguish rg results
-            item.labelDetails = {
-              description = '(rg)',
-            }
-          end
-          return items
-        end,
-      },
+      snippets = { score_offset = -3 },
+      lsp = { score_offset = -8 },
+
+      -- ripgrep = {
+      --   module = 'blink-ripgrep',
+      --   name = 'Ripgrep',
+      --   score_offset = -10, -- Tune by preference
+      --   -- see the full configuration below for all available options
+      --   ---@module "blink-ripgrep"
+      --   ---@type blink-ripgrep.Options
+      --   opts = { prefix_min_len = 4 },
+      --   transform_items = function(_, items)
+      --     for _, item in ipairs(items) do
+      --       -- example: append a description to easily distinguish rg results
+      --       item.labelDetails = {
+      --         description = '(rg)',
+      --       }
+      --     end
+      --     return items
+      --   end,
+      -- },
     },
-    
+
     default = {
       'lsp',
       'path',
@@ -227,7 +228,7 @@ require('blink.cmp').setup {
       'buffer',
       'emoji',
       -- 'yank',
-      "ripgrep"
+      -- 'ripgrep',
     },
   },
 

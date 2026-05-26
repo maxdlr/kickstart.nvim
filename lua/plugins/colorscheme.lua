@@ -32,6 +32,10 @@ require('neon').setup {
     highlights.CursorColumn = { bg = '#403345', bold = true }
     highlights.WinSeparator = { fg = '#FF4081', bg = '#000000' }
 
+    -- highlights.LspReferenceText = { underline = false, bg = '#403345' }
+    -- highlights.LspReferenceRead = { underline = false, bg = '#403345' }
+    -- highlights.LspReferenceWrite = { underline = false, bg = '#403345' }
+
     -- -- Telescope: differentiate file paths from match content
     -- highlights.TelescopeResultsIdentifier = { fg = '#7aa2f7' }
     -- highlights.TelescopeResultsLineNr = { fg = '#565f89' }
