@@ -4,6 +4,27 @@ local noicePlugins = {
 }
 vim.pack.add(noicePlugins)
 vim.pack.add { Gh 'folke/noice.nvim' }
+
+require('notify').setup {
+  -- How long notifications stay visible (ms)
+  timeout = 3000,
+
+  -- Animation style: 'fade_in_slide_out' | 'fade' | 'slide' | 'static'
+  stages = Bezier_timing(0.25, 1.0, 0.5, 1.0, 50),
+
+  -- Max width of the notification window (fraction of editor width or absolute columns)
+  max_width = 50,
+
+  -- Minimum width
+  min_width = 20,
+
+  -- Frames per second for animations (higher = smoother but more redraws)
+  fps = 30,
+
+  -- Time for the notification to fade in (ms) — only for fade-based stages
+  -- You can also define fully custom stages, see below
+}
+
 require('noice').setup {
   lsp = {
     override = {
@@ -26,7 +47,7 @@ require('noice').setup {
     },
   },
   presets = {
-    presets = { inc_rename = true },
+    inc_rename = true,
     bottom_search = true,
     command_palette = true,
     long_message_to_split = true,

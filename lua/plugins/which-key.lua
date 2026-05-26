@@ -16,6 +16,7 @@ require('which-key').setup {
     { '<leader>g', group = ' Git', mode = { 'n' } },
     { '<leader>h', group = ' Macros', mode = { 'n' } },
     { '<leader>n', group = ' Noices', mode = { 'n' } },
+    { '<leader>m', group = ' Markers', mode = { 'n' } },
     { '<leader>q', group = ' Sessions', mode = { 'n' } },
     { '<leader>s', group = ' Search', mode = { 'n', 'v' } },
     { '<leader>sr', group = ' Search and replace', mode = { 'n', 'v' } },

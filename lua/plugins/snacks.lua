@@ -50,6 +50,11 @@ require('snacks').setup {
   },
 }
 
+-- Snacks.lazygit():map '<leader>gg'
+vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'LazyGit' })
+vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = 'LazyGit File History' })
+vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'LazyGit Log' })
+
 Snacks.toggle.zoom():map('<leader>wm'):map '<leader>uZ'
 Snacks.toggle.zen():map '<leader>uz'
 
@@ -65,6 +70,16 @@ Snacks.toggle.dim():map '<leader>uD'
 Snacks.toggle.inlay_hints():map '<leader>uh'
 Snacks.toggle.indent():map '<leader>ug'
 
--- Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map '<leader>uc'
+-- map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+-- map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '\\', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+-- map('n', '<leader>`', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+vim.keymap.set('n', '<leader>bd', function() Snacks.bufdelete() end, { desc = 'Delete Buffer' })
+vim.keymap.set('n', '<leader>bo', function() Snacks.bufdelete.other() end, { desc = 'Delete Other Buffers' })
+vim.keymap.set('n', '<leader>bD', '<cmd>:bd<cr>', { desc = 'Delete Buffer and Window' })
+
+Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map '<leader>uc'
 -- Snacks.toggle.treesitter():map '<leader>uT'
 -- Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map '<leader>ub'

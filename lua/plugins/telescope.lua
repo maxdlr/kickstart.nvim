@@ -150,7 +150,7 @@ vim.keymap.set('n', '<leader>p', function() builtin.registers(require('telescope
     virtual_lines = true,
   }) end, { desc = 'Yank history' })
 
-vim.keymap.set('n', '\\', '<C-^>', {desc = 'Jump to last buffer'})
+-- vim.keymap.set('n', '\\', '<C-^>', {desc = 'Jump to last buffer'})
 
 vim.keymap.set('n', '<leader>bl', function() builtin.buffers(require('telescope.themes').get_dropdown {
     winblend = 5,

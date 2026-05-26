@@ -53,6 +53,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- or a suggestion from your LSP for this to activate.
     map('<leader>ca', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
+    local diagnostic_goto = function(next, severity)
+      return function()
+        vim.diagnostic.jump {
+          count = (next and 1 or -1) * vim.v.count1,
+          severity = severity and vim.diagnostic.severity[severity] or nil,
+          float = true,
+        }
+      end
+    end
+
+    vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
+    vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
+    vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
+    vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
+    vim.keymap.set('n', '[e', diagnostic_goto(false, 'ERROR'), { desc = 'Prev Error' })
+    vim.keymap.set('n', ']w', diagnostic_goto(true, 'WARN'), { desc = 'Next Warning' })
+    vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
+
     -- WARN: This is not Goto Definition, this is Goto Declaration.
     --  For example, in C this would take you to the header.
     -- map('gd', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -113,6 +131,8 @@ local servers = {
   -- But for many setups, the LSP (`ts_ls`) will work just fine
   -- ts_ls is disabled — typescript-tools.nvim handles TS/JS instead
   jsonls = {},
+
+  tailwindcss = {},
 
   stylua = {}, -- Used to format Lua code
 
