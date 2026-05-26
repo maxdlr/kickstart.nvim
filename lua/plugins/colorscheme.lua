@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field, undefined-doc-name
 -- [[ Colorscheme ]]
 -- You can easily change to a different colorscheme.
 -- Change the name of the colorscheme plugin below, and then
@@ -29,6 +30,12 @@ require('neon').setup {
     highlights.CursorLineNr = { fg = '#FFFFFF', bold = true }
     highlights.CursorLine = { bg = '#403345', bold = true }
     highlights.CursorColumn = { bg = '#403345', bold = true }
+    highlights.WinSeparator = { fg = '#FF4081', bg = '#000000' }
+
+    -- -- Telescope: differentiate file paths from match content
+    -- highlights.TelescopeResultsIdentifier = { fg = '#7aa2f7' }
+    -- highlights.TelescopeResultsLineNr = { fg = '#565f89' }
+    -- highlights.TelescopeMatching = { fg = '#ff9e64', bold = true }
   end,
 }
 

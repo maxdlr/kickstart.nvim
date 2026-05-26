@@ -12,7 +12,7 @@ vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Split Vertical' })
 vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Split horizontal' })
 
 -- Closing
-vim.keymap.set('n', '<leader>wd', '<C-w>q', { desc = 'Close window' })
+vim.keymap.set('n', '<leader>wd', '<C-w>c', { desc = 'Close window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close all other windows' })
 
 -- Moving

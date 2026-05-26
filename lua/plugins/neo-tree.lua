@@ -1,21 +1,41 @@
 -- Neo-tree is a Neovim plugin to browse the file system
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 
-local plugins = {
+local neotreePlugins = {
   { src = Gh 'nvim-neo-tree/neo-tree.nvim', version = vim.version.range '*' },
   Gh 'nvim-lua/plenary.nvim',
   Gh 'MunifTanjim/nui.nvim',
+  Gh 'antosha417/nvim-lsp-file-operations',
+  Gh 'nvim-tree/nvim-web-devicons',
+  Gh 's1n7ax/nvim-window-picker',
 }
 
 if vim.g.have_nerd_font then
-  table.insert(plugins, Gh 'nvim-tree/nvim-web-devicons') -- not strictly required, but recommended
+  table.insert(neotreePlugins, Gh 'nvim-tree/nvim-web-devicons') -- not strictly required, but recommended
 end
 
-vim.pack.add(plugins)
+vim.pack.add(neotreePlugins)
 
 vim.keymap.set('n', '<leader>e', '<Cmd>Neotree reveal<CR>', { desc = 'Explorer', silent = true })
 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = 'neo-tree',
+--   callback = function()
+--     vim.wo.number = true
+--     vim.wo.relativenumber = true
+--   end,
+-- })
+
 require('neo-tree').setup {
+  event_handlers = {
+    {
+      event = 'neo_tree_buffer_enter',
+      handler = function()
+        -- vim.opt.number = true
+        vim.opt.relativenumber = true
+      end,
+    },
+  },
   filesystem = {
     default_component_configs = {
       container = {
@@ -93,6 +113,7 @@ require('neo-tree').setup {
       position = 'left',
       mappings = {
         ['<leader>e'] = 'close_window',
+        ['t'] = 'open_tabnew',
       },
     },
   },

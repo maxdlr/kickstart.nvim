@@ -109,6 +109,7 @@ do
   --  For more options, you can see `:help option-list`
 
   require 'ui.init'
+  require 'keymaps.init'
   -- Make line numbers default
   -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!

@@ -3,29 +3,29 @@ vim.pack.add { Gh 'stevearc/conform.nvim' }
 require('conform').setup {
   notify_on_error = false,
   format_on_save = function(bufnr)
-    -- You can specify filetypes to autoformat on save here:
-    local enabled_filetypes = {
-      -- lua = true,
-      -- python = true,
-    }
-    if enabled_filetypes[vim.bo[bufnr].filetype] then
-      return { timeout_ms = 500 }
-    else
-      return nil
-    end
+    -- Disable for filetypes you don't want to autoformat
+    local disabled_filetypes = {}
+    if disabled_filetypes[vim.bo[bufnr].filetype] then return nil end
+    return { timeout_ms = 500 }
   end,
   default_format_opts = {
     lsp_format = 'fallback', -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
   },
-  -- You can also specify external formatters in here.
   formatters_by_ft = {
-    -- rust = { 'rustfmt' },
-    -- Conform can also run multiple formatters sequentially
-    -- python = { "isort", "black" },
-    --
-    -- You can use 'stop_after_first' to run the first available formatter from the list
-    javascript = { 'prettierd', 'prettier', stop_after_first = true },
+    javascript = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    typescript = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    javascriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    typescriptreact = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    json = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    jsonc = { 'biome', 'prettierd', 'prettier', stop_after_first = true },
+    markdown = { 'prettierd', 'prettier', stop_after_first = true },
+    css = { 'prettierd', 'prettier', stop_after_first = true },
+  },
+  formatters = {
+    biome = {
+      condition = function() return vim.fs.find({ 'biome.json', 'biome.jsonc' }, { upward = true, type = 'file' })[1] ~= nil end,
+    },
   },
 }
 
-vim.keymap.set({ 'n', 'v' }, '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
+vim.keymap.set({ 'n', 'v' }, '<leader>cf', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })

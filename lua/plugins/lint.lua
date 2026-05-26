@@ -5,6 +5,10 @@ vim.pack.add { Gh 'mfussenegger/nvim-lint' }
 local lint = require 'lint'
 lint.linters_by_ft = {
   markdown = { 'markdownlint' }, -- Make sure to install `markdownlint` via mason / npm
+  javascript = { 'eslint_d' },
+  javascriptreact = { 'eslint_d' },
+  typescript = { 'eslint_d' },
+  typescriptreact = { 'eslint_d' },
 }
 
 -- To allow other plugins to add linters to require('lint').linters_by_ft,
@@ -50,4 +54,9 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
     -- describe the hovered symbol using Markdown.
     if vim.bo.modifiable then lint.try_lint() end
   end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  pattern = { '*.js', '*.jsx', '*.ts', '*.tsx' },
+  callback = function() require('lint').try_lint() end,
 })

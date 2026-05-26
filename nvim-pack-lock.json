@@ -34,6 +34,10 @@
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
+    "coc.nvim": {
+      "rev": "e62e589c4a65c2047741946299f2406217b6ce13",
+      "src": "https://github.com/neoclide/coc.nvim"
+    },
     "colorful-menu.nvim": {
       "rev": "13f9b7eaa9cd2901b4f8915cfb2483c3be4c8c20",
       "src": "https://github.com/xzbdmw/colorful-menu.nvim"
@@ -147,6 +151,10 @@
       "rev": "d48f3a76189d03b2239f6df1b2f7e3fa8353743b",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
+    "nvim-lsp-file-operations": {
+      "rev": "b9c795d3973e8eec22706af14959bc60c579e771",
+      "src": "https://github.com/antosha417/nvim-lsp-file-operations"
+    },
     "nvim-lspconfig": {
       "rev": "a4ed4e761c400849e8c9f8bda33e5083f890268c",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -175,6 +183,10 @@
     "nvim-web-devicons": {
       "rev": "0d7d35fa946837b8738b17c18d1faa1ac351e7f9",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
+    },
+    "nvim-window-picker": {
+      "rev": "6382540b2ae5de6c793d4aa2e3fe6dbb518505ec",
+      "src": "https://github.com/s1n7ax/nvim-window-picker"
     },
     "persistence.nvim": {
       "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
@@ -227,6 +239,10 @@
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
       "src": "https://github.com/folke/which-key.nvim"
+    },
+    "yanky.nvim": {
+      "rev": "b13d318dc7c816e2eee626dde61fa0a7237bc77e",
+      "src": "https://github.com/gbprod/yanky.nvim"
     }
   }
 }

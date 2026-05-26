@@ -1,6 +1,7 @@
 vim.pack.add { Gh 'nvim-zh/colorful-winsep.nvim' }
 require('colorful-winsep').setup {
-  event = { "WinLeave" },
+  no_exec_files = { 'neo-tree', 'TelescopePrompt', 'mason' },
+  event = { 'WinLeave' },
   animate = {
     ---@type "shift"|"progressive"|false
     enabled = 'progressive', -- false to disable or choose a option below (e.g. "shift") and set option for it if needed

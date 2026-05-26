@@ -104,7 +104,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Jump to the implementation of the word under your cursor.
     -- Useful when your language has ways of declaring types without an actual implementation.
-    vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+    vim.keymap.set('n', 'cgi', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
 
   vim.keymap.set('n', '<leader>co', function()
     vim.lsp.buf.code_action {
@@ -121,7 +121,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Fuzzy find all the symbols in your current document.
     -- Symbols are things like variables, functions, types, etc.
-    vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+    vim.keymap.set('n', 'cgO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
 
     -- Fuzzy find all the symbols in your current workspace.
     -- Similar to document symbols, except searches over your entire project.
@@ -130,7 +130,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Jump to the type of the word under your cursor.
     -- Useful when you're not sure what type a variable is and you want to see
     -- the definition of its *type*, not where it was *defined*.
-    vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+    vim.keymap.set('n', 'cgt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
   end,
 })
 
@@ -144,13 +144,15 @@ vim.keymap.set('n', '/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>P', function() builtin.registers(require('telescope.themes').get_dropdown {
+vim.keymap.set('n', '<leader>p', function() builtin.registers(require('telescope.themes').get_dropdown {
     winblend = 5,
     previewer = false,
     virtual_lines = true,
   }) end, { desc = 'Yank history' })
 
-vim.keymap.set('n', '<leader>sb', function() builtin.buffers(require('telescope.themes').get_dropdown {
+vim.keymap.set('n', '\\', '<C-^>', {desc = 'Jump to last buffer'})
+
+vim.keymap.set('n', '<leader>bl', function() builtin.buffers(require('telescope.themes').get_dropdown {
     winblend = 5,
     previewer = true,
       layout_config = {

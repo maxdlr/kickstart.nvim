@@ -22,6 +22,8 @@ require('sidekick').setup {
 
 local map = vim.keymap.set
 
+map('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
 map('n', '<leader>ah', function() require('sidekick').nes_jump_or_apply() end, { expr = true, desc = 'Goto/Apply Next Edit Suggestion' })
 map('n', '<leader>ae', function() require('sidekick.nes').toggle() end, { desc = 'Toggle Next Edit Suggestions' })
 map('n', '<leader>au', function() require('sidekick').update() end, { expr = true, desc = 'Update Next Edit Suggestion' })

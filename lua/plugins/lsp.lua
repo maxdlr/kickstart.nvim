@@ -91,9 +91,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- vim.lsp.inlay_hint.enable()
     -- This may be unwanted, since they displace some of your code
-    if client and client:supports_method('textDocument/inlayHint', event.buf) then
-      map('<leader>uh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, 'Inlay [H]ints')
-    end
+    -- if client and client:supports_method('textDocument/inlayHint', event.buf) then
+    --   map('<leader>uh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, 'Inlay [H]ints')
+    -- end
   end,
 })
 
@@ -111,7 +111,7 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
   --
   -- But for many setups, the LSP (`ts_ls`) will work just fine
-  ts_ls = {},
+  -- ts_ls is disabled — typescript-tools.nvim handles TS/JS instead
   jsonls = {},
 
   stylua = {}, -- Used to format Lua code
@@ -175,6 +175,9 @@ require('mason').setup {}
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
   -- You can add other tools here that you want Mason to install
+  'prettierd',
+  'biome',
+  'eslint',
 })
 
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
