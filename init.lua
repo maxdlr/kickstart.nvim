@@ -130,6 +130,12 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
+  -- Default indentation (guess-indent will override per-file)
+  vim.o.expandtab = true
+  vim.o.tabstop = 2
+  vim.o.shiftwidth = 2
+  vim.o.softtabstop = 2
+
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
