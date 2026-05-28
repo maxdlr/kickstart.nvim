@@ -24,9 +24,9 @@
 -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
 -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
--- Useful status updates for LSP.
-vim.pack.add { Gh 'j-hui/fidget.nvim' }
-require('fidget').setup {}
+-- LSP status/progress is handled by noice.nvim
+-- vim.pack.add { Gh 'j-hui/fidget.nvim' }
+-- require('fidget').setup {}
 
 --  This function gets run when an LSP attaches to a particular buffer.
 --    That is to say, every time a new file is opened that is associated with

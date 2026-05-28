@@ -37,12 +37,20 @@ local focus_preview = function(prompt_bufnr)
   local action_state = require 'telescope.actions.state'
   local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_win = picker.prompt_win
+
+  -- If previewer is hidden, toggle it on first
+  if not picker.previewer then
+    require('telescope.actions.layout').toggle_preview(prompt_bufnr)
+    picker = action_state.get_current_picker(prompt_bufnr)
+  end
+
   local previewer = picker.previewer
+  if not previewer or not previewer.state then return end
   local winid = previewer.state.winid
   local bufnr = previewer.state.bufnr
   vim.keymap.set('n', '<Tab>', function() vim.cmd(string.format('noautocmd lua vim.api.nvim_set_current_win(%s)', prompt_win)) end, { buffer = bufnr })
+  vim.keymap.set('n', '<Esc>', function() require('telescope.actions').close(prompt_bufnr) end, { buffer = bufnr })
   vim.cmd(string.format('noautocmd lua vim.api.nvim_set_current_win(%s)', winid))
-  -- api.nvim_set_current_win(winid)
 end
 
 -- See `:help telescope` and `:help telescope.setup()`
@@ -58,11 +66,13 @@ require('telescope').setup {
     mappings = {
    n = {
       ['<Tab>'] = focus_preview,
+      ['<C-P>'] = require('telescope.actions.layout').toggle_preview
     },
     i = {
       ['<Tab>'] = focus_preview,
+      ['<c-enter>'] = 'to_fuzzy_refine',
+        ['<C-P>'] = require('telescope.actions.layout').toggle_preview
     },
-      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
     },
   },
   -- pickers = {}
@@ -70,6 +80,11 @@ require('telescope').setup {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
   },
 }
+
+vim.api.nvim_create_autocmd('User', {
+    pattern = 'TelescopePreviewerLoaded',
+    callback = function() vim.wo.number = true; vim.o.relativenumber = true end,
+  })
 
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
@@ -101,23 +116,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Find references for the word under your cursor.
     vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
+    vim.keymap.set('n', 'gR', function () builtin.lsp_references {jump_type ='vsplit'} end, { buffer = buf, desc = '[G]oto [R]eferences' })
 
     -- Jump to the implementation of the word under your cursor.
     -- Useful when your language has ways of declaring types without an actual implementation.
     vim.keymap.set('n', 'cgi', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
 
-  vim.keymap.set('n', '<leader>co', function()
+  vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
+  vim.keymap.set('n', '<leader>cm', '<cmd>TSToolsAddMissingImports<cr>', { buffer = buf, desc = 'Add missing imports' })
+
+  vim.keymap.set('n', '<leader>cm', function()
     vim.lsp.buf.code_action {
       apply = true,
-      filter = function(action) return action.kind == 'source.organizeImports'
-   end,
+      filter = function(action) return action.kind ~= nil and vim.startswith(action.kind, 'source.addMissingImports') end,
     }
-  end, { desc = 'Organize imports' })
+  end, { desc = 'Add missing imports' })
 
     -- Jump to the definition of the word under your cursor.
     -- This is where a variable was first declared, or where a function is defined, etc.
     -- To jump back, press <C-t>.
     vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+    vim.keymap.set('n', 'gD', function() builtin.lsp_definitions { jump_type = 'vsplit' } end, { buffer = buf, desc = '[G]oto [D]efinition (split)' })
 
     -- Fuzzy find all the symbols in your current document.
     -- Symbols are things like variables, functions, types, etc.
@@ -136,12 +155,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Override default behavior and theme when searching
 vim.keymap.set('n', '/', function()
-  -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+  builtin.current_buffer_fuzzy_find {
     winblend = 5,
-    previewer = false,
     virtual_lines = true,
-  })
+    previewer = false,
+    layout_strategy = 'vertical',
+    layout_config = { prompt_position = 'top', width = 0.6, height = 0.6, mirror = true },
+    sorting_strategy = 'ascending',
+    mappings = {
+    },
+  }
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>p', function() builtin.registers(require('telescope.themes').get_dropdown {

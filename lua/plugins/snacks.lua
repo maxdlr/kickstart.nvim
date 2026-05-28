@@ -70,6 +70,8 @@ Snacks.toggle.dim():map '<leader>uD'
 Snacks.toggle.inlay_hints():map '<leader>uh'
 Snacks.toggle.indent():map '<leader>ug'
 
+vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
+
 -- map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 -- map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })

@@ -35,7 +35,34 @@ require('blink.cmp').setup {
     --
     -- See `:help blink-cmp-config-keymap` for defining your own keymap
     preset = 'default',
-    ['<CR>'] = { 'accept', 'fallback' },
+    ['<CR>'] = {
+      function(cmp)
+        if not cmp.is_visible() then return end
+        if vim.b._blink_snippet_trigger then
+          vim.b._blink_snippet_trigger = false
+          -- Use feedkeys to delete the \ (search backward for it), then accept in a scheduled callback
+          local col = vim.api.nvim_win_get_cursor(0)[2]
+          local line = vim.api.nvim_get_current_line()
+          local before = line:sub(1, col)
+          local bs_pos = before:find '\\[%w_]*$'
+          if bs_pos then
+            -- Delete the backslash using nvim_buf_set_text (allowed here via schedule)
+            -- But first, accept and then clean up
+            -- Actually: store position, accept, then clean
+            vim.g._blink_bs_row = vim.api.nvim_win_get_cursor(0)[1] - 1
+            vim.g._blink_bs_col = bs_pos - 1
+            local ret = cmp.accept()
+            vim.schedule(function()
+              pcall(vim.api.nvim_buf_set_text, 0, vim.g._blink_bs_row, vim.g._blink_bs_col, vim.g._blink_bs_row, vim.g._blink_bs_col + 1, {})
+            end)
+            return ret
+          end
+        end
+        return cmp.accept()
+      end,
+      'fallback',
+    },
+    ['<C-y>'] = {},
 
     -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
     --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -167,7 +194,7 @@ require('blink.cmp').setup {
   sources = {
     providers = {
       buffer = {
-        score_offset = -10, -- Tune by preference
+        score_offset = -5, -- Tune by preference
         opts = {
           get_bufnrs = function()
             return vim.iter(vim.api.nvim_list_wins()):map(vim.api.nvim_win_get_buf):filter(function(buf) return vim.bo[buf].buftype == '' end):totable()
@@ -186,6 +213,26 @@ require('blink.cmp').setup {
         },
       },
 
+      snippets = {
+        score_offset = -1,
+        transform_items = function(_, items)
+          local col = vim.api.nvim_win_get_cursor(0)[2]
+          local line = vim.api.nvim_get_current_line()
+          local before = line:sub(1, col)
+          if before:match '\\[%w_]*$' then
+            vim.b._blink_snippet_trigger = true
+            for _, item in ipairs(items) do
+              item.score_offset = (item.score_offset or 0) + 100
+            end
+          else
+            vim.b._blink_snippet_trigger = false
+          end
+          return items
+        end,
+      },
+
+      lsp = { score_offset = 0 },
+
       -- yank = {
       --   name = 'yank',
       --   module = 'blink-yanky',
@@ -197,9 +244,6 @@ require('blink.cmp').setup {
       --     kind_icon = '󰅍',
       --   },
       -- },
-
-      snippets = { score_offset = -3 },
-      lsp = { score_offset = -8 },
 
       -- ripgrep = {
       --   module = 'blink-ripgrep',

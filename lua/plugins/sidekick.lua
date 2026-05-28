@@ -22,7 +22,17 @@ require('sidekick').setup {
 
 local map = vim.keymap.set
 
-map('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    local name = vim.api.nvim_buf_get_name(buf)
+    if name:find 'tmux' then
+      vim.inspect(print(name))
+      vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { buffer = buf, desc = 'Exit terminal mode (sidekick)' })
+    end
+  end,
+})
 
 map('n', '<leader>ah', function() require('sidekick').nes_jump_or_apply() end, { expr = true, desc = 'Goto/Apply Next Edit Suggestion' })
 map('n', '<leader>ae', function() require('sidekick.nes').toggle() end, { desc = 'Toggle Next Edit Suggestions' })
