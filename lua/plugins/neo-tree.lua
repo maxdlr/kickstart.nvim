@@ -116,6 +116,7 @@ require('neo-tree').setup {
       mappings = {
         ['<leader>e'] = 'close_window',
         ['t'] = 'open_tabnew',
+        ['m'] = { 'move', config = { show_path = 'relative' } },
       },
     },
   },

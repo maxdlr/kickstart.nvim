@@ -48,12 +48,46 @@ require('snacks').setup {
       width = 160,
     },
   },
+
+  statuscolumn = {},
+
+  gh = {},
+
+  words = {
+    -- your words configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  },
+
+  -- toggle = {
+  --   -- your toggle configuration comes here
+  --   -- or leave it empty to use the default settings
+  --   -- refer to the configuration section below
+  -- },
+
+  picker = {
+    sources = {
+      -- gh_issue = {
+      --   -- your gh_issue picker configuration comes here
+      --   -- or leave it empty to use the default settings
+      -- },
+      gh_pr = {},
+    },
+  },
 }
 
 -- Snacks.lazygit():map '<leader>gg'
 vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'LazyGit' })
 vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = 'LazyGit File History' })
 vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'LazyGit Log' })
+
+vim.keymap.set('n', '<leader>gp', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
+vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr { state = 'all' } end, { desc = 'GitHub Pull Requests (open)' })
+
+-- { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
+-- { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+-- { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
+-- { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
 
 Snacks.toggle.zoom():map('<leader>wm'):map '<leader>uZ'
 Snacks.toggle.zen():map '<leader>uz'
@@ -72,8 +106,8 @@ Snacks.toggle.indent():map '<leader>ug'
 
 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
 
--- map('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
--- map('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+vim.keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '[b', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
 vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
 vim.keymap.set('n', '\\', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })

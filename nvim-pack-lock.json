@@ -131,6 +131,10 @@
       "rev": "fdaea31df2e76f73511d742db87188a7e698b64b",
       "src": "https://github.com/Zeioth/neon.nvim"
     },
+    "nerdicons.nvim": {
+      "rev": "2d257ff9b00b7d1510704e0a565a6a7ede76b79a",
+      "src": "https://github.com/glepnir/nerdicons.nvim"
+    },
     "noice.nvim": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
       "src": "https://github.com/folke/noice.nvim"

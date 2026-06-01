@@ -132,7 +132,11 @@ local servers = {
   -- ts_ls is disabled — typescript-tools.nvim handles TS/JS instead
   jsonls = {},
 
+  eslint = {},
+
   tailwindcss = {},
+
+  cssls = {},
 
   stylua = {}, -- Used to format Lua code
 

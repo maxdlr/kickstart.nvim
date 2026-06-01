@@ -34,13 +34,15 @@ if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, Gh 'nvim-t
 vim.pack.add(telescope_plugins)
 
 local focus_preview = function(prompt_bufnr)
-  local action_state = require 'telescope.actions.state'
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+  local action_layout = require('telescope.actions.layout')
   local picker = action_state.get_current_picker(prompt_bufnr)
   local prompt_win = picker.prompt_win
 
   -- If previewer is hidden, toggle it on first
   if not picker.previewer then
-    require('telescope.actions.layout').toggle_preview(prompt_bufnr)
+    action_layout.toggle_preview(prompt_bufnr)
     picker = action_state.get_current_picker(prompt_bufnr)
   end
 
@@ -48,8 +50,11 @@ local focus_preview = function(prompt_bufnr)
   if not previewer or not previewer.state then return end
   local winid = previewer.state.winid
   local bufnr = previewer.state.bufnr
+
   vim.keymap.set('n', '<Tab>', function() vim.cmd(string.format('noautocmd lua vim.api.nvim_set_current_win(%s)', prompt_win)) end, { buffer = bufnr })
-  vim.keymap.set('n', '<Esc>', function() require('telescope.actions').close(prompt_bufnr) end, { buffer = bufnr })
+  vim.keymap.set('n', '<Esc>', function() actions.close(prompt_bufnr) end, { buffer = bufnr })
+  vim.keymap.set('n', '<CR>', function() actions.file_edit(prompt_bufnr) end, { buffer = bufnr })
+
   vim.cmd(string.format('noautocmd lua vim.api.nvim_set_current_win(%s)', winid))
 end
 
@@ -71,7 +76,7 @@ require('telescope').setup {
     i = {
       ['<Tab>'] = focus_preview,
       ['<c-enter>'] = 'to_fuzzy_refine',
-        ['<C-P>'] = require('telescope.actions.layout').toggle_preview
+      ['<C-P>'] = require('telescope.actions.layout').toggle_preview
     },
     },
   },
@@ -94,13 +99,13 @@ pcall(require('telescope').load_extension, 'ui-select')
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
--- vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Files' })
+vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = '👓 Files' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
 -- vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = 'Current Word' })
--- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = 'Grep' })
 vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = 'Diagnostics' })
 vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
-vim.keymap.set('n', '<leader>,', builtin.oldfiles, { desc = 'Recent Files' })
+vim.keymap.set('n', '<leader>sC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
+-- vim.keymap.set('n', '<leader>,', builtin.oldfiles, { desc = 'Recent Files' })
 vim.keymap.set('n', '<leader>s:', builtin.commands, { desc = 'Commands' })
 -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = 'Find existing buffers' })
 
@@ -175,7 +180,7 @@ vim.keymap.set('n', '<leader>p', function() builtin.registers(require('telescope
 
 -- vim.keymap.set('n', '\\', '<C-^>', {desc = 'Jump to last buffer'})
 
-vim.keymap.set('n', '<leader>bl', function() builtin.buffers(require('telescope.themes').get_dropdown {
+vim.keymap.set('n', '<leader>,', function() builtin.buffers(require('telescope.themes').get_dropdown {
     winblend = 5,
     previewer = true,
       layout_config = {
@@ -183,25 +188,25 @@ vim.keymap.set('n', '<leader>bl', function() builtin.buffers(require('telescope.
     },
     sorting_strategy = 'ascending',
 
-  }) end, { desc = 'Buffers' })
+  }) end, { desc = 'Buffers (active)' })
 
 
 
 
 -- It's also possible to pass additional configuration options.
---  See `:help telescope.builtin.live_grep()` for information about particular keys
--- vim.keymap.set(
---   'n',
---   '<leader>/',
---   function()
---     builtin.live_grep {
---
---       grep_open_files = true,
---       prompt_title = 'Live Grep in Open Files',
---     }
---   end,
---   { desc = '[S]earch [/] in Open Files' }
--- )
+vim.keymap.set(
+  --  See `:help telescope.builtin.live_grep()` for information about particular keys
+  'n',
+  '<leader>/',
+  function()
+    builtin.live_grep {
+      grep_open_files = false,
+      prompt_title = 'Grep',
+    }
+  end,
+  { desc = '👓 Grep files' }
+)
 
 -- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+vim.keymap.set('n', '<leader>sc', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
+vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = '👓 Under cursor' })
