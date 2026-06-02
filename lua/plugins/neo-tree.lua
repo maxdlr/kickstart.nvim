@@ -31,9 +31,13 @@ require('neo-tree').setup {
   event_handlers = {
     {
       event = 'neo_tree_buffer_enter',
-      handler = function()
-        -- vim.opt.number = true
-        vim.opt.relativenumber = true
+      handler = function() vim.opt.relativenumber = true end,
+    },
+    {
+      event = 'neo_tree_popup_input_ready',
+      handler = function(args)
+        -- vim.cmd 'stopinsert'
+        vim.keymap.set('i', '<esc>', vim.cmd.stopinsert, { buffer = args.bufnr })
       end,
     },
   },
