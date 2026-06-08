@@ -88,26 +88,27 @@ require('telescope').setup {
 
 vim.api.nvim_create_autocmd('User', {
     pattern = 'TelescopePreviewerLoaded',
-    callback = function() vim.wo.number = true; vim.o.relativenumber = true end,
+    callback = function() vim.wo.number = true; vim.o.relativenumber = true; vim.o.wrap = true end,
   })
 
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
+pcall(require('telescope').load_extension, 'yank_history')
 
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
-vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = '👓 Files' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
--- vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = 'Current Word' })
-vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = 'Diagnostics' })
 vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
-vim.keymap.set('n', '<leader>sC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
--- vim.keymap.set('n', '<leader>,', builtin.oldfiles, { desc = 'Recent Files' })
 vim.keymap.set('n', '<leader>s:', builtin.commands, { desc = 'Commands' })
--- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = 'Find existing buffers' })
+
+vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Srch Files' })
+
+vim.keymap.set('n', '<leader>cD', builtin.diagnostics, { desc = 'Diagnostics' })
+
+vim.keymap.set('n', '<leader>uC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
 
 -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
 -- If you later switch picker plugins, this is where to update these mappings.
@@ -120,12 +121,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local buf = event.buf
 
     -- Find references for the word under your cursor.
-    vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
-    vim.keymap.set('n', 'gR', function () builtin.lsp_references {jump_type ='vsplit'} end, { buffer = buf, desc = '[G]oto [R]eferences' })
+    vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = buf, desc = 'References' })
+    vim.keymap.set('n', 'gR', function () builtin.lsp_references { jump_type ='vsplit' } end, { buffer = buf, desc = 'References' })
 
     -- Jump to the implementation of the word under your cursor.
     -- Useful when your language has ways of declaring types without an actual implementation.
-    vim.keymap.set('n', 'cgi', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+    vim.keymap.set('n', '<leader>ci', builtin.lsp_implementations, { buffer = buf, desc = 'Implementation' })
 
   vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
   vim.keymap.set('n', '<leader>cm', '<cmd>TSToolsAddMissingImports<cr>', { buffer = buf, desc = 'Add missing imports' })
@@ -140,12 +141,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Jump to the definition of the word under your cursor.
     -- This is where a variable was first declared, or where a function is defined, etc.
     -- To jump back, press <C-t>.
-    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
-    vim.keymap.set('n', 'gD', function() builtin.lsp_definitions { jump_type = 'vsplit' } end, { buffer = buf, desc = '[G]oto [D]efinition (split)' })
+    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = 'Definition' })
+    vim.keymap.set('n', 'gD', function() builtin.lsp_definitions { jump_type = 'vsplit' } end, { buffer = buf, desc = 'Definition (split)' })
 
     -- Fuzzy find all the symbols in your current document.
     -- Symbols are things like variables, functions, types, etc.
-    vim.keymap.set('n', 'cgO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+    vim.keymap.set('n', '<leader>cs', builtin.lsp_document_symbols, { buffer = buf, desc = 'Symbols' })
 
     -- Fuzzy find all the symbols in your current workspace.
     -- Similar to document symbols, except searches over your entire project.
@@ -154,59 +155,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Jump to the type of the word under your cursor.
     -- Useful when you're not sure what type a variable is and you want to see
     -- the definition of its *type*, not where it was *defined*.
-    vim.keymap.set('n', 'cgt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+    vim.keymap.set('n', '<leader>ct', builtin.lsp_type_definitions, { buffer = buf, desc = 'Type' })
   end,
 })
 
--- Override default behavior and theme when searching
-vim.keymap.set('n', '/', function()
-  builtin.current_buffer_fuzzy_find {
-    winblend = 5,
-    virtual_lines = true,
-    previewer = false,
-    layout_strategy = 'vertical',
-    layout_config = { prompt_position = 'top', width = 0.6, height = 0.6, mirror = true },
-    sorting_strategy = 'ascending',
-    mappings = {
-    },
-  }
-end, { desc = '[/] Fuzzily search in current buffer' })
-
-vim.keymap.set('n', '<leader>p', function() builtin.registers(require('telescope.themes').get_dropdown {
-    winblend = 5,
-    previewer = false,
-    virtual_lines = true,
-  }) end, { desc = 'Yank history' })
-
--- vim.keymap.set('n', '\\', '<C-^>', {desc = 'Jump to last buffer'})
-
-vim.keymap.set('n', '<leader>,', function() builtin.buffers(require('telescope.themes').get_dropdown {
-    winblend = 5,
-    previewer = true,
-      layout_config = {
-      prompt_position = 'top',
-    },
-    sorting_strategy = 'ascending',
-
-  }) end, { desc = 'Buffers (active)' })
 
 
 
-
--- It's also possible to pass additional configuration options.
-vim.keymap.set(
-  --  See `:help telescope.builtin.live_grep()` for information about particular keys
-  'n',
-  '<leader>/',
-  function()
-    builtin.live_grep {
-      grep_open_files = false,
-      prompt_title = 'Grep',
-    }
-  end,
-  { desc = '👓 Grep files' }
-)
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sc', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
-vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = '👓 Under cursor' })
+vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = 'Srch under cursor' })

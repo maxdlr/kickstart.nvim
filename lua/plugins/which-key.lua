@@ -24,7 +24,20 @@ require('which-key').setup {
     { '<leader>u', icon = '󱠏', group = ' User interface', mode = { 'n', 'v' } },
     { '<leader>w', group = ' Windows', mode = { 'n' } },
     { '<leader><Tab>', group = ' Tabs', mode = { 'n' } },
-    { '<leader>$', icon = '', group = ' Utils', mode = { 'n' } },
+
+    { '<leader>$', icon = '', group = ' Utils' },
+
+    { '<leader><leader>', icon = { icon = '', color = 'blue' } },
+    { '<leader>/', icon = { icon = '', color = 'blue' } },
+    { '<leader>\\', icon = { icon = '', color = 'blue' } },
+
+    { '<leader>|', icon = { icon = '', color = 'green' } },
+    { '<leader>-', icon = { icon = '', color = 'green' } },
+
+    { '<leader>e', icon = { icon = '', color = 'orange' } },
+    { '<leader>E', icon = { icon = '', color = 'orange' } },
+
+    { '<leader>p', icon = { icon = '', color = 'yellow' } },
     -- { 'gr', group = ' LSP Actions', mode = { 'n' } },
   },
 }

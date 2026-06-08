@@ -10,4 +10,4 @@ require('nerdicons').setup {
   register = '*', -- Register to copy to
 }
 
-vim.keymap.set('n', '<leader>$i', '<Cmd>NerdIcons<CR>', { desc = 'Search Nerd icons' })
+vim.keymap.set('n', '<leader>si', '<Cmd>NerdIcons<CR>', { desc = 'Search Nerd icons' })

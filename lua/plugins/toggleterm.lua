@@ -7,7 +7,7 @@ require('toggleterm').setup {
       return vim.o.columns * 0.4
     end
   end,
-  hide_numbers = true,
+  hide_numbers = false,
   shade_terminals = true,
   shading_factor = 2,
   start_in_insert = true,
@@ -24,6 +24,8 @@ require('toggleterm').setup {
     title_pos = 'center',
   },
   on_open = function(term)
+    vim.wo.number = true
+    vim.wo.relativenumber = true
     local opts = { buffer = term.bufnr }
     vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
     vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
@@ -40,6 +42,12 @@ local Terminal = require('toggleterm.terminal').Terminal
 local float_term = Terminal:new { direction = 'float', count = 1 }
 local vert_term = Terminal:new { direction = 'vertical', count = 2 }
 local horiz_term = Terminal:new { direction = 'horizontal', count = 3 }
+
+local next_count = 10
+vim.keymap.set('n', '<leader>Tn', function()
+  next_count = next_count + 1
+  Terminal:new({ direction = 'vertical', count = next_count }):open()
+end, { desc = 'Terminal (new vertical)' })
 
 vim.keymap.set('n', '<leader>t', function() float_term:toggle() end, { desc = 'Terminal (float)' })
 vim.keymap.set('n', '<leader>Tt', function() float_term:toggle() end, { desc = 'Terminal (float)' })

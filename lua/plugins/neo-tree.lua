@@ -16,8 +16,8 @@ end
 
 vim.pack.add(neotreePlugins)
 
-vim.keymap.set('n', '<leader>e', '<Cmd>Neotree reveal<CR>', { desc = 'Explorer', silent = true })
-vim.keymap.set('n', '<leader>E', '<Cmd>Neotree close<CR>', { desc = 'Explorer', silent = true })
+vim.keymap.set('n', '<leader>e', '<Cmd>Neotree reveal<CR>', { desc = 'Explr Open/Focus', silent = true })
+vim.keymap.set('n', '<leader>E', '<Cmd>Neotree close<CR>', { desc = 'Explr Close', silent = true })
 
 -- vim.api.nvim_create_autocmd('FileType', {
 --   pattern = 'neo-tree',

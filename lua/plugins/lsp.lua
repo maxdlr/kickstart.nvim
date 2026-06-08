@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Execute a code action, usually your cursor needs to be on top of an error
     -- or a suggestion from your LSP for this to activate.
-    map('<leader>ca', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+    map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
     local diagnostic_goto = function(next, severity)
       return function()

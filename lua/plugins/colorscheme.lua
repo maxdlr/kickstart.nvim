@@ -17,6 +17,7 @@ vim.pack.add { Gh 'Zeioth/neon.nvim' }
 ---@diagnostic disable-next-line: missing-fields
 require('neon').setup {
   dim_inactive = false,
+  -- transparent = true,
   styles = {
     comments = { italic = true },
     keywords = { italic = true },
