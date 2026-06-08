@@ -17,7 +17,7 @@ local my_commands = {
 vim.keymap.set('n', '<leader>$', function()
   require('telescope.pickers')
     .new(require('telescope.themes').get_dropdown {}, {
-      prompt_title = 'Personal Commands',
+      prompt_title = 'Utils',
       finder = require('telescope.finders').new_table {
         results = my_commands,
         entry_maker = function(e) return { value = e, display = e[1], ordinal = e[1] } end,
