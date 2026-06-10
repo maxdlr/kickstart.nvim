@@ -1,3 +1,4 @@
-vim.pack.add { Gh 'pmizio/typescript-tools.nvim' }
-vim.pack.add { Gh 'nvim-lua/plenary.nvim' }
-require('typescript-tools').setup {}
+-- Disabled: using built-in ts_ls instead (typescript-tools causes memory leak via request cancellation spam)
+-- vim.pack.add { Gh 'pmizio/typescript-tools.nvim' }
+-- vim.pack.add { Gh 'nvim-lua/plenary.nvim' }
+-- require('typescript-tools').setup {}

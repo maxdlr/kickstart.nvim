@@ -78,6 +78,10 @@
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "grug-far.nvim": {
+      "rev": "c995bbacf8229dc096ec1c3d60f8531059c86c1b",
+      "src": "https://github.com/MagicDuck/grug-far.nvim"
+    },
     "guess-indent.nvim": {
       "rev": "84a4987ff36798c2fc1169cbaff67960aed9776f",
       "src": "https://github.com/NMAC427/guess-indent.nvim"
@@ -121,6 +125,10 @@
     "mini.nvim": {
       "rev": "a405061478d8027b4e21214d897ce1eb33115792",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "multicursor.nvim": {
+      "rev": "704b99f10a72cc05d370cfeb294ff83412a8ab55",
+      "src": "https://github.com/jake-stewart/multicursor.nvim"
     },
     "neo-tree.nvim": {
       "rev": "83e7a2982fd12b9c3d35bc39dd5877cd91a02a61",
@@ -271,6 +279,10 @@
     "typescript-tools.nvim": {
       "rev": "c2f5910074103705661e9651aa841e0d7eea9932",
       "src": "https://github.com/pmizio/typescript-tools.nvim"
+    },
+    "vim-repeat": {
+      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+      "src": "https://github.com/tpope/vim-repeat"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

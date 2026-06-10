@@ -62,14 +62,25 @@ vim.api.nvim_create_autocmd('LspAttach', {
         }
       end
     end
-    vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
+    -- vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
+    vim.keymap.set('n', '<leader>co', function()
+      vim.lsp.buf.code_action {
+        apply = true,
+        filter = function(a)
+          return a.kind and a.kind:match '^source%.organizeImports'
+        end,
+      }
+    end, { buffer = event.buf, desc = 'Organize imports' })
 
+    -- vim.keymap.set('n', '<leader>cm', ... TSTools version ...)
     vim.keymap.set('n', '<leader>cm', function()
       vim.lsp.buf.code_action {
         apply = true,
-        filter = function(action) return action.kind ~= nil and vim.startswith(action.kind, 'source.addMissingImports') end,
+        filter = function(a)
+          return a.kind and a.kind:match '^source%.addMissingImports'
+        end,
       }
-    end, { desc = 'Add missing imports' })
+    end, { buffer = event.buf, desc = 'Add missing imports' })
 
     vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
     vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
@@ -137,7 +148,12 @@ local servers = {
   --    https://github.com/pmizio/typescript-tools.nvim
   --
   -- But for many setups, the LSP (`ts_ls`) will work just fine
-  -- ts_ls is disabled — typescript-tools.nvim handles TS/JS instead
+  ts_ls = {
+    init_options = {
+      maxTsServerMemory = 4096,
+    },
+  },
+
   jsonls = {},
 
   eslint = {},

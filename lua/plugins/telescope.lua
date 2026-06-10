@@ -91,9 +91,13 @@ require('telescope').setup {
 }
 
 vim.api.nvim_create_autocmd('User', {
-    pattern = 'TelescopePreviewerLoaded',
-    callback = function() vim.wo.number = true; vim.o.relativenumber = true; vim.o.wrap = true end,
-  })
+  pattern = 'TelescopePreviewerLoaded',
+  callback = function()
+    vim.wo.number = true
+    vim.o.relativenumber = true
+    vim.o.wrap = true
+  end,
+})
 
 -- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
