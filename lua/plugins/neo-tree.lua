@@ -104,6 +104,7 @@ require('neo-tree').setup {
         --"thumbs.db"
       },
       always_show = { -- remains visible even if other settings would normally hide it
+        '.config',
         '.gitignore',
         '.zshrc',
       },

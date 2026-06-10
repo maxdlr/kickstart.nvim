@@ -5,7 +5,7 @@ local my_commands = {
     'Reload config',
     function()
       for name in pairs(package.loaded) do
-        if name:match '^plugins' or name:match '^keymaps' or name:match '^ui' then package.loaded[name] = nil end
+        if name:match '^plugins' or name:match '^keymaps' or name:match '^ui' or name:match '^utils' then package.loaded[name] = nil end
       end
       vim.cmd 'source $MYVIMRC'
     end,

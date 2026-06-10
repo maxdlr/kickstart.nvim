@@ -71,12 +71,16 @@ require('telescope').setup {
     mappings = {
    n = {
       ['<Tab>'] = focus_preview,
-      ['<C-P>'] = require('telescope.actions.layout').toggle_preview
+      ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
+      ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
+      ['<C-Down>'] = require('telescope.actions').cycle_history_next,
     },
     i = {
       ['<Tab>'] = focus_preview,
       ['<c-enter>'] = 'to_fuzzy_refine',
-      ['<C-P>'] = require('telescope.actions.layout').toggle_preview
+      ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
+      ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
+      ['<C-Down>'] = require('telescope.actions').cycle_history_next,
     },
     },
   },
@@ -128,15 +132,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Useful when your language has ways of declaring types without an actual implementation.
     vim.keymap.set('n', '<leader>ci', builtin.lsp_implementations, { buffer = buf, desc = 'Implementation' })
 
-  vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
-  vim.keymap.set('n', '<leader>cm', '<cmd>TSToolsAddMissingImports<cr>', { buffer = buf, desc = 'Add missing imports' })
-
-  vim.keymap.set('n', '<leader>cm', function()
-    vim.lsp.buf.code_action {
-      apply = true,
-      filter = function(action) return action.kind ~= nil and vim.startswith(action.kind, 'source.addMissingImports') end,
-    }
-  end, { desc = 'Add missing imports' })
+  -- vim.keymap.set('n', '<leader>cm', '<cmd>TSToolsAddMissingImports<cr>', { buffer = buf, desc = 'Add missing imports' })
 
     -- Jump to the definition of the word under your cursor.
     -- This is where a variable was first declared, or where a function is defined, etc.

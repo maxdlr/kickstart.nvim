@@ -1,6 +1,9 @@
 -- Useful plugin to show you pending keybinds.
 vim.pack.add { Gh 'folke/which-key.nvim' }
-require('which-key').setup {
+-- Use Once() so re-sourcing the config (e.g. <leader>$ "Reload config") doesn't call
+-- setup again, which would drop the 'helix' preset and revert to the classic view.
+Once('which_key_did_setup', function()
+  require('which-key').setup {
   preset = 'helix',
   -- Delay between pressing a key and opening which-key (milliseconds)
   delay = 100,
@@ -40,6 +43,7 @@ require('which-key').setup {
     { '<leader>p', icon = { icon = '', color = 'yellow' } },
     -- { 'gr', group = ' LSP Actions', mode = { 'n' } },
   },
-}
+  }
+end)
 
 vim.keymap.set('n', '<leader>?', function() require('which-key').show { global = false } end, { desc = 'Buffer Keymaps' })

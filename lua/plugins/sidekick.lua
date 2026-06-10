@@ -22,7 +22,7 @@ require('sidekick').setup {
 
 local map = vim.keymap.set
 
-map('n', '<M-h>', function() require('sidekick').nes_jump_or_apply() end, { expr = true, desc = 'Goto/Apply Next Edit Suggestion' })
+map('n', 'Ì', function() require('sidekick').nes_jump_or_apply() end, { expr = true, desc = 'Goto/Apply Next Edit Suggestion' })
 map('n', '<leader>ae', function() require('sidekick.nes').toggle() end, { desc = 'Toggle Next Edit Suggestions' })
 map('n', '<leader>au', function() require('sidekick').update() end, { expr = true, desc = 'Update Next Edit Suggestion' })
 map('n', '<leader>aa', function() require('sidekick.cli').toggle() end, { desc = 'Sidekick Toggle CLI' })

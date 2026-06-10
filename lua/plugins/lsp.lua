@@ -62,6 +62,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
         }
       end
     end
+    vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
+
+    vim.keymap.set('n', '<leader>cm', function()
+      vim.lsp.buf.code_action {
+        apply = true,
+        filter = function(action) return action.kind ~= nil and vim.startswith(action.kind, 'source.addMissingImports') end,
+      }
+    end, { desc = 'Add missing imports' })
 
     vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
     vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
