@@ -2,13 +2,8 @@
 -- action is a string (Ex/<cmd> command) or a Lua function.
 local my_commands = {
   {
-    'Reload config',
-    function()
-      for name in pairs(package.loaded) do
-        if name:match '^plugins' or name:match '^keymaps' or name:match '^ui' or name:match '^utils' then package.loaded[name] = nil end
-      end
-      vim.cmd 'source $MYVIMRC'
-    end,
+    'Restart',
+    function() vim.cmd [[restart]] end,
   },
   { 'Update plugins', function() vim.pack.update() end },
   { 'Toggle CsvView', '<Cmd>CsvViewToggle delimiter=; display_mode=border header_lnum=1<CR>' },

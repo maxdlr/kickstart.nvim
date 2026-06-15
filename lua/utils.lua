@@ -19,18 +19,6 @@ end
 ---@return string
 function Gh(repo) return 'https://github.com/' .. repo end
 
---- Runs `fn` only the first time it is called for a given `key` in a Neovim
---- session. Useful for plugin `setup()` calls that are not idempotent, so that
---- re-sourcing the config (e.g. the "Reload config" command) does not call them
---- again. The flag lives in `vim.g`, which survives a `package.loaded` reset.
----@param key string Unique identifier (used as a `vim.g` flag name).
----@param fn fun() Function to run once.
-function Once(key, fn)
-  if vim.g[key] then return end
-  vim.g[key] = true
-  fn()
-end
-
 function Snippet_keymap(mode, lhs, snippet, opts)
   opts = opts or {}
   vim.keymap.set(mode, lhs, function()

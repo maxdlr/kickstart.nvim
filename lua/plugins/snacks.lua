@@ -1,9 +1,6 @@
 ---@diagnostic disable: undefined-global
 vim.pack.add { Gh 'folke/snacks.nvim' }
--- Use Once() so re-sourcing the config (e.g. <leader>$ "Reload config") doesn't call
--- setup again, which would emit "snacks.nvim is already setup".
-Once('snacks_did_setup', function()
-  require('snacks').setup {
+require('snacks').setup {
   dashboard = {
     preset = {
       header = [[
@@ -77,8 +74,7 @@ Once('snacks_did_setup', function()
       gh_pr = {},
     },
   },
-  }
-end)
+}
 
 -- Snacks.lazygit():map '<leader>gg'
 vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'LazyGit' })

@@ -104,6 +104,7 @@ require('neo-tree').setup {
         --"thumbs.db"
       },
       always_show = { -- remains visible even if other settings would normally hide it
+        'exports',
         '.config',
         '.gitignore',
         '.zshrc',
@@ -122,6 +123,9 @@ require('neo-tree').setup {
         ['<leader>e'] = 'close_window',
         ['t'] = 'open_tabnew',
         ['m'] = { 'move', config = { show_path = 'relative' } },
+        ['zb'] = function() vim.cmd 'normal! zb' end,
+        ['zt'] = function() vim.cmd 'normal! zt' end,
+        ['zz'] = function() vim.cmd 'normal! zz' end,
       },
     },
   },

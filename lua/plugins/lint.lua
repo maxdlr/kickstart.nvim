@@ -58,6 +58,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
 })
 
 vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  group = lint_augroup,
   pattern = { '*.js', '*.jsx', '*.ts', '*.tsx' },
   callback = function() require('lint').try_lint() end,
 })

@@ -85,6 +85,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 --
 require 'utils'
+require 'neovide'
 
 -- ============================================================
 -- SECTION 1: FOUNDATION
@@ -316,6 +317,7 @@ do
   --
   -- See `:help vim.pack-events`
   vim.api.nvim_create_autocmd('PackChanged', {
+    group = vim.api.nvim_create_augroup('kickstart-pack-changed', { clear = true }),
     callback = function(ev)
       local name = ev.data.spec.name
       local kind = ev.data.kind

@@ -53,6 +53,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- or a suggestion from your LSP for this to activate.
     map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
+    -- Source actions: whole-file operations (organize/add/remove imports, fix all, etc.)
+    -- These are kind `source.*` and only returned when explicitly requested via context.only.
+    map('<leader>cA', function()
+      vim.lsp.buf.code_action {
+        context = { only = { 'source' }, diagnostics = {} },
+      }
+    end, 'Source Action')
+
     local diagnostic_goto = function(next, severity)
       return function()
         vim.diagnostic.jump {
@@ -64,23 +72,46 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     -- vim.keymap.set('n', '<leader>co', '<cmd>TSToolsOrganizeImports<cr>', { buffer = buf, desc = 'Organize imports' })
     vim.keymap.set('n', '<leader>co', function()
-      vim.lsp.buf.code_action {
-        apply = true,
-        filter = function(a)
-          return a.kind and a.kind:match '^source%.organizeImports'
-        end,
-      }
+      local bufnr = event.buf
+      local clients = vim.lsp.get_clients { bufnr = bufnr, method = 'textDocument/codeAction' }
+      if #clients == 0 then return end
+      local encoding = clients[1].offset_encoding or 'utf-16'
+
+      for _, action_kind in ipairs { 'source.removeUnusedImports', 'source.organizeImports', 'source.sortImports' } do
+        local params = vim.tbl_extend('force', vim.lsp.util.make_range_params(0, encoding), {
+          context = { only = { action_kind }, diagnostics = {} },
+        })
+        local results = vim.lsp.buf_request_sync(bufnr, 'textDocument/codeAction', params, 3000)
+        if results then
+          for client_id, resp in pairs(results) do
+            if resp.result and #resp.result > 0 then
+              local action = resp.result[1]
+              local c = vim.lsp.get_client_by_id(client_id)
+              if action.edit then
+                vim.lsp.util.apply_workspace_edit(action.edit, c and c.offset_encoding or encoding)
+              end
+              if action.command and c then
+                c:exec_cmd(action.command)
+              end
+              break
+            end
+          end
+        end
+      end
     end, { buffer = event.buf, desc = 'Organize imports' })
 
     -- vim.keymap.set('n', '<leader>cm', ... TSTools version ...)
-    vim.keymap.set('n', '<leader>cm', function()
-      vim.lsp.buf.code_action {
-        apply = true,
-        filter = function(a)
-          return a.kind and a.kind:match '^source%.addMissingImports'
-        end,
-      }
-    end, { buffer = event.buf, desc = 'Add missing imports' })
+    vim.keymap.set(
+      'n',
+      '<leader>cm',
+      function()
+        vim.lsp.buf.code_action {
+          context = { only = { 'source.addMissingImports' }, diagnostics = {} },
+          apply = true,
+        }
+      end,
+      { buffer = event.buf, desc = 'Add missing imports' }
+    )
 
     vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
     vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })

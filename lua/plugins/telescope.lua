@@ -91,6 +91,7 @@ require('telescope').setup {
 }
 
 vim.api.nvim_create_autocmd('User', {
+  group = vim.api.nvim_create_augroup('telescope-previewer-loaded', { clear = true }),
   pattern = 'TelescopePreviewerLoaded',
   callback = function()
     vim.wo.number = true
