@@ -1,35 +1,7 @@
--- Curated personal commands: { label, action }
--- action is a string (Ex/<cmd> command) or a Lua function.
 local my_commands = {
-  {
-    'Restart',
-    function() vim.cmd [[restart]] end,
-  },
+  { 'Restart', function() vim.cmd [[restart]] end },
   { 'Update plugins', function() vim.pack.update() end },
-  { 'Toggle CsvView', '<Cmd>CsvViewToggle delimiter=; display_mode=border header_lnum=1<CR>' },
+  { 'Toggle CsvView', 'CsvViewToggle delimiter=; display_mode=border header_lnum=1' },
 }
 
-vim.keymap.set('n', '<leader>$', function()
-  require('telescope.pickers')
-    .new(require('telescope.themes').get_dropdown {}, {
-      prompt_title = 'Utils',
-      finder = require('telescope.finders').new_table {
-        results = my_commands,
-        entry_maker = function(e) return { value = e, display = e[1], ordinal = e[1] } end,
-      },
-      sorter = require('telescope.config').values.generic_sorter {},
-      attach_mappings = function(bufnr)
-        require('telescope.actions').select_default:replace(function()
-          require('telescope.actions').close(bufnr)
-          local action = require('telescope.actions.state').get_selected_entry().value[2]
-          if type(action) == 'function' then
-            action()
-          else
-            vim.cmd(vim.keycode(action))
-          end
-        end)
-        return true
-      end,
-    })
-    :find()
-end, { desc = 'Personal commands' })
+vim.keymap.set('n', '<leader>$', Command_picker('Utils', my_commands), { desc = 'Personal commands' })

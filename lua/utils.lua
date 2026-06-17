@@ -110,3 +110,42 @@ function Bezier_timing(x1, y1, x2, y2, total_ms)
     return math.max(1, math.floor(time_after - time_before + 0.5))
   end
 end
+
+--- Creates a Telescope dropdown picker from a list of commands.
+--- @param title string Picker prompt title
+--- @param commands {[1]: string, [2]: string|function}[] List of {label, action} pairs.
+---   action: a Lua function, or a string Ex command (without <Cmd>/<CR> wrapping).
+--- @param keymap_opts? {mode?: string, lhs?: string, desc?: string}
+function Command_picker(title, commands)
+  return function()
+    local pickers = require('telescope.pickers')
+    local finders = require('telescope.finders')
+    local actions = require('telescope.actions')
+    local action_state = require('telescope.actions.state')
+    local themes = require('telescope.themes')
+    local config = require('telescope.config')
+
+    pickers
+      .new(themes.get_dropdown {}, {
+        prompt_title = title,
+        finder = finders.new_table {
+          results = commands,
+          entry_maker = function(e) return { value = e, display = e[1], ordinal = e[1] } end,
+        },
+        sorter = config.values.generic_sorter {},
+        attach_mappings = function(bufnr)
+          actions.select_default:replace(function()
+            actions.close(bufnr)
+            local action = action_state.get_selected_entry().value[2]
+            if type(action) == 'function' then
+              action()
+            else
+              vim.cmd(action)
+            end
+          end)
+          return true
+        end,
+      })
+      :find()
+  end
+end

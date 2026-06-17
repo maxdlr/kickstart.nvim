@@ -58,6 +58,14 @@
       "rev": "5c22774c3ecc7f8883af5d143b366e45b1f0875d",
       "src": "https://github.com/hat0uma/csvview.nvim"
     },
+    "dressing.nvim": {
+      "rev": "2d7c2db2507fa3c4956142ee607431ddb2828639",
+      "src": "https://github.com/stevearc/dressing.nvim"
+    },
+    "easycolor.nvim": {
+      "rev": "327135955e27ca8568cf4782ffc7840a89f31fef",
+      "src": "https://github.com/neph-iap/easycolor.nvim"
+    },
     "fff.nvim": {
       "rev": "cf3dcf6d0b47c299614ba54f341ce7b5284e73ff",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
@@ -231,6 +239,10 @@
     "nvim-window-picker": {
       "rev": "6382540b2ae5de6c793d4aa2e3fe6dbb518505ec",
       "src": "https://github.com/s1n7ax/nvim-window-picker"
+    },
+    "octo.nvim": {
+      "rev": "7fed87415c401954f73401bbed0fd736b9611e7c",
+      "src": "https://github.com/pwntester/octo.nvim"
     },
     "persistence.nvim": {
       "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
