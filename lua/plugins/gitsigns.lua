@@ -55,9 +55,9 @@ require('gitsigns').setup {
     -- map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
     -- map('n', '<leader>hQ', function() gitsigns.setqflist 'all' end,
     -- { desc = 'git hunk [Q]uickfix list (all files in repo)' })
-    map('n', '<leader>gq', gitsigns.setqflist, { desc = 'git hunk [q]uickfix list (all changes in this file)' })
+    map('n', '<leader>gq', gitsigns.setqflist, { desc = 'git hunk quickfix list (all changes in this file)' })
     -- Toggles
-    map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
+    map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'blame line' })
     -- map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git intra-line [w]ord diff' })
 
     -- Text object

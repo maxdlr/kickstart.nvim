@@ -14,6 +14,7 @@ require('which-key').setup {
     { '<leader>c', group = ' Code', mode = { 'n', 'v' } },
     { '<leader>d', group = ' Diagnostics', mode = { 'n' } },
     { '<leader>g', group = ' Git', mode = { 'n' } },
+    { '<leader>gh', icon = '', group = ' Pr commands', mode = { 'n' } },
     { '<leader>h', icon = '󰾹', group = ' Macros', mode = { 'n' } },
     { '<leader>n', group = ' Noices', mode = { 'n' } },
     { '<leader>m', icon = '󱘈', group = ' Markers', mode = { 'n' } },

@@ -111,6 +111,7 @@ do
 
   require 'ui.init'
   require 'keymaps.init'
+  require 'commands.init'
   -- Make line numbers default
   -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!
@@ -224,22 +225,7 @@ do
   vim.keymap.set('n', 'Ï', ':m .+1<CR>==', { desc = 'move line down' })
   vim.keymap.set('n', 'È', ':m .-2<CR>==', { desc = 'move line up' })
 
-  Snippet_keymap('n', '<leader>hf', "const %s = () => {\n  return '%s';\n}\nexport default %s;", {
-    prompt = 'Function name: ',
-    desc = 'Create exported function',
-  })
-
-  Snippet_keymap('n', '<leader>hc', 'console.log({%s})', {
-    from_register = '"',
-    desc = 'Log latest yank string',
-  })
-
-  Snippet_keymap('n', '<leader>he', "export { default as %s } from './%s';", {
-    prompt = 'default as: ',
-    desc = 'Create index default export',
-  })
-
-  vim.keymap.set('n', '<leader>dd', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+  -- vim.keymap.set('n', '<leader>dd', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
   -- vim.keymap.set('n', '<leader>cD', vim.diagnostic.setqflist, { desc = 'Project Diagnostics (quickfix)' })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
