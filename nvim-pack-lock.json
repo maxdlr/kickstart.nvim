@@ -300,6 +300,10 @@
       "rev": "c2f5910074103705661e9651aa841e0d7eea9932",
       "src": "https://github.com/pmizio/typescript-tools.nvim"
     },
+    "vim-kitty-navigator": {
+      "rev": "c40c7d6181fa44fade771980952c60c1d89c28ea",
+      "src": "https://github.com/knubie/vim-kitty-navigator"
+    },
     "vim-repeat": {
       "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
       "src": "https://github.com/tpope/vim-repeat"

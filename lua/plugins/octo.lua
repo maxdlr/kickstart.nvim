@@ -3,9 +3,11 @@ require('octo').setup()
 
 local commands = {
   { 'Create', 'Octo pr create --assignee @me' },
+  { 'Commits', 'Octo pr commits' },
+  { 'Url (copy)', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end },
   { 'Open', 'silent !gh pr view --web' },
-  { 'Copy url', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end },
-  { 'List', function() Snacks.picker.gh_pr() end },
+  { 'View', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end },
+  { 'List', 'Octo pr list' },
 }
 
 vim.keymap.set('n', '<leader>gp', Command_picker('Pr', commands), { desc = 'Pr commands' })

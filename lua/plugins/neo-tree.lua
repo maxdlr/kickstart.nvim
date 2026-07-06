@@ -16,8 +16,8 @@ end
 
 vim.pack.add(neotreePlugins)
 
-vim.keymap.set('n', '<leader>E', '<Cmd>Neotree reveal<CR>', { desc = 'Explr Open/Focus', silent = true })
--- vim.keymap.set('n', '<leader>E', '<Cmd>Neotree close<CR>', { desc = 'Explr Close', silent = true })
+vim.keymap.set('n', '<leader>e', '<Cmd>Neotree reveal<CR>', { desc = 'Explr Open/Focus', silent = true })
+vim.keymap.set('n', '<leader>E', '<Cmd>Neotree close<CR>', { desc = 'Explr Close', silent = true })
 
 -- vim.api.nvim_create_autocmd('FileType', {
 --   pattern = 'neo-tree',
@@ -28,6 +28,12 @@ vim.keymap.set('n', '<leader>E', '<Cmd>Neotree reveal<CR>', { desc = 'Explr Open
 -- })
 
 require('neo-tree').setup {
+  popup_border_style = 'rounded',
+  nui = {
+    input = {
+      size = { width = 60 },
+    },
+  },
   event_handlers = {
     {
       event = 'neo_tree_buffer_enter',
@@ -119,10 +125,30 @@ require('neo-tree').setup {
     },
     window = {
       position = 'left',
+      popup = {
+        size = { width = '40%', height = '60%' },
+      },
       mappings = {
         ['<leader>e'] = 'close_window',
         ['t'] = 'open_tabnew',
         ['m'] = { 'move', config = { show_path = 'relative' } },
+        ['h'] = function(state)
+          local node = state.tree:get_node()
+          if node.type == 'directory' and node:is_expanded() then
+            require('neo-tree.sources.filesystem').toggle_directory(state, node)
+          else
+            require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
+          end
+        end,
+        ['l'] = function(state)
+          local node = state.tree:get_node()
+          if node.type == 'directory' then
+            if not node:is_expanded() then require('neo-tree.sources.filesystem').toggle_directory(state, node) end
+          else
+            require('neo-tree.sources.filesystem.commands').open(state)
+          end
+        end,
+        ['L'] = function(state) require('neo-tree.sources.filesystem.commands').open_vsplit(state) end,
         ['zb'] = function() vim.cmd 'normal! zb' end,
         ['zt'] = function() vim.cmd 'normal! zt' end,
         ['zz'] = function() vim.cmd 'normal! zz' end,

@@ -1,0 +1,11 @@
+vim.pack.add { Gh 'knubie/vim-kitty-navigator' }
+-- require('vim-kitty-navigator').setup {
+-- debug = true,
+-- disable_mappings = false,
+-- keybindings = {
+--   left = '<C-h>',
+--   down = '<C-j>',
+--   up = '<C-k>',
+--   right = '<C-l>',
+-- },
+-- }

@@ -64,8 +64,12 @@ require('telescope').setup {
   --  All the info you're looking for is in `:help telescope.setup()`
   --
   defaults = {
+    layout_strategy = 'flex',
     layout_config = {
       prompt_position = 'top',
+      flex = { flip_columns = 120 },
+      horizontal = { preview_width = 0.55 },
+      vertical = { mirror = true, preview_height = 0.4 },
     },
     sorting_strategy = 'ascending',
     mappings = {
