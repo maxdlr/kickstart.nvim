@@ -1,0 +1,18 @@
+local builtin = require 'telescope.builtin'
+
+vim.keymap.set(
+  'n',
+  '/',
+  function()
+    builtin.current_buffer_fuzzy_find {
+      winblend = 5,
+      virtual_lines = true,
+      previewer = false,
+      layout_strategy = 'vertical',
+      skip_empty_lines = true,
+      layout_config = { prompt_position = 'top', width = 0.6, height = 0.6, mirror = true },
+      sorting_strategy = 'ascending',
+    }
+  end,
+  { desc = '[/] Fuzzily search in current buffer' }
+)

@@ -68,7 +68,7 @@ require('telescope').setup {
     layout_config = {
       prompt_position = 'top',
       flex = { flip_columns = 120 },
-      horizontal = { preview_width = 0.55 },
+      horizontal = { preview_width = 0.4 },
       vertical = { mirror = true, preview_height = 0.4 },
     },
     sorting_strategy = 'ascending',
@@ -116,11 +116,7 @@ vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
 vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
 vim.keymap.set('n', '<leader>s:', builtin.commands, { desc = 'Commands' })
-
-vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Srch Files' })
-
 vim.keymap.set('n', '<leader>cD', builtin.diagnostics, { desc = 'Diagnostics' })
-
 vim.keymap.set('n', '<leader>uC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
 
 -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.

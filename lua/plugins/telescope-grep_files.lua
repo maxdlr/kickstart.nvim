@@ -9,6 +9,10 @@ vim.keymap.set(
     builtin.live_grep {
       grep_open_files = false,
       prompt_title = 'Grep',
+      layout_strategy = 'horizontal',
+      layout_config = {
+        preview_width = 0.4,
+      },
     }
   end,
   { desc = 'Srch Grep files' }
