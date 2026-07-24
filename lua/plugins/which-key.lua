@@ -24,6 +24,7 @@ require('which-key').setup {
     { '<leader>T', group = ' Terminal', mode = { 'n' } },
     { '<leader>u', icon = '󱠏', group = ' User interface', mode = { 'n', 'v' } },
     { '<leader>w', group = ' Windows', mode = { 'n' } },
+    { '<leader>x', group = ' Diagnostics', mode = { 'n' } },
     { '<Tab>', group = ' Tabs', mode = { 'n' } },
 
     { '<leader>$', icon = '', group = ' Utils' },

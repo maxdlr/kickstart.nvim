@@ -39,28 +39,50 @@ require('gitsigns').setup {
 
     -- Actions
     -- visual mode
-    map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
-    map('v', '<leader>gs', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git un[s]tage hunk' })
-    -- normal mode
-    map('n', '<leader>gs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
-    map('n', '<leader>gs', gitsigns.reset_hunk, { desc = 'git un[s]tage hunk' })
+    -- map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
+    -- map('v', '<leader>gs', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git un[s]tage hunk' })
 
-    map('n', '<leader>gS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-    map('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
+    -- normal mode
+    -- map('n', '<leader>gs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
+    -- map('n', '<leader>gs', gitsigns.reset_hunk, { desc = 'git un[s]tage hunk' })
+
+    -- map('n', '<leader>gS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
+    -- map('n', '<leader>gR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
 
     -- map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-    map('n', '<leader>go', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
+    -- map('n', '<leader>go', gitsigns.preview_hunk_inline, { desc = 'git preview hunk [i]nline' })
+
     -- map('n', '<leader>hb', function() gitsigns.blame_line { full = true } end, { desc = 'git [b]lame line' })
     -- map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
     -- map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
     -- map('n', '<leader>hQ', function() gitsigns.setqflist 'all' end,
     -- { desc = 'git hunk [Q]uickfix list (all files in repo)' })
-    map('n', '<leader>gq', gitsigns.setqflist, { desc = 'git hunk quickfix list (all changes in this file)' })
+    -- map('n', '<leader>gq', gitsigns.setqflist, { desc = 'git hunk quickfix list (all changes in this file)' })
     -- Toggles
-    map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'blame line' })
+    -- map('n', '<leader>gB', gitsigns.toggle_current_line_blame, { desc = 'blame line' })
     -- map('n', '<leader>tw', gitsigns.toggle_word_diff, { desc = '[T]oggle git intra-line [w]ord diff' })
 
     -- Text object
-    map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
+    -- map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
   end,
 }
+
+local gitsigns = require 'gitsigns'
+
+local visualCommands = {
+  { 'Stage Selection', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end },
+  { 'Reset Selection', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end },
+}
+
+local normalCommands = {
+  { '🟢 Stage Hunk', gitsigns.stage_hunk },
+  { '🔴 Reset Hunk', gitsigns.reset_hunk },
+  { '🟢 Stage Buffer', gitsigns.stage_buffer },
+  { '🔴 Reset Buffer', gitsigns.reset_buffer },
+  { '🔵 Preview Hunk', gitsigns.preview_hunk_inline },
+  { '🟡 Blame', gitsigns.toggle_current_line_blame },
+  { '🟠 List', gitsigns.setqflist },
+}
+
+vim.keymap.set('v', '<leader>gs', Command_picker('Pr', visualCommands), { desc = 'Git commands' })
+vim.keymap.set('n', '<leader>gs', Command_picker('Pr', normalCommands), { desc = 'Git commands' })
