@@ -61,7 +61,7 @@ end
 local commands = {
   { ' Create', create_pr_and_assign_me, '#7AE35F' },
   { ' Url - Copy', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end, '#D7FF36' },
-  { ' View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end, '#5196FF' },
+  { ' View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end, '#86B7FF' },
   { ' Open', 'silent !gh pr view --web', '#6BFFFF' },
   { ' List - All', 'Octo pr list', '#FFB443' },
   { ' List - Branch', list_prs_from_branch, '#FFB443' },

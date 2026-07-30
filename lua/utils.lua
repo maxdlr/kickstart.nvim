@@ -137,10 +137,15 @@ end
 --- in its layout code, so there's no per-instance config option to hook into).
 local BORDER_HL_GROUPS = { 'TelescopePromptBorder', 'TelescopeResultsBorder', 'TelescopePreviewBorder', 'TelescopePromptTitle' }
 
+--- Sentinel action value marking a command entry as a non-selectable separator.
+--- Use it as the `action` field, e.g. `{ '───────────', Command_picker_separator }`.
+Command_picker_separator = false
+
 --- Creates a Telescope dropdown picker from a list of commands.
 --- @param title string Picker prompt title
---- @param commands {[1]: string, [2]: string|function, [3]: string?}[] List of {label, action, color} pairs.
----   action: a Lua function, or a string Ex command (without <Cmd>/<CR> wrapping).
+--- @param commands {[1]: string, [2]: string|function|false, [3]: string?}[] List of {label, action, color} pairs.
+---   action: a Lua function, a string Ex command (without <Cmd>/<CR> wrapping), or
+---   `Command_picker_separator` (false) to render the entry as a non-selectable divider.
 ---   color: optional hex color (e.g. "#FF8800") for the label text. Defaults to white.
 --- @param opts? {border_color?: string} border_color: optional hex color (e.g. "#7aa2f7") for the
 ---   picker's border. Defaults to the global TelescopeBorder highlight.
@@ -181,16 +186,19 @@ function Command_picker(title, commands, opts)
           finder = finders.new_table {
             results = commands,
             entry_maker = function(e)
-              local hl_group = get_color_hl('CommandPickerColor', e[3] or DEFAULT_COMMAND_COLOR)
+              local is_separator = e[2] == Command_picker_separator
+              local hl_group = get_color_hl('CommandPickerColor', e[3] or (is_separator and '#555555' or DEFAULT_COMMAND_COLOR))
               return {
                 value = e,
-                ordinal = e[1],
+                -- Empty ordinal keeps separators from matching search input, so
+                -- typing never accidentally "selects" a divider via fuzzy match.
+                ordinal = is_separator and '' or e[1],
                 display = function(entry) return entry.value[1], { { { 0, #entry.value[1] }, hl_group } } end,
               }
             end,
           },
           sorter = config.values.generic_sorter {},
-          attach_mappings = function(bufnr)
+          attach_mappings = function(bufnr, map)
             if restore_border_hl then
               -- Scoped to this picker's prompt buffer only, so it doesn't leak
               -- into other Telescope pickers the way overriding the shared
@@ -201,9 +209,31 @@ function Command_picker(title, commands, opts)
                 callback = restore_border_hl,
               })
             end
+
+            -- Skip over separator rows when moving the selection, so they can
+            -- never be landed on (and therefore never look "selectable").
+            local function skip_separators(move)
+              return function()
+                move(bufnr)
+                local guard = 0
+                while action_state.get_selected_entry().value[2] == Command_picker_separator and guard < #commands do
+                  move(bufnr)
+                  guard = guard + 1
+                end
+              end
+            end
+            local move_next = skip_separators(actions.move_selection_next)
+            local move_prev = skip_separators(actions.move_selection_previous)
+            map({ 'i', 'n' }, '<Down>', move_next)
+            map({ 'i', 'n' }, '<C-n>', move_next)
+            map({ 'i', 'n' }, '<Up>', move_prev)
+            map({ 'i', 'n' }, '<C-p>', move_prev)
+
             actions.select_default:replace(function()
-              actions.close(bufnr)
               local action = action_state.get_selected_entry().value[2]
+              -- Separators are inert: ignore the selection and keep the picker open.
+              if action == Command_picker_separator then return end
+              actions.close(bufnr)
               if type(action) == 'function' then
                 action()
               else

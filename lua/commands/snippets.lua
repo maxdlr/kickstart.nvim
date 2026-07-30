@@ -8,7 +8,7 @@ Snippet_keymap('n', '<leader>hc', 'console.log({%s})', {
   desc = 'Log latest yank string',
 })
 
-Snippet_keymap('n', '<leader>he', "export { default as %s } from './%s';", {
+Snippet_keymap('n', '<leader>he', "export { default } from './%s';", {
   prompt = 'default as: ',
   desc = 'Create index default export',
 })
