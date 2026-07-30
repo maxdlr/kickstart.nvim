@@ -2,9 +2,9 @@
 --
 -- Shows how to use the DAP plugin to debug your code.
 --
--- Primarily focused on configuring the debugger for Go, but can
--- be extended to other languages as well. That's why it's called
--- kickstart.nvim and not kitchen-sink.nvim ;)
+-- Configured for the JS/TS stack (Node, Express, Next.js server-side,
+-- React component code running under Node/Jest). Client-side React/Next
+-- code that runs in the browser is debugged via browser devtools, not DAP.
 
 vim.pack.add {
   'https://github.com/mfussenegger/nvim-dap',
@@ -12,18 +12,52 @@ vim.pack.add {
   'https://github.com/nvim-neotest/nvim-nio',
   'https://github.com/mason-org/mason.nvim',
   'https://github.com/jay-babu/mason-nvim-dap.nvim',
-  'https://github.com/leoluz/nvim-dap-go',
+  'https://github.com/mxsdev/nvim-dap-vscode-js',
 }
 
+-- nvim-dap-vscode-js spawns the js-debug server as a detached process
+-- (dap-vscode-js/utils.lua: uv.spawn { detached = true }). Its cleanup only
+-- runs when that process exits on its own; dap.terminate() closes the DAP
+-- session but never signals the detached process to stop. This is
+-- especially likely to orphan a listener with dev servers that restart
+-- themselves (e.g. ts-node-dev --respawn, nodemon), since the debug
+-- adapter can lose track of the process across a respawn without dying.
+-- Rather than patch the target project, free the port before launching so
+-- a leftover listener from a previous session can't block the next one.
+local js_debug_port = 8123
+
+local function free_js_debug_port(callback)
+  vim.system({ 'lsof', '-ti', ':' .. js_debug_port }, { text = true }, function(result)
+    local pid = vim.trim(result.stdout or '')
+    if pid == '' then
+      vim.schedule(callback)
+      return
+    end
+    vim.system({ 'kill', '-9', pid }, {}, function() vim.schedule(callback) end)
+  end)
+end
+
 -- Basic debugging keymaps, feel free to change to your liking!
--- vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = 'Debug: Start/Continue' })
--- vim.keymap.set('n', '<F1>', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
--- vim.keymap.set('n', '<F2>', function() require('dap').step_over() end, { desc = 'Debug: Step Over' })
--- vim.keymap.set('n', '<F3>', function() require('dap').step_out() end, { desc = 'Debug: Step Out' })
--- vim.keymap.set('n', '<leader>b', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
--- vim.keymap.set('n', '<leader>B', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, { desc = 'Debug: Set Breakpoint' })
+vim.keymap.set(
+  'n',
+  '<leader>dc',
+  function() free_js_debug_port(function() require('dap').continue() end) end,
+  { desc = 'Debug: Start/Continue' }
+)
+vim.keymap.set('n', '<leader>do', function()
+  free_js_debug_port(function()
+    local dap = require 'dap'
+    dap.run(dap.configurations[vim.bo.filetype][1])
+  end)
+end, { desc = 'Debug: Start session (first config for filetype)' })
+vim.keymap.set('n', '<leader>dl', function() require('dap').step_into() end, { desc = 'Debug: Step Into' })
+vim.keymap.set('n', '<leader>dj', function() require('dap').step_over() end, { desc = 'Debug: Step Over' })
+vim.keymap.set('n', '<leader>dh', function() require('dap').step_out() end, { desc = 'Debug: Step Out' })
+vim.keymap.set('n', '<leader>db', function() require('dap').toggle_breakpoint() end, { desc = 'Debug: Toggle Breakpoint' })
+vim.keymap.set('n', '<leader>dB', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, { desc = 'Debug: Set Breakpoint' })
+vim.keymap.set('n', '<leader>dt', function() require('dap').terminate() end, { desc = 'Debug: Terminate session' })
 -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
--- vim.keymap.set('n', '<F7>', function() require('dapui').toggle() end, { desc = 'Debug: See last session result.' })
+vim.keymap.set('n', '<leader>ds', function() require('dapui').toggle() end, { desc = 'Debug: See last session result.' })
 
 local dap = require 'dap'
 local dapui = require 'dapui'
@@ -37,11 +71,10 @@ require('mason-nvim-dap').setup {
   -- see mason-nvim-dap README for more information
   handlers = {},
 
-  -- You'll need to check that you have the required things installed
-  -- online, please don't ask me how to install them :)
+  -- js-debug-adapter (vscode-js-debug) covers Node/TS/JS. It's installed
+  -- via mason and wired into nvim-dap-vscode-js below.
   ensure_installed = {
-    -- Update this to ensure that you have the debuggers for the langs you want
-    'delve',
+    'js-debug-adapter',
   },
 }
 
@@ -73,7 +106,7 @@ dapui.setup {
 -- vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
 -- vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
 -- local breakpoint_icons = vim.g.have_nerd_font
---     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
+--     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
 --   or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
 -- for type, icon in pairs(breakpoint_icons) do
 --   local tp = 'Dap' .. type
@@ -85,11 +118,81 @@ dap.listeners.after.event_initialized['dapui_config'] = dapui.open
 dap.listeners.before.event_terminated['dapui_config'] = dapui.close
 dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
--- Install golang specific config
-require('dap-go').setup {
-  delve = {
-    -- On Windows delve must be run attached or it crashes.
-    -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-    detached = vim.fn.has 'win32' == 0,
-  },
+-- Ensures the js-debug adapter process is killed when Neovim exits, so it
+-- doesn't linger and hold its control port open for the next session
+-- (see: "EADDRINUSE: address already in use ::1:8123").
+vim.api.nvim_create_autocmd('VimLeavePre', {
+  callback = function()
+    if dap.session() then dap.terminate() end
+  end,
+})
+
+-- JS/TS debugging via vscode-js-debug (installed as "js-debug-adapter" by mason).
+-- Covers Node scripts, Express servers, and Next.js server-side code.
+--
+-- nvim-dap-vscode-js hardcodes its entrypoint lookup to
+-- "<debugger_path>/out/src/vsDebugServer.js", which matches an old
+-- vscode-js-debug build layout. Current mason packages ship the prebuilt
+-- release at "js-debug/src/dapDebugServer.js" instead (no "out/" dir), so
+-- auto-detection fails. Passing debugger_cmd explicitly bypasses that
+-- broken path assumption entirely.
+local js_debug_path = vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js'
+
+require('dap-vscode-js').setup {
+  debugger_cmd = { 'node', js_debug_path },
+  adapters = { 'pwa-node', 'pwa-chrome', 'node-terminal' },
 }
+
+local js_ts_filetypes = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }
+
+for _, language in ipairs(js_ts_filetypes) do
+  dap.configurations[language] = {
+    {
+      -- Preferred for dev servers that restart themselves on file changes
+      -- (ts-node-dev --respawn, nodemon, etc.) — restart = true means the
+      -- adapter reconnects automatically after the target process respawns,
+      -- rather than needing a fresh debug session each time.
+      -- Start the server yourself with the inspector enabled, e.g.:
+      --   NODE_OPTIONS=--inspect npm run dev
+      type = 'pwa-node',
+      request = 'attach',
+      name = 'Attach to localhost:9229',
+      port = 9229,
+      address = 'localhost',
+      restart = true,
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+    },
+    {
+      type = 'pwa-node',
+      request = 'attach',
+      name = 'Attach to process (--inspect)',
+      processId = require('dap.utils').pick_process,
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+    },
+    {
+      type = 'pwa-node',
+      request = 'launch',
+      name = 'Launch file',
+      program = '${file}',
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+    },
+    {
+      -- Debug an npm script directly (e.g. "dev", "start") without having
+      -- to manually pass --inspect in package.json. Not recommended for
+      -- scripts that self-restart (ts-node-dev --respawn, nodemon) — the
+      -- debug adapter is spawned detached and can be orphaned across a
+      -- respawn. Prefer "Attach to localhost:9229" for those.
+      type = 'pwa-node',
+      request = 'launch',
+      name = 'Debug npm script',
+      runtimeExecutable = 'npm',
+      runtimeArgs = { 'run-script', 'dev' },
+      cwd = '${workspaceFolder}',
+      console = 'integratedTerminal',
+      sourceMaps = true,
+    },
+  }
+end

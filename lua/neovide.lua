@@ -1,7 +1,7 @@
 vim.o.guifont = 'FiraCode Nerd Font:h14'
 
-if vim.g.neovide then
-  vim.opt.linespace = 4 -- Put anything you want to happen only in Neovide here
+if vim.g.neovide then -- Put anything you want to happen only in Neovide here
+  vim.opt.linespace = 4
 
   vim.g.neovide_floating_blur_amount_x = 2.0
   vim.g.neovide_floating_blur_amount_y = 2.0

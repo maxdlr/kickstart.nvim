@@ -111,41 +111,73 @@ function Bezier_timing(x1, y1, x2, y2, total_ms)
   end
 end
 
+local DEFAULT_COMMAND_COLOR = '#FFFFFF'
+
+--- Cache of hex color -> highlight group name, so repeated colors (or repeated
+--- picker invocations) don't keep redefining the same highlight group.
+local command_color_hl_cache = {}
+
+--- Gets (or lazily creates) a highlight group that sets the foreground to `hex`.
+--- @param hex string Hex color, e.g. "#FF8800"
+--- @return string Highlight group name
+local function get_command_color_hl(hex)
+  local cached = command_color_hl_cache[hex]
+  if cached then return cached end
+
+  local hl_name = 'CommandPickerColor' .. hex:gsub('^#', '')
+  vim.api.nvim_set_hl(0, hl_name, { fg = hex })
+  command_color_hl_cache[hex] = hl_name
+  return hl_name
+end
+
 --- Creates a Telescope dropdown picker from a list of commands.
 --- @param title string Picker prompt title
---- @param commands {[1]: string, [2]: string|function}[] List of {label, action} pairs.
+--- @param commands {[1]: string, [2]: string|function, [3]: string?}[] List of {label, action, color} pairs.
 ---   action: a Lua function, or a string Ex command (without <Cmd>/<CR> wrapping).
+---   color: optional hex color (e.g. "#FF8800") for the label text. Defaults to white.
 --- @param keymap_opts? {mode?: string, lhs?: string, desc?: string}
 function Command_picker(title, commands)
   return function()
-    local pickers = require('telescope.pickers')
-    local finders = require('telescope.finders')
-    local actions = require('telescope.actions')
-    local action_state = require('telescope.actions.state')
-    local themes = require('telescope.themes')
-    local config = require('telescope.config')
+    local pickers = require 'telescope.pickers'
+    local finders = require 'telescope.finders'
+    local actions = require 'telescope.actions'
+    local action_state = require 'telescope.actions.state'
+    local themes = require 'telescope.themes'
+    local config = require 'telescope.config'
 
     pickers
-      .new(themes.get_dropdown {}, {
-        prompt_title = title,
-        finder = finders.new_table {
-          results = commands,
-          entry_maker = function(e) return { value = e, display = e[1], ordinal = e[1] } end,
+      .new(
+        themes.get_dropdown {
+          layout_config = { prompt_position = 'top', width = 0.1, height = #commands + 2 },
         },
-        sorter = config.values.generic_sorter {},
-        attach_mappings = function(bufnr)
-          actions.select_default:replace(function()
-            actions.close(bufnr)
-            local action = action_state.get_selected_entry().value[2]
-            if type(action) == 'function' then
-              action()
-            else
-              vim.cmd(action)
-            end
-          end)
-          return true
-        end,
-      })
+        {
+          prompt_title = title,
+          finder = finders.new_table {
+            results = commands,
+            entry_maker = function(e)
+              local hl_group = get_command_color_hl(e[3] or DEFAULT_COMMAND_COLOR)
+              return {
+                value = e,
+                ordinal = e[1],
+                display = function(entry) return entry.value[1], { { { 0, #entry.value[1] }, hl_group } } end,
+              }
+            end,
+          },
+          sorter = config.values.generic_sorter {},
+          attach_mappings = function(bufnr)
+            actions.select_default:replace(function()
+              actions.close(bufnr)
+              local action = action_state.get_selected_entry().value[2]
+              if type(action) == 'function' then
+                action()
+              else
+                vim.cmd(action)
+              end
+            end)
+            return true
+          end,
+        }
+      )
       :find()
   end
 end

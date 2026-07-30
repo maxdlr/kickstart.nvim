@@ -183,6 +183,10 @@
       "rev": "1a66cabaa4a4da0be107d5eda6d57242f0fe7e49",
       "src": "https://github.com/rcarriga/nvim-dap-ui"
     },
+    "nvim-dap-vscode-js": {
+      "rev": "03bd29672d7fab5e515fc8469b7d07cc5994bbf6",
+      "src": "https://github.com/mxsdev/nvim-dap-vscode-js"
+    },
     "nvim-early-retirement": {
       "rev": "3b05315a61c8f01bb893249f9e044fc359122c9d",
       "src": "https://github.com/chrisgrieser/nvim-early-retirement"

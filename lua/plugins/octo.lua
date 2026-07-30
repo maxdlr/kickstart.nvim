@@ -53,12 +53,18 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function(args) vim.keymap.set('n', '<leader>gy', yank_review_comment_path, { buffer = args.buf, desc = 'Yank review comment file path' }) end,
 })
 
+local function list_prs_from_branch()
+  local branch = vim.fn.system('git branch --show-current'):gsub('%s+$', '')
+  require('octo.picker').prs { headRefName = branch, states = { 'OPEN', 'CLOSED', 'MERGED' } }
+end
+
 local commands = {
-  { 'Create', create_pr_and_assign_me },
-  { 'Url (copy)', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end },
-  { 'Open', 'silent !gh pr view --web' },
-  { 'View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end },
-  { 'List', 'Octo pr list' },
+  { ' Create', create_pr_and_assign_me, '#7AE35F' },
+  { ' Url - Copy', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end, '#D7FF36' },
+  { ' View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end, '#5196FF' },
+  { ' Open', 'silent !gh pr view --web', '#6BFFFF' },
+  { ' List - All', 'Octo pr list', '#FFB443' },
+  { ' List - Branch', list_prs_from_branch, '#FFB443' },
 }
 
 vim.keymap.set('n', '<leader>gp', Command_picker('Pr', commands), { desc = 'Pr commands' })

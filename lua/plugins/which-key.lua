@@ -11,6 +11,7 @@ require('which-key').setup {
     mode = { 'n', 'x' },
     { '<leader>a', icon = '', group = ' Ai', mode = { 'n' } },
     { '<leader>b', group = ' Buffers', mode = { 'n' } },
+    { '<leader>d', group = ' Debug', mode = { 'n' } },
     { '<leader>c', group = ' Code', mode = { 'n', 'v' } },
     { '<leader>d', group = ' Diagnostics', mode = { 'n' } },
     { '<leader>g', group = ' Git', mode = { 'n' } },

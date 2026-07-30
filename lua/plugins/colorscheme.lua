@@ -26,12 +26,12 @@ require('neon').setup {
   ---@param highlights neon.Highlights -- table<string, vim.api.keyset.highlight>
   ---@param colors ColorScheme -- palette colors (bg, fg, blue, red, green, yellow, etc.)
   on_highlights = function(highlights, colors)
-    highlights.LineNrAbove = { fg = '#FF4081', bold = false }
+    highlights.LineNrAbove = { fg = '#FF0055', bold = false }
     highlights.LineNrBelow = { fg = '#F4EF00', bold = false }
     highlights.CursorLineNr = { fg = '#FFFFFF', bold = true }
     highlights.CursorLine = { bg = '#403345', bold = true }
     highlights.CursorColumn = { bg = '#403345', bold = true }
-    highlights.WinSeparator = { fg = '#FF4081', bg = '#000000' }
+    highlights.WinSeparator = { fg = '#FF0055', bg = '#000000' }
     -- highlights.ModeMsg = { bg = '#FFFFFF', fg = '#000000' }
 
     -- highlights.LspReferenceText = { underline = false, bg = '#403345' }

@@ -29,11 +29,12 @@ vim.keymap.set('n', '<leader>E', '<Cmd>Neotree close<CR>', { desc = 'Explr Close
 
 require('neo-tree').setup {
   popup_border_style = 'rounded',
-  nui = {
-    input = {
-      size = { width = 60 },
-    },
-  },
+  -- neo-tree's own nui-based input popup has no width override hook for
+  -- rename/move/add (its width is hardcoded to fit the prompt label, not
+  -- the path being edited — see neo-tree/ui/popups.lua popup_options()).
+  -- Delegate to vim.ui.input instead, which noice.nvim renders as a
+  -- properly sized floating input.
+  use_popups_for_input = false,
   event_handlers = {
     {
       event = 'neo_tree_buffer_enter',
@@ -114,12 +115,14 @@ require('neo-tree').setup {
         '.config',
         '.gitignore',
         '.zshrc',
+        'dev',
       },
       hide_by_name = {
         'node_modules',
       },
       always_show_by_pattern = { -- uses glob style patterns
         '.env*',
+        'dev/**',
       },
       hide_hidden = true,
     },
