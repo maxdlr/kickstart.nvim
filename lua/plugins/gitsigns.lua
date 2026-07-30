@@ -75,14 +75,14 @@ local visualCommands = {
 }
 
 local normalCommands = {
-  { '🟢 Stage Hunk', gitsigns.stage_hunk },
-  { '🔴 Reset Hunk', gitsigns.reset_hunk },
-  { '🟢 Stage Buffer', gitsigns.stage_buffer },
-  { '🔴 Reset Buffer', gitsigns.reset_buffer },
-  { '🔵 Preview Hunk', gitsigns.preview_hunk_inline },
-  { '🟡 Blame', gitsigns.toggle_current_line_blame },
-  { '🟠 List', gitsigns.setqflist },
+  { '🟢 Stage Hunk', gitsigns.stage_hunk, '#70E354' },
+  { '🔴 Reset Hunk', gitsigns.reset_hunk, '#E35454' },
+  { '🟢 Stage Buffer', gitsigns.stage_buffer, '#70E354' },
+  { '🔴 Reset Buffer', gitsigns.reset_buffer, '#E35454' },
+  { '🔵 Preview Hunk', gitsigns.preview_hunk_inline, '#54A0E3' },
+  { '🟡 Blame', gitsigns.toggle_current_line_blame, '#E3D654' },
+  { '🟠 List', gitsigns.setqflist, '#E39E54' },
 }
 
-vim.keymap.set('v', '<leader>gs', Command_picker('Pr', visualCommands), { desc = 'Git commands' })
-vim.keymap.set('n', '<leader>gs', Command_picker('Pr', normalCommands), { desc = 'Git commands' })
+vim.keymap.set('v', '<leader>gs', Command_picker('Pr', visualCommands, { border_color = '#7EFF5E' }), { desc = 'Git commands' })
+vim.keymap.set('n', '<leader>gs', Command_picker('Pr', normalCommands, { border_color = '#7EFF5E' }), { desc = 'Git commands' })

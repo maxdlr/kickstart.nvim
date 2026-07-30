@@ -10,11 +10,4 @@ require('easycolor').setup {
   fzf = true,
 }
 
--- return {
---   'neph-iap/easycolor.nvim',
---   dependencies = { 'stevearc/dressing.nvim' }, -- Optional, but provides better UI for editing the formatting template
---   opts = {},
---   keys = { { '<leader>uP', '<cmd>EasyColor<cr>', desc = 'Color Picker' } },
--- }
-
-vim.keymap.set('n', '<leader>uP', '<cmd>EasyColor<cr>', { desc = 'Color Picker' })
+vim.keymap.set('n', '<leader>sc', '<cmd>EasyColor<cr>', { desc = 'Color Picker' })

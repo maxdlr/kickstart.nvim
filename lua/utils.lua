@@ -13,8 +13,6 @@ function Create_autoCmdGroups(definitions)
   end
 end
 
----Because most plugins are hosted on GitHub, you can use the helper
----function to have less repetition in the following sections.
 ---@param repo string
 ---@return string
 function Gh(repo) return 'https://github.com/' .. repo end
@@ -113,30 +111,41 @@ end
 
 local DEFAULT_COMMAND_COLOR = '#FFFFFF'
 
---- Cache of hex color -> highlight group name, so repeated colors (or repeated
+--- Cache of "prefix:hex" -> highlight group name, so repeated colors (or repeated
 --- picker invocations) don't keep redefining the same highlight group.
-local command_color_hl_cache = {}
+local color_hl_cache = {}
 
---- Gets (or lazily creates) a highlight group that sets the foreground to `hex`.
+--- Gets (or lazily creates) a highlight group named `prefix<HEX>` that sets `hl_field` to `hex`.
+--- @param prefix string Highlight group name prefix, e.g. "CommandPickerColor"
 --- @param hex string Hex color, e.g. "#FF8800"
+--- @param hl_field? string Highlight field to set, "fg" (default) or "bg"
 --- @return string Highlight group name
-local function get_command_color_hl(hex)
-  local cached = command_color_hl_cache[hex]
+local function get_color_hl(prefix, hex, hl_field)
+  hl_field = hl_field or 'fg'
+  local cache_key = prefix .. ':' .. hex .. ':' .. hl_field
+  local cached = color_hl_cache[cache_key]
   if cached then return cached end
 
-  local hl_name = 'CommandPickerColor' .. hex:gsub('^#', '')
-  vim.api.nvim_set_hl(0, hl_name, { fg = hex })
-  command_color_hl_cache[hex] = hl_name
+  local hl_name = prefix .. hex:gsub('^#', '')
+  vim.api.nvim_set_hl(0, hl_name, { [hl_field] = hex })
+  color_hl_cache[cache_key] = hl_name
   return hl_name
 end
+
+--- Telescope border highlight groups controlled per-picker-instance by temporarily
+--- overriding them, then restoring on close (Telescope hardcodes these group names
+--- in its layout code, so there's no per-instance config option to hook into).
+local BORDER_HL_GROUPS = { 'TelescopePromptBorder', 'TelescopeResultsBorder', 'TelescopePreviewBorder', 'TelescopePromptTitle' }
 
 --- Creates a Telescope dropdown picker from a list of commands.
 --- @param title string Picker prompt title
 --- @param commands {[1]: string, [2]: string|function, [3]: string?}[] List of {label, action, color} pairs.
 ---   action: a Lua function, or a string Ex command (without <Cmd>/<CR> wrapping).
 ---   color: optional hex color (e.g. "#FF8800") for the label text. Defaults to white.
---- @param keymap_opts? {mode?: string, lhs?: string, desc?: string}
-function Command_picker(title, commands)
+--- @param opts? {border_color?: string} border_color: optional hex color (e.g. "#7aa2f7") for the
+---   picker's border. Defaults to the global TelescopeBorder highlight.
+function Command_picker(title, commands, opts)
+  opts = opts or {}
   return function()
     local pickers = require 'telescope.pickers'
     local finders = require 'telescope.finders'
@@ -145,17 +154,34 @@ function Command_picker(title, commands)
     local themes = require 'telescope.themes'
     local config = require 'telescope.config'
 
+    local restore_border_hl
+    if opts.border_color then
+      -- Save current border highlight definitions, override them for this picker,
+      -- and queue a restore for when the picker closes.
+      local previous = {}
+      for _, group in ipairs(BORDER_HL_GROUPS) do
+        previous[group] = vim.api.nvim_get_hl(0, { name = group, link = false })
+        vim.api.nvim_set_hl(0, group, { fg = opts.border_color })
+      end
+      restore_border_hl = function()
+        for group, hl in pairs(previous) do
+          vim.api.nvim_set_hl(0, group, hl)
+        end
+      end
+    end
+
     pickers
       .new(
         themes.get_dropdown {
-          layout_config = { prompt_position = 'top', width = 0.1, height = #commands + 2 },
+          winblend = 5,
+          layout_config = { prompt_position = 'top', width = 0.13, height = #commands + 4 },
         },
         {
           prompt_title = title,
           finder = finders.new_table {
             results = commands,
             entry_maker = function(e)
-              local hl_group = get_command_color_hl(e[3] or DEFAULT_COMMAND_COLOR)
+              local hl_group = get_color_hl('CommandPickerColor', e[3] or DEFAULT_COMMAND_COLOR)
               return {
                 value = e,
                 ordinal = e[1],
@@ -165,6 +191,16 @@ function Command_picker(title, commands)
           },
           sorter = config.values.generic_sorter {},
           attach_mappings = function(bufnr)
+            if restore_border_hl then
+              -- Scoped to this picker's prompt buffer only, so it doesn't leak
+              -- into other Telescope pickers the way overriding the shared
+              -- actions.close post-hook would.
+              vim.api.nvim_create_autocmd('BufWinLeave', {
+                buffer = bufnr,
+                once = true,
+                callback = restore_border_hl,
+              })
+            end
             actions.select_default:replace(function()
               actions.close(bufnr)
               local action = action_state.get_selected_entry().value[2]

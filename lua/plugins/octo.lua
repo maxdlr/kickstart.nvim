@@ -67,4 +67,4 @@ local commands = {
   { ' List - Branch', list_prs_from_branch, '#FFB443' },
 }
 
-vim.keymap.set('n', '<leader>gp', Command_picker('Pr', commands), { desc = 'Pr commands' })
+vim.keymap.set('n', '<leader>gp', Command_picker('Pr', commands, { border_color = '#A1C7FF' }), { desc = 'Pr commands' })

@@ -42,6 +42,13 @@ require('neon').setup {
     -- highlights.TelescopeResultsIdentifier = { fg = '#7aa2f7' }
     -- highlights.TelescopeResultsLineNr = { fg = '#565f89' }
     -- highlights.TelescopeMatching = { fg = '#ff9e64', bold = true }
+
+    -- Telescope: border color for all pickers (prompt/results/preview all link to this)
+    highlights.TelescopeBorder = { fg = '#FF0055' }
+    highlights.TelescopePromptBorder = { fg = '#FF0055' }
+    highlights.TelescopeResultsBorder = { fg = '#FF0055' }
+    highlights.TelescopePreviewBorder = { fg = '#FF0055' }
+    highlights.TelescopePromptTitle = { fg = '#FF0055' }
   end,
 }
 

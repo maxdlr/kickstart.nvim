@@ -160,10 +160,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-
-
-
-
 -- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sc', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
+vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
 vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = 'Srch under cursor' })
