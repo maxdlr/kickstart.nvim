@@ -2,7 +2,7 @@
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
 
 local neotreePlugins = {
-  { src = Gh 'nvim-neo-tree/neo-tree.nvim', version = vim.version.range '*' },
+  Gh 'nvim-neo-tree/neo-tree.nvim',
   Gh 'nvim-lua/plenary.nvim',
   Gh 'MunifTanjim/nui.nvim',
   Gh 'antosha417/nvim-lsp-file-operations',
@@ -122,7 +122,7 @@ require('neo-tree').setup {
       },
       always_show_by_pattern = { -- uses glob style patterns
         '.env*',
-        'dev/**',
+        '**/dev/*',
       },
       hide_hidden = true,
     },

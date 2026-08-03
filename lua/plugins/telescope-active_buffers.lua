@@ -7,7 +7,7 @@ vim.keymap.set(
     builtin.buffers(require('telescope.themes').get_dropdown {
       winblend = 5,
       virtual_lines = true,
-      layout_strategy = 'horizontal',
+      layout_strategy = 'vertical',
       layout_config = { prompt_position = 'top', width = 0.6, height = 0.6 },
       previewer = true,
       sorting_strategy = 'ascending',

@@ -9,9 +9,9 @@ vim.keymap.set(
     builtin.live_grep {
       grep_open_files = false,
       prompt_title = 'Grep',
-      layout_strategy = 'horizontal',
+      layout_strategy = 'vertical',
       layout_config = {
-        preview_width = 0.4,
+        preview_height = 0.3,
       },
     }
   end,
