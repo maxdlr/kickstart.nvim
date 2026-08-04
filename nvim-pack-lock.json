@@ -106,6 +106,10 @@
       "rev": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
     },
+    "karen-yank.nvim": {
+      "rev": "817f50c9464ce557c8f7f8f4d4c8d2f7b81fc40c",
+      "src": "https://github.com/tenxsoydev/karen-yank.nvim"
+    },
     "kitty-scrollback.nvim": {
       "rev": "53fd294658941719d7622471f28e70179d6737a6",
       "src": "https://github.com/mikesmithgh/kitty-scrollback.nvim"
