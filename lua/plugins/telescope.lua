@@ -30,8 +30,9 @@ local telescope_plugins = {
 }
 if vim.fn.executable 'make' == 1 then table.insert(telescope_plugins, Gh 'nvim-telescope/telescope-fzf-native.nvim') end
 
--- NOTE: You can install multiple plugins at once
 vim.pack.add(telescope_plugins)
+
+local telescope_entry_maker = require 'plugins.telescope-entry-maker'
 
 local focus_preview = function(prompt_bufnr)
   local actions = require('telescope.actions')
@@ -91,6 +92,18 @@ require('telescope').setup {
   -- pickers = {}
   extensions = {
     ['ui-select'] = { require('telescope.themes').get_dropdown() },
+    ['repo'] = {
+      list = {
+        -- fd_opts = {
+        --   "--no-ignore-vcs",
+        -- },
+        search_dirs = {
+          "~/Documents/work",
+          "~/Documents/perso",
+          "~/.config/nvim",
+        },
+      },
+    },
   },
 }
 
@@ -108,6 +121,7 @@ vim.api.nvim_create_autocmd('User', {
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
 pcall(require('telescope').load_extension, 'yank_history')
+pcall(require('telescope').load_extension, 'repo')
 
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
@@ -163,3 +177,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
 vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = 'Srch under cursor' })
+
+vim.keymap.set(
+  'n',
+  '<leader>sf',
+  function()
+    local cwd = vim.fn.expand '%:p:h:h'
+    builtin.find_files {
+      cwd = cwd,
+      prompt_title = 'Parent dir',
+      entry_maker = telescope_entry_maker.file_entry_maker { cwd = cwd },
+    }
+  end,
+  { desc = 'Find files in parent directory' }
+)
+
+vim.keymap.set('n', '<leader>sg', function()
+  builtin.live_grep {
+    entry_maker = telescope_entry_maker.grep_entry_maker { cwd = vim.uv.cwd() },
+  }
+end, { desc = 'Grep (live)' })
