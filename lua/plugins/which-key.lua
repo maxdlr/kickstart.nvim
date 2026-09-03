@@ -13,7 +13,7 @@ require('which-key').setup {
     { '<leader>b', group = ' Buffers', mode = { 'n' } },
     { '<leader>d', group = ' Debug', mode = { 'n' } },
     { '<leader>c', group = ' Code', mode = { 'n', 'v' } },
-    { '<leader>d', group = ' Diagnostics', mode = { 'n' } },
+    { '<leader>d', group = ' Debug', mode = { 'n' } },
     { '<leader>g', group = ' Git', mode = { 'n' } },
     { '<leader>h', icon = '󰾹', group = ' Macros', mode = { 'n' } },
     { '<leader>n', group = ' Noices', mode = { 'n' } },

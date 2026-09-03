@@ -12,6 +12,15 @@ require('sidekick').setup {
         is_proc = '\\<kiro\\>',
         url = 'https://kiro.dev',
       },
+      -- Separate tool entry so resumed sessions get their own tmux/session id
+      -- and never collide with (or overwrite) the plain `kiro` session.
+      kiro_resume = {
+        cmd = { 'kiro-cli' },
+        is_proc = '\\<kiro\\>',
+        url = 'https://kiro.dev',
+      },
+
+      aider = {},
     },
     mux = {
       backend = 'tmux',
@@ -74,6 +83,30 @@ local function kill_all()
   end
 end
 
+-- Prompt for a kiro session id and launch `kiro-cli --resume-id <id>` in its
+-- own dedicated session (tool `kiro_resume`), separate from the plain `kiro`
+-- session so resuming never clobbers a normal running session.
+--
+-- The sidekick terminal starts insert-mode on focus (`WinEnter` -> `startinsert`),
+-- and dressing.nvim's vim.ui.input cancels itself on `BufLeave`. If a sidekick
+-- CLI window is focused (or grabs focus back) while the input is opening, the
+-- prompt gets silently cancelled before it can be used. Blur any focused
+-- sidekick terminal first, then open the prompt on the next tick so no
+-- pending focus event can close it out from under us.
+local function kiro_resume()
+  local state = require('sidekick.cli.state').get({ attached = true, terminal = true })[1]
+  if state and state.terminal and state.terminal:is_focused() then state.terminal:blur() end
+
+  vim.schedule(function()
+    vim.ui.input({ prompt = 'Kiro session id to resume: ' }, function(id)
+      if not id or id == '' then return end
+      local Config = require 'sidekick.config'
+      Config.cli.tools.kiro_resume.cmd = { 'kiro-cli', '--resume-id', id }
+      require('sidekick.cli').toggle { name = 'kiro_resume', focus = true }
+    end)
+  end)
+end
+
 local map = vim.keymap.set
 
 map('n', 'Ì', function() require('sidekick').nes_jump_or_apply() end, { expr = true, desc = 'Goto/Apply Next Edit Suggestion' })
@@ -82,6 +115,7 @@ map('n', '<leader>ae', function() require('sidekick.nes').toggle() end, { desc =
 map('n', '<leader>aa', function() require('sidekick.cli').toggle() end, { desc = 'Sidekick Toggle CLI' })
 map('n', '<leader>ac', function() require('sidekick.cli').toggle { name = 'copilot', focus = true } end, { desc = 'Sidekick Toggle Copilot' })
 map('n', '<leader>ak', function() require('sidekick.cli').toggle { name = 'kiro', focus = true } end, { desc = 'Sidekick Toggle Kiro' })
+map('n', '<leader>aK', kiro_resume, { desc = 'Sidekick Resume Kiro Session (by id)' })
 
 map('n', '<leader>as', function() require('sidekick.cli').select() end, { desc = 'Select CLI' })
 map('n', '<leader>ad', function() require('sidekick.cli').close() end, { desc = 'Detach a CLI Session' })

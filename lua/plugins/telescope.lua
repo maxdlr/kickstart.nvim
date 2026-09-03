@@ -34,6 +34,16 @@ vim.pack.add(telescope_plugins)
 
 local telescope_entry_maker = require 'plugins.telescope-entry-maker'
 
+-- Highlight groups for the custom entry makers. All use default = true so an
+-- explicit user override (or colorscheme) wins; links keep them theme-aware.
+vim.api.nvim_set_hl(0, 'TelescopeParentDir', { link = 'Comment', default = true }) -- parent dir segment
+vim.api.nvim_set_hl(0, 'TelescopeFileExt', { link = 'Type', default = true }) -- file extension segment
+vim.api.nvim_set_hl(0, 'TelescopeGitModified', { link = 'GitSignsChange', default = true })
+vim.api.nvim_set_hl(0, 'TelescopeGitAdded', { link = 'GitSignsAdd', default = true })
+vim.api.nvim_set_hl(0, 'TelescopeGitDeleted', { link = 'GitSignsDelete', default = true })
+vim.api.nvim_set_hl(0, 'TelescopeGitRenamed', { link = 'GitSignsChange', default = true })
+vim.api.nvim_set_hl(0, 'TelescopeGitUntracked', { link = 'Comment', default = true })
+
 local focus_preview = function(prompt_bufnr)
   local actions = require('telescope.actions')
   local action_state = require('telescope.actions.state')
@@ -126,6 +136,7 @@ pcall(require('telescope').load_extension, 'repo')
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
+vim.keymap.set('n', '<leader>sH', builtin.highlights, { desc = 'Telescope highlights' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
 vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
 vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
@@ -144,7 +155,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local buf = event.buf
 
     -- Find references for the word under your cursor.
-    vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = buf, desc = 'References' })
+    vim.keymap.set('n', 'gr', builtin.lsp_references , { buffer = buf, desc = 'References' })
+
     vim.keymap.set('n', 'gR', function () builtin.lsp_references { jump_type ='vsplit' } end, { buffer = buf, desc = 'References' })
 
     -- Jump to the implementation of the word under your cursor.
@@ -176,7 +188,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
-vim.keymap.set('n', '<leader>\\', builtin.grep_string, { desc = 'Srch under cursor' })
+
+vim.keymap.set('n', '<leader>\\', function() builtin.grep_string{
+  entry_maker = telescope_entry_maker.grep_entry_maker { cwd = vim.fn.expand '%:p:h' },
+        layout_strategy = 'vertical',
+      layout_config = {
+    width = 0.6,
+        preview_height = 0.3,
+      },
+
+} end, { desc = 'Srch under cursor' })
 
 vim.keymap.set(
   'n',
@@ -191,9 +212,3 @@ vim.keymap.set(
   end,
   { desc = 'Find files in parent directory' }
 )
-
-vim.keymap.set('n', '<leader>sg', function()
-  builtin.live_grep {
-    entry_maker = telescope_entry_maker.grep_entry_maker { cwd = vim.uv.cwd() },
-  }
-end, { desc = 'Grep (live)' })
