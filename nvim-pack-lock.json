@@ -6,9 +6,9 @@
       "version": "2.0.0 - 3.0.0"
     },
     "airtable.nvim": {
-      "rev": "746c4f149baa36380c38f29f13dbe51cddffd992",
+      "rev": "546fcbf546647d19ebab22670391532ead02e559",
       "src": "https://github.com/maxdlr/airtable.nvim",
-      "version": "'search'"
+      "version": "'main'"
     },
     "auto-save.nvim": {
       "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
@@ -27,7 +27,7 @@
       "src": "https://github.com/moyiz/blink-emoji.nvim"
     },
     "blink-ripgrep.nvim": {
-      "rev": "48e59dafc40f8046d0b788f0f70d2d27c4e20305",
+      "rev": "e3ac509af5a78e0372f1cd5dee00359f80b6a231",
       "src": "https://github.com/mikavilpas/blink-ripgrep.nvim"
     },
     "blink.cmp": {
@@ -172,7 +172,7 @@
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lsp-file-operations": {
-      "rev": "775c97a7de77e0368758a70eddd8a52af1ab6046",
+      "rev": "276f096ef324c140d00bd0188a0e70382e156771",
       "src": "https://github.com/antosha417/nvim-lsp-file-operations"
     },
     "nvim-lspconfig": {

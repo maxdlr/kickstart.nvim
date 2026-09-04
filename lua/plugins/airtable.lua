@@ -2,7 +2,7 @@
 vim.pack.add {
   Gh 'nvim-lua/plenary.nvim',
   Gh 'nvim-telescope/telescope.nvim',
-  { src = Gh 'maxdlr/airtable.nvim', version = 'search' },
+  { src = Gh 'maxdlr/airtable.nvim', version = 'main' },
 }
 
 local status_result_line = {
@@ -32,10 +32,13 @@ require('airtable').setup {
   -- Exact name of the table you want to query (or use its table id, e.g. 'tbllXO2M4wggGjKlO')
   table_name = '🚀 Team Gedeon',
 
+  default_filter = 'Mine',
+
   buffer = {
     -- Map these to your team's actual Airtable field names
     fields = {
       { key = 'title', field = 'Titre' },
+      { key = 'Last update', field = 'Last status change' },
       { key = 'priority', field = 'Priority' },
       { key = 'status', field = 'Status' },
       { key = 'feature flag', field = 'Feature Flag' },
@@ -52,11 +55,9 @@ require('airtable').setup {
     },
   },
 
-  default_filter = 'All',
-
   pickers = {
     {
-      name = 'All',
+      name = 'Mine',
 
       filters = {
         { field = 'Assignee', value = 'Maxime' },
@@ -82,9 +83,10 @@ require('airtable').setup {
         { field = 'Status', value = { 'To do', 'En cours', 'PR à Valider' } },
       },
 
-      sort = { field = 'Assignee', order = 'asc' },
+      sort = { field = 'Last status change', order = 'desc' },
 
       result_line = {
+        { field = 'Last status change' },
         { field = 'Assignee', hl = '#48FF1B' },
         { field = 'Created By', hl = '#F2BCFF' },
         { field = 'Titre', hl = '#E3E3E3' },
@@ -99,7 +101,7 @@ vim.keymap.set('n', '<leader>rr', function() require('airtable').open() end, { d
 
 local airtable_menu = {
   { 'Everyone', function() require('airtable').open 'Everyone' end },
-  { 'All', function() require('airtable').open 'All' end },
+  { 'Mine', function() require('airtable').open 'Mine' end },
 }
 
 vim.keymap.set('n', '<leader>ra', Command_picker('Airtable', airtable_menu, { border_color = '#D1FF1B' }), { desc = 'Airtable ' })

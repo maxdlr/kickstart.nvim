@@ -11,20 +11,26 @@ require('which-key').setup {
     mode = { 'n', 'x' },
     { '<leader>a', icon = '', group = ' Ai', mode = { 'n' } },
     { '<leader>b', group = ' Buffers', mode = { 'n' } },
-    { '<leader>d', group = ' Debug', mode = { 'n' } },
     { '<leader>c', group = ' Code', mode = { 'n', 'v' } },
     { '<leader>d', group = ' Debug', mode = { 'n' } },
+
+    { '<leader>e', icon = { icon = '', color = 'orange' } },
+    { '<leader>E', icon = { icon = '', color = 'orange' } },
+
     { '<leader>g', group = ' Git', mode = { 'n' } },
     { '<leader>h', icon = '󰾹', group = ' Macros', mode = { 'n' } },
-    { '<leader>n', group = ' Noices', mode = { 'n' } },
     { '<leader>m', icon = '󱘈', group = ' Markers', mode = { 'n' } },
+    { '<leader>n', group = ' Noices', mode = { 'n' } },
+    { '<leader>p', icon = { icon = '', color = 'yellow' } },
     { '<leader>q', group = ' Sessions', mode = { 'n' } },
+    { '<leader>r', icon = { icon = '󱐫', color = 'red' }, group = ' Airtable', mode = { 'n' } },
     { '<leader>s', group = ' Search', mode = { 'n', 'v' } },
     { '<leader>sr', group = ' Search and replace', mode = { 'n', 'v' } },
     { '<leader>T', group = ' Terminal', mode = { 'n' } },
     { '<leader>u', icon = '󱠏', group = ' User interface', mode = { 'n', 'v' } },
     { '<leader>w', group = ' Windows', mode = { 'n' } },
     { '<leader>x', group = ' Diagnostics', mode = { 'n' } },
+
     { '<Tab>', group = ' Tabs', mode = { 'n' } },
 
     { '<leader>$', icon = '', group = ' Utils' },
@@ -36,10 +42,6 @@ require('which-key').setup {
     { '<leader>|', icon = { icon = '', color = 'green' } },
     { '<leader>-', icon = { icon = '', color = 'green' } },
 
-    { '<leader>e', icon = { icon = '', color = 'orange' } },
-    { '<leader>E', icon = { icon = '', color = 'orange' } },
-
-    { '<leader>p', icon = { icon = '', color = 'yellow' } },
     -- { 'gr', group = ' LSP Actions', mode = { 'n' } },
   },
 }
