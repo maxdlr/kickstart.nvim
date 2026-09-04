@@ -179,7 +179,11 @@ function Command_picker(title, commands, opts)
       .new(
         themes.get_dropdown {
           winblend = 5,
-          layout_config = { prompt_position = 'top', width = 0.13, height = #commands + 4 },
+          layout_config = {
+            prompt_position = 'top',
+            width = function(_, max_columns, _) return math.max(40, math.floor(max_columns * 0.13)) end,
+            height = #commands + 4,
+          },
         },
         {
           prompt_title = title,

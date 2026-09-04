@@ -104,6 +104,20 @@ Snacks.toggle.dim():map '<leader>uD'
 Snacks.toggle.inlay_hints():map '<leader>uh'
 Snacks.toggle.indent():map '<leader>ug'
 
+Snacks.toggle
+  .new({
+    name = 'Auto Save',
+    get = function() return require('auto-save').enabled() end,
+    set = function(state)
+      if state then
+        require('auto-save').on()
+      else
+        require('auto-save').off()
+      end
+    end,
+  })
+  :map '<leader>ua'
+
 vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, { desc = 'Rename symbol' })
 
 vim.keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })

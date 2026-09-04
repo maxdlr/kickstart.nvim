@@ -6,9 +6,9 @@
       "version": "2.0.0 - 3.0.0"
     },
     "airtable.nvim": {
-      "rev": "62440500bdcf6c7181f80561e2db767cc13bcbf2",
+      "rev": "746c4f149baa36380c38f29f13dbe51cddffd992",
       "src": "https://github.com/maxdlr/airtable.nvim",
-      "version": "'styling'"
+      "version": "'search'"
     },
     "auto-save.nvim": {
       "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
@@ -27,7 +27,7 @@
       "src": "https://github.com/moyiz/blink-emoji.nvim"
     },
     "blink-ripgrep.nvim": {
-      "rev": "c5a23c4388c945374bf37c5e68f6604062aa0696",
+      "rev": "48e59dafc40f8046d0b788f0f70d2d27c4e20305",
       "src": "https://github.com/mikavilpas/blink-ripgrep.nvim"
     },
     "blink.cmp": {
@@ -84,7 +84,7 @@
       "src": "https://github.com/NMAC427/guess-indent.nvim"
     },
     "indent-blankline.nvim": {
-      "rev": "3b1ee1854c1067c34cad2423eb78e280d4069e01",
+      "rev": "f1e186e44d3b7f9ae918008e2c28ce37c6023d2d",
       "src": "https://github.com/lukas-reineke/indent-blankline.nvim"
     },
     "kitty-scrollback.nvim": {
@@ -176,7 +176,7 @@
       "src": "https://github.com/antosha417/nvim-lsp-file-operations"
     },
     "nvim-lspconfig": {
-      "rev": "85e732c62ac59ab7c12df71ddd020baa87948390",
+      "rev": "84252f9832fb5b9024fe9f7258e7c2aff915e6fb",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
