@@ -87,7 +87,7 @@ do
   -- - r-cr-o:hor20 — replace, command-line replace, operator-pending → horizontal
   -- underline ▁ (20% height)
   -- - t:ver25 — terminal mode → vertical line ▏ (25% width)
-  vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:ver25'
+  vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,t:ver25,o:hor80'
 
   vim.o.foldlevel = 99
 

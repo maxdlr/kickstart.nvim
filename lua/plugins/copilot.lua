@@ -6,7 +6,7 @@ require('copilot').setup {
     debounce = 75,
     hide_during_completion = false,
     keymap = {
-      accept = 'Ì',
+      accept = '<M-h>',
       accept_word = '¬',
       -- accept_line = '€',
       -- next = 'Ï',

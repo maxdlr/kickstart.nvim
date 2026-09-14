@@ -1,0 +1,41 @@
+--   - block      → solid full-size block
+--   - hor{N}     → horizontal bar, N% of cell height (bottom-aligned)
+--   - ver{N}     → vertical bar, N% of cell width (left-aligned)
+--
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:block,t:ver25'   -- full block
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor10,t:ver25'   -- thin underline
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor20,t:ver25'   -- current default (thin-ish)
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,t:ver25'   -- half-height block
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor80,t:ver25'   -- near-full underline
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:ver25,t:ver25'   -- thin vertical bar
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:ver50,t:ver25'   -- half vertical bar
+
+-- Reference: shape cheat sheet for ALL modes
+--
+-- Mode groups you can target (comma-separated, each with :shape):
+--   n     normal
+--   v     visual
+--   ve    visual-exclusive (past end of line)
+--   o     operator-pending
+--   i     insert
+--   r     replace
+--   c     command-line
+--   cr    command-line replace
+--   ci    command-line insert
+--   sm    showmatch (briefly jumping to matching paren)
+--   t     terminal mode
+--   a     all modes (sets blink params, applies to every group after it)
+--
+-- Shape + size:
+--   block        full block
+--   hor{1-100}   horizontal bar, bottom-aligned, N% of cell height
+--   ver{1-100}   vertical bar, left-aligned, N% of cell width
+--
+-- Optional blink params (append after shape, only meaningful combined with `a:`):
+--   blinkwait{ms}  delay before blinking starts
+--   blinkoff{ms}   time cursor is hidden during blink
+--   blinkon{ms}    time cursor is shown during blink
+--
+-- Optional highlight group override (append after shape):
+--   block-Cursor        use "Cursor" highlight group for foreground/background
+--   block-Cursor/lCursor  Cursor for normal, lCursor for lang-mapping mode

@@ -5,21 +5,43 @@ vim.pack.add {
   { src = Gh 'maxdlr/airtable.nvim', version = 'main' },
 }
 
+local fieldNames = {
+  status = 'Status',
+  priority = 'Priority',
+  assignee = 'Assignee',
+  createdBy = 'Created By',
+  lastStatusChange = 'Last status change',
+  featureFlag = 'Feature Flag',
+  lienPR = 'Lien PR',
+  todoDev = 'Todo Dev',
+  qa = 'QA',
+  qaAssignee = 'QA Assignee',
+  todo = 'To do',
+  enCours = 'En cours',
+  prAValider = 'PR à Valider',
+  bloque = 'Bloqué',
+  pretAQA = 'Prêt à QA',
+  titre = 'Titre',
+  reviewers = 'Reviewers',
+  description = 'Description',
+  application = 'Application',
+}
+
 local status_result_line = {
-  field = 'Status',
+  field = fieldNames.status,
   hl = {
-    { value = 'To do', color = '#E32424' },
-    { value = 'En cours', color = '#FFBF5E' },
-    { value = 'PR à Valider', color = '#5F94E3' },
-    { value = 'Bloqué', color = '#8E8E8E' },
+    { value = fieldNames.todo, color = '#E32424' },
+    { value = fieldNames.enCours, color = '#FFBF5E' },
+    { value = fieldNames.prAValider, color = '#5F94E3' },
+    { value = fieldNames.bloque, color = '#8E8E8E' },
   },
 }
 
 local status_result_line_prefix = {
-  { { icon = '󰲶', color = '#FFBF5E' }, { field = 'Status', value = 'En cours' } },
-  { { icon = '󱖫', color = '#E32424' }, { field = 'Status', value = 'To do' } },
-  { { icon = '', color = '#5F94E3' }, { field = 'Status', value = 'PR à Valider' } },
-  { { icon = '', color = '#8E8E8E' }, { field = 'Status', value = 'Bloqué' } },
+  { { icon = '󰲶', color = '#FFBF5E' }, { field = fieldNames.status, value = fieldNames.enCours } },
+  { { icon = '󱖫', color = '#E32424' }, { field = fieldNames.status, value = fieldNames.todo } },
+  { { icon = '', color = '#5F94E3' }, { field = fieldNames.status, value = fieldNames.prAValider } },
+  { { icon = '', color = '#8E8E8E' }, { field = fieldNames.status, value = fieldNames.bloque } },
 }
 
 require('airtable').setup {
@@ -37,21 +59,24 @@ require('airtable').setup {
   buffer = {
     -- Map these to your team's actual Airtable field names
     fields = {
-      { key = 'title', field = 'Titre' },
-      { key = 'Last update', field = 'Last status change' },
-      { key = 'priority', field = 'Priority' },
-      { key = 'status', field = 'Status' },
-      { key = 'feature flag', field = 'Feature Flag' },
-      { key = 'QA Assignee', field = 'Assignee QA' },
-      { key = 'lien pr', field = 'Lien PR' },
-      { key = 'description', field = 'Description' },
-      { key = 'todo dev', field = 'Todo Dev' },
-      { key = 'QA', field = 'QA' },
+      { key = 'Title', field = fieldNames.titre },
+      { key = 'Last update', field = fieldNames.lastStatusChange },
+      { key = 'Priority', field = fieldNames.priority },
+      { key = 'Status', field = fieldNames.status },
+      { key = 'Feature Flag', field = fieldNames.featureFlag },
+      { key = 'QA Assignee', field = fieldNames.qaAssignee },
+      { key = 'Reviewers', field = fieldNames.reviewers },
+      { key = 'Lien PR', field = fieldNames.lienPR },
+      { key = 'Description', field = fieldNames.description },
+      { key = 'Todo Dev', field = fieldNames.todoDev },
+      { key = 'QA', field = fieldNames.qa },
     },
 
     editable = {
-      { field = 'Status', type = 'select' },
-      { field = 'Lien PR', type = 'text', name = 'Edit Lien PR' },
+      { field = fieldNames.status, type = 'select' },
+      { field = fieldNames.lienPR, type = 'text', name = 'Edit Lien PR' },
+      { field = fieldNames.featureFlag, type = 'text', name = 'Edit ff' },
+      { field = fieldNames.todoDev, type = 'text', name = 'Edit Todo Dev' },
     },
   },
 
@@ -60,36 +85,52 @@ require('airtable').setup {
       name = 'Mine',
 
       filters = {
-        { field = 'Assignee', value = 'Maxime' },
-        { field = 'Status', value = { 'To do', 'En cours', 'PR à Valider' } },
+        { field = fieldNames.assignee, value = 'Maxime' },
+        {
+          field = fieldNames.status,
+          value = {
+            fieldNames.todo,
+            fieldNames.enCours,
+            fieldNames.prAValider,
+            fieldNames.pretAQA,
+          },
+        },
       },
 
-      sort = { field = 'Priority', order = 'asc' },
+      sort = { field = fieldNames.priority, order = 'asc' },
 
       result_line = {
         status_result_line,
-        { field = 'Titre', hl = '#E3E3E3' },
-        { field = 'Priority', hl = '#00FFFF' },
-        { field = 'Created By', hl = '#F2BCFF' },
-        { field = 'Application' },
+        { field = fieldNames.titre, hl = '#E3E3E3' },
+        { field = fieldNames.priority, hl = '#00FFFF' },
+        { field = fieldNames.createdBy, hl = '#F2BCFF' },
+        { field = fieldNames.application },
       },
 
       result_line_prefix = status_result_line_prefix,
     },
+
     {
       name = 'Everyone',
 
       filters = {
-        { field = 'Status', value = { 'To do', 'En cours', 'PR à Valider' } },
+        {
+          field = fieldNames.status,
+          value = {
+            fieldNames.todo,
+            fieldNames.enCours,
+            fieldNames.prAValider,
+          },
+        },
       },
 
-      sort = { field = 'Last status change', order = 'desc' },
+      sort = { field = fieldNames.lastStatusChange, order = 'desc' },
 
       result_line = {
-        { field = 'Last status change' },
-        { field = 'Assignee', hl = '#48FF1B' },
-        { field = 'Created By', hl = '#F2BCFF' },
-        { field = 'Titre', hl = '#E3E3E3' },
+        { field = fieldNames.lastStatusChange },
+        { field = fieldNames.assignee, hl = '#48FF1B' },
+        { field = fieldNames.createdBy, hl = '#F2BCFF' },
+        { field = fieldNames.titre, hl = '#E3E3E3' },
       },
 
       result_line_prefix = status_result_line_prefix,
@@ -97,7 +138,7 @@ require('airtable').setup {
   },
 }
 
-vim.keymap.set('n', '<leader>rr', function() require('airtable').open() end, { desc = 'Airtable' })
+vim.keymap.set('n', '<leader>rr', function() require('airtable').resume() end, { desc = 'Airtable' })
 
 local airtable_menu = {
   { 'Everyone', function() require('airtable').open 'Everyone' end },
