@@ -25,6 +25,8 @@ local fieldNames = {
   reviewers = 'Reviewers',
   description = 'Description',
   application = 'Application',
+  loe = 'LOE (Jours)',
+  raf = 'RAF (Jours)',
 }
 
 local status_result_line = {
@@ -77,6 +79,18 @@ require('airtable').setup {
       { field = fieldNames.lienPR, type = 'text', name = 'Edit Lien PR' },
       { field = fieldNames.featureFlag, type = 'text', name = 'Edit ff' },
       { field = fieldNames.todoDev, type = 'text', name = 'Edit Todo Dev' },
+      { field = fieldNames.loe, type = 'text', name = 'Edit LOE' },
+      { field = fieldNames.raf, type = 'text', name = 'Edit RAF' },
+    },
+
+    style = {
+      -- section_border_character = 'x',
+
+      -- section_separator = { -- to dev
+      --  enabled = true,
+      --  character = '─',
+      -- }
+      editable_section_border_color = '#D1FF1B',
     },
   },
 

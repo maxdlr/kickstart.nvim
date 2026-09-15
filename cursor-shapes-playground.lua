@@ -1,10 +1,10 @@
 --   - block      → solid full-size block
 --   - hor{N}     → horizontal bar, N% of cell height (bottom-aligned)
 --   - ver{N}     → vertical bar, N% of cell width (left-aligned)
---
+
 -- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:block,t:ver25'   -- full block
 -- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor10,t:ver25'   -- thin underline
--- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor20,t:ver25'   -- current default (thin-ish)
+-- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor20,t:ver25'   -- current default ()
 -- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,t:ver25'   -- half-height block
 -- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:hor80,t:ver25'   -- near-full underline
 -- vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr:hor20,o:ver25,t:ver25'   -- thin vertical bar

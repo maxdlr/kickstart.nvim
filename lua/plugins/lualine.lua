@@ -41,7 +41,7 @@ require('lualine').setup {
     lualine_c = {},
     lualine_x = {},
     lualine_y = {},
-    lualine_z = { { 'buffers' } },
+    lualine_z = { { 'buffers', show_filename_only = false, hide_filename_extension = true } },
   },
   winbar = {
     lualine_a = {},
