@@ -159,4 +159,4 @@ local airtable_menu = {
   { 'Mine', function() require('airtable').open 'Mine' end },
 }
 
-vim.keymap.set('n', '<leader>ra', Command_picker('Airtable', airtable_menu, { border_color = '#D1FF1B' }), { desc = 'Airtable ' })
+vim.keymap.set('n', '<leader>ra', Command_picker('Airtable', airtable_menu, { border_color = '#D1FF1B' }), { desc = 'Airtable' })

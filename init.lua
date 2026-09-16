@@ -1,5 +1,5 @@
 require 'utils'
-require 'neovide'
+-- require 'neovide'
 
 -- ============================================================
 -- SECTION 1: FOUNDATION
@@ -16,7 +16,7 @@ do
 
   require 'ui.init'
   require 'keymaps.init'
-  require 'commands.init'
+  require 'plugouts.init'
   -- Enable mouse mode, can be useful for resizing splits for example!
   vim.o.mouse = 'a'
 

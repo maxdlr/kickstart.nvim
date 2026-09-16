@@ -1,4 +1,5 @@
 vim.pack.add { Gh 'akinsho/toggleterm.nvim' }
+
 require('toggleterm').setup {
   size = function(term)
     if term.direction == 'horizontal' then
