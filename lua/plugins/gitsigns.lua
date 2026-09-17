@@ -79,14 +79,14 @@ require('gitsigns').setup {
 local gitsigns = require 'gitsigns'
 
 local visualCommands = {
-  { 'Stage Selection', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end },
-  { 'Reset Selection', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end },
+  { ' Stage Selection', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, '#70E354' },
+  { ' Reset Selection', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, '#E35454' },
 }
 
 local normalCommands = {
-  { ' Blame', gitsigns.toggle_current_line_blame, '#E3D654' },
-  { ' Preview Hunk', gitsigns.preview_hunk_inline, '#54A0E3' },
-  { ' List', gitsigns.setqflist, '#E39E54' },
+  { ' Blame', gitsigns.toggle_current_line_blame, '#51FFFF' },
+  { ' Preview Hunk', gitsigns.preview_hunk_inline, '#51FFFF' },
+  { ' List', gitsigns.setqflist, '#51FFFF' },
   { '--- Hunk --------------------------------', Command_picker_separator },
   { ' Stage Hunk', gitsigns.stage_hunk, '#70E354' },
   { ' Reset Hunk', gitsigns.reset_hunk, '#E35454' },
@@ -95,5 +95,5 @@ local normalCommands = {
   { ' Reset Buffer', gitsigns.reset_buffer, '#E35454' },
 }
 
-vim.keymap.set('v', '<leader>gs', Command_picker('Git', visualCommands, { border_color = '#7EFF5E' }), { desc = 'Git commands' })
-vim.keymap.set('n', '<leader>gs', Command_picker('Git', normalCommands, { border_color = '#7EFF5E' }), { desc = 'Git commands' })
+vim.keymap.set({ 'v' }, '<leader>gs', Command_picker('Git', visualCommands, { border_color = '#51FFFF' }), { desc = '󰩤 Git commands' })
+vim.keymap.set({ 'n' }, '<leader>gs', Command_picker('Git', normalCommands, { border_color = '#51FFFF' }), { desc = '󰩤 Git commands' })

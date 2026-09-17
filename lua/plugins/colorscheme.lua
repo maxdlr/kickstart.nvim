@@ -33,6 +33,15 @@ require('neon').setup {
     highlights.CursorColumn = { bg = '#403345', bold = true }
     highlights.WinSeparator = { fg = '#FF0055', bg = '#000000' }
     -- highlights.ModeMsg = { bg = '#FFFFFF', fg = '#000000' }
+    --
+    -- Colors of the modes
+    -- highlights.Normal = { bg = '#FF0055', fg = '#FFFFFF' }
+    -- highlights.Insert = { bg = '#FFFFFF', fg = '#FFFFFF' }
+    -- highlights.Visual = { bg = '#000000', fg = '#FFFFFF' }
+    -- highlights.Replace = { bg = '#000000', fg = '#FFFFFF' }
+    -- highlights.Command = { bg = '#000000', fg = '#FFFFFF' }
+    -- highlights.Terminal = { bg = '#000000', fg = '#FFFFFF' }
+    -- highlights.Inactive = { bg = '#000000', fg = '#FFFFFF' }
 
     -- highlights.LspReferenceText = { underline = false, bg = '#403345' }
     -- highlights.LspReferenceRead = { underline = false, bg = '#403345' }

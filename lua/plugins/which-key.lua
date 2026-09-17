@@ -20,6 +20,7 @@ require('which-key').setup {
     { '<leader>g', group = ' Git', mode = { 'n' } },
     { '<leader>gs', icon = '󰍜' },
     { '<leader>gp', icon = '󰍜' },
+    { '<leader>gr', icon = '󰍜' },
 
     { '<leader>h', icon = '󰍜' },
     { '<leader>m', icon = '󱘈', group = ' Markers', mode = { 'n' } },
@@ -40,7 +41,7 @@ require('which-key').setup {
 
     { '<Tab>', group = ' Tabs', mode = { 'n' } },
 
-    { '<leader>$', icon = '󰍜', group = 'Utils' },
+    { '<leader>$', icon = '󰍜', group = '󰩤 Utils' },
 
     { '<leader><leader>', icon = { icon = '', color = 'blue' } },
     { '<leader>/', icon = { icon = '', color = 'blue' } },

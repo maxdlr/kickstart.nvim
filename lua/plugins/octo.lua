@@ -58,13 +58,19 @@ local function list_prs_from_branch()
   require('octo.picker').prs { headRefName = branch, states = { 'OPEN', 'CLOSED', 'MERGED' } }
 end
 
-local commands = {
+local pr_commands = {
   { ' Create', create_pr_and_assign_me, '#7AE35F' },
-  { ' Url - Copy', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end, '#D7FF36' },
-  { ' View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end, '#86B7FF' },
   { ' Open', 'silent !gh pr view --web', '#6BFFFF' },
+  { ' View/Refresh', function() vim.cmd('Octo pr edit ' .. vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')) end, '#86B7FF' },
+  { ' Url - Copy', function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end, '#D7FF36' },
+  { '--- Lists --------------------------------', Command_picker_separator },
   { ' List - All', 'Octo pr list', '#FFB443' },
   { ' List - Branch', list_prs_from_branch, '#FFB443' },
 }
 
-vim.keymap.set('n', '<leader>gp', Command_picker('Pr', commands, { border_color = '#A1C7FF' }), { desc = 'Pr commands' })
+local repo_commands = {
+  { ' Open repo', 'silent !gh browse', '#6BFFFF' },
+}
+
+vim.keymap.set('n', '<leader>gp', Command_picker('Pr', pr_commands, { border_color = '#A1C7FF' }), { desc = '󰩤 Pr commands' })
+vim.keymap.set('n', '<leader>gr', Command_picker('Repo', repo_commands, { border_color = '#A1C7FF' }), { desc = '󰩤 Repo commands' })

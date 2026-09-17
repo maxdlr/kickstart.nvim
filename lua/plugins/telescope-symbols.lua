@@ -1,0 +1,1 @@
+-- nvim-telescope/telescope-symbols.nvim

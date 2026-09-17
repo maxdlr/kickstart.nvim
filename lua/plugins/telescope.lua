@@ -89,6 +89,8 @@ require('telescope').setup {
       ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
       ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
       ['<C-Down>'] = require('telescope.actions').cycle_history_next,
+      ['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
+      ['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
     },
     i = {
       ['<Tab>'] = focus_preview,
@@ -96,6 +98,8 @@ require('telescope').setup {
       ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
       ['<C-Up>'] = require('telescope.actions').cycle_history_prev,
       ['<C-Down>'] = require('telescope.actions').cycle_history_next,
+      ['<PageUp>'] = require('telescope.actions').preview_scrolling_up,
+      ['<PageDown>'] = require('telescope.actions').preview_scrolling_down,
     },
     },
   },
@@ -185,6 +189,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>ct', builtin.lsp_type_definitions, { buffer = buf, desc = 'Type' })
   end,
 })
+
+vim.keymap.set('n', '<leader>sj', function () builtin.jumplist {
+  winblend = 5,
+  previewer = true,
+  layout_config = {
+    width = 0.7,
+    height = 0.3,
+    preview_cutoff = 1
+  },
+}
+end, { desc = 'Jumps' })
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })

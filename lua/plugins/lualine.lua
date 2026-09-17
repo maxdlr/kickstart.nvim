@@ -5,15 +5,53 @@ vim.pack.add { Gh 'nvim-lualine/lualine.nvim' }
 local horizon = require 'lualine.themes.horizon'
 local theme = vim.deepcopy(horizon)
 
-for _, mode in ipairs {
-  'normal',
-  -- 'insert', 'visual', 'replace', 'command', 'terminal', 'inactive'
-} do
-  if theme[mode] and theme[mode].a then theme[mode].a.bg = '#FF0055' end
+local red = '#FF0055'
+local dark = '#2E303E'
+local yellow = '#F4EF00'
+local green = '#00FF55'
+local orange = '#FFAA00'
+local white = '#FFFFFF'
 
-  if theme[mode] and theme[mode].c then theme[mode].c.fg = '#FF0055' end
-  if theme[mode] and theme[mode].c then theme.inactive.a.bg = '#2E303E' end
-  if theme[mode] and theme[mode].c then theme.inactive.a.fg = '#FF0055' end
+---@param mode string
+---@param when_active? { bg: string, fg: string }
+local function set_colors_by_mode(mode, when_active)
+  local local_when_active = {
+    bg = (when_active and when_active.bg) or red,
+    fg = (when_active and when_active.fg) or dark,
+  }
+
+  if theme[mode] and theme[mode].a then
+    theme[mode].a.bg = local_when_active.bg
+    theme[mode].c.fg = local_when_active.fg
+  end
+end
+
+-- Sections, from outer to inner:
+-- a = mode indicator,
+-- b = branch/git info,
+-- c = filename/central content,
+-- z = mirrors `a` on the opposite side.
+--
+-- control all mode colors in one place, instead of having to set them individually for each mode
+for _, mode in ipairs { 'normal', 'insert', 'visual', 'replace', 'command', 'terminal' } do
+  theme.inactive.a.bg = dark
+  theme.inactive.a.fg = red
+
+  if theme[mode] then
+    if mode == 'normal' then
+      set_colors_by_mode(mode)
+    elseif mode == 'insert' then
+      set_colors_by_mode(mode, { bg = green, fg = dark })
+    elseif mode == 'visual' then
+      set_colors_by_mode(mode, { bg = yellow, fg = dark })
+    elseif mode == 'replace' then
+      set_colors_by_mode(mode, { bg = red, fg = dark })
+    elseif mode == 'command' then
+      set_colors_by_mode(mode, { bg = orange, fg = dark })
+    elseif mode == 'terminal' then
+      set_colors_by_mode(mode, { bg = white, fg = dark })
+    end
+  end
 end
 
 -- Inactive tabs render with theme.inactive.a, which horizon sets to a
@@ -32,16 +70,66 @@ require('lualine').setup {
   options = {
     theme = theme,
     globalstatus = true,
-    always_show_tabline = false,
+    always_show_tabline = true,
   },
   extensions = { 'quickfix', 'fzf', 'neo-tree', 'toggleterm', 'trouble' },
   tabline = {
-    lualine_a = { { 'tabs' } },
+    lualine_a = {
+      {
+        'tabs',
+        use_mode_colors = true,
+        mode = 1,
+        max_length = vim.o.columns / 2,
+
+        symbols = {
+          -- modified = '•',
+          modified = '',
+        },
+
+        fmt = function(name, context)
+          -- Show • if buffer is modified in tab
+          local buflist = vim.fn.tabpagebuflist(context.tabnr)
+          local winnr = vim.fn.tabpagewinnr(context.tabnr)
+          local bufnr = buflist[winnr]
+          local mod = vim.fn.getbufvar(bufnr, '&mod')
+
+          -- Get the number of windows in the tab
+          local winlist = vim.fn.tabpagewinnr(context.tabnr, '$')
+
+          -- If there is more than one window in the tab, show the number of windows in the tab
+          -- if winlist > 1 then name = name .. ' [' .. winlist .. ']' end
+
+          -- Get the names of the buffers in the windows if there is more than one window in the tab
+
+          name = name:gsub('%..*$', '')
+
+          if winlist > 1 then
+            local buf_names = {}
+            for i = 1, winlist do
+              local win_bufnr = buflist[i]
+              local win_bufname = vim.fn.bufname(win_bufnr):gsub('%..*$', '')
+              table.insert(buf_names, vim.fn.fnamemodify(win_bufname, ':t'))
+            end
+            name = table.concat(buf_names, ' ┃┃ ')
+          end
+
+          return name .. (mod == 1 and ' ●' or '')
+        end,
+      },
+    },
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
     lualine_y = {},
-    lualine_z = { { 'buffers', show_filename_only = false, hide_filename_extension = true } },
+    lualine_z = {
+      {
+        'buffers',
+        show_filename_only = true,
+        hide_filename_extension = true,
+        use_mode_colors = true,
+        max_length = vim.o.columns / 2,
+      },
+    },
   },
   winbar = {
     lualine_a = {},

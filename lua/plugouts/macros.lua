@@ -32,18 +32,18 @@ local cmds = {
     end,
   },
   {
-    '󱞩 console.log({ <  > });',
-    function()
-      snippet_maker('console.log({%s})', {
-        from_register = '"',
-      })
-    end,
-  },
-  {
     'export { default } from "./";',
     function()
       snippet_maker("export { default } from './%s';", {
         prompt = 'default as: ',
+      })
+    end,
+  },
+  {
+    '󱞩 console.log({ <  > });',
+    function()
+      snippet_maker('console.log({%s})', {
+        from_register = '"',
       })
     end,
   },
@@ -55,5 +55,5 @@ vim.keymap.set(
   Command_picker('Macros', cmds, {
     border_color = '#ff9e64',
   }),
-  { desc = 'Macros' }
+  { desc = '󰩤 Macros' }
 )
