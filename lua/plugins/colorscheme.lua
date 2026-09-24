@@ -12,6 +12,8 @@
 --     comments = { italic = false }, -- Disable italics in comments
 --   },
 -- }
+--
+-- local bg = '#24283b'
 
 vim.pack.add { Gh 'Zeioth/neon.nvim' }
 ---@diagnostic disable-next-line: missing-fields
@@ -27,7 +29,7 @@ require('neon').setup {
   ---@param colors ColorScheme -- palette colors (bg, fg, blue, red, green, yellow, etc.)
   on_highlights = function(highlights, colors)
     highlights.LineNrAbove = { fg = '#FF0055', bold = false }
-    highlights.LineNrBelow = { fg = '#F4EF00', bold = false }
+    highlights.LineNrBelow = { fg = '#E9AC5B', bold = false }
     highlights.CursorLineNr = { fg = '#FFFFFF', bold = true }
     highlights.CursorLine = { bg = '#403345', bold = true }
     highlights.CursorColumn = { bg = '#403345', bold = true }
@@ -60,7 +62,7 @@ require('neon').setup {
     highlights.TelescopePromptTitle = { fg = '#FF0055' }
 
     highlights.TelescopeParentDir = { fg = '#AAAAAA' }
-    highlights.TelescopeResultsIdentifier = { fg = '#F4EF00' }
+    highlights.TelescopeResultsIdentifier = { fg = '#E9AC5B' }
     highlights.TelescopeFileExt = { fg = '#AAAAAA' }
     highlights.TelescopeResultsLineNr = { fg = '#555555' }
     highlights.TelescopeResultsComment = { fg = '#717171' }
@@ -70,5 +72,5 @@ require('neon').setup {
 -- Load the colorscheme here.
 -- Like many other themes, this one has different styles, and you could load
 -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-vim.cmd.colorscheme 'neon-cherrykiss-storm'
-CurrentColorscheme = 'neon-cherrykiss-storm'
+vim.cmd.colorscheme 'neon-cyberpunk-storm'
+CurrentColorscheme = 'neon-cyberpunk-storm'

@@ -59,6 +59,7 @@ require('airtable').setup {
   default_filter = 'Mine',
 
   buffer = {
+    name = { field = fieldNames.titre },
     -- Map these to your team's actual Airtable field names
     fields = {
       { key = 'Title', field = fieldNames.titre },
@@ -99,7 +100,7 @@ require('airtable').setup {
       name = 'Mine',
 
       filters = {
-        { field = fieldNames.assignee, value = 'Maxime' },
+        { field = fieldNames.assignee, value = 'maxime@gedeon.io', by = 'email' },
         {
           field = fieldNames.status,
           value = {

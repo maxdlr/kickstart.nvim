@@ -7,10 +7,11 @@ local theme = vim.deepcopy(horizon)
 
 local red = '#FF0055'
 local dark = '#2E303E'
-local yellow = '#F4EF00'
+local yellow = '#E9AC5B'
 local green = '#00FF55'
-local orange = '#FFAA00'
+local orange = '#FF9900'
 local white = '#FFFFFF'
+local grey = '#808080'
 
 ---@param mode string
 ---@param when_active? { bg: string, fg: string }
@@ -66,6 +67,13 @@ local function repo_name()
   return vim.fn.fnamemodify(root, ':t')
 end
 
+local symbols = {
+  modified = '●',
+  readonly = '',
+  unnamed = '',
+  newfile = '󰐗',
+}
+
 require('lualine').setup {
   options = {
     theme = theme,
@@ -80,11 +88,9 @@ require('lualine').setup {
         use_mode_colors = true,
         mode = 1,
         max_length = vim.o.columns / 2,
+        show_modified_status = false,
 
-        symbols = {
-          -- modified = '•',
-          modified = '',
-        },
+        symbols = symbols,
 
         fmt = function(name, context)
           -- Show • if buffer is modified in tab
@@ -105,12 +111,41 @@ require('lualine').setup {
 
           if winlist > 1 then
             local buf_names = {}
+
+            ---@param buf_name string
+            local buf_names_replacements = function(buf_name)
+              return {
+                {
+                  pattern = '^neo%-tree.*',
+                  replacement = '󰙅',
+                },
+                {
+                  pattern = '^Airtable.*',
+                  replacement = function()
+                    if #buf_name > 50 then
+                      return buf_name:sub(1, 50) .. '...'
+                    else
+                      return buf_name
+                    end
+                  end,
+                },
+              }
+            end
             for i = 1, winlist do
               local win_bufnr = buflist[i]
               local win_bufname = vim.fn.bufname(win_bufnr):gsub('%..*$', '')
-              table.insert(buf_names, vim.fn.fnamemodify(win_bufname, ':t'))
+
+              -- if win_bufname includes one of the patterns in buf_names_replacements, replace it with the replacement
+              for _, replacement in ipairs(buf_names_replacements(win_bufname)) do
+                if win_bufname:match(replacement.pattern) then
+                  win_bufname = type(replacement.replacement) == 'function' and replacement.replacement() or replacement.replacement
+                end
+              end
+
+              if win_bufname ~= '' then table.insert(buf_names, vim.fn.fnamemodify(win_bufname, ':t')) end
             end
-            name = table.concat(buf_names, ' ┃┃ ')
+            -- ┃
+            name = table.concat(buf_names, ' | ')
           end
 
           return name .. (mod == 1 and ' ●' or '')
@@ -134,7 +169,17 @@ require('lualine').setup {
   winbar = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { { 'filename', path = 4 }, { 'diagnostics' } },
+    lualine_c = {
+      {
+        'filename',
+        path = 4,
+        color = { fg = red, gui = 'italic,bold' },
+        symbols = symbols,
+
+        fmt = function(name) return name .. ' •••••' end,
+      },
+      { 'diagnostics' },
+    },
     lualine_x = { { 'searchcount' }, { 'diff' } },
     lualine_y = {},
     lualine_z = {},
@@ -142,13 +187,20 @@ require('lualine').setup {
   inactive_winbar = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { { 'filename', path = 4 } },
+    lualine_c = {
+      {
+        'filename',
+        path = 4,
+        color = { fg = grey },
+        symbols = symbols,
+      },
+    },
     lualine_x = {},
     lualine_y = {},
     lualine_z = {},
   },
   sections = {
-    lualine_a = { { 'mode', icons_enabled = true } },
+    lualine_a = { { 'mode', icons_enabled = true, color = { gui = 'bold' } } },
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
