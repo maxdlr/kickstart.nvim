@@ -11,7 +11,7 @@ require('octo').setup {
 -- arg (like --assignee) is silently ignored. Instead, assign the viewer once the new
 -- PR buffer is ready (Octo buffers set filetype "octo" after creation).
 local function create_pr_and_assign_me()
-  vim.cmd 'Octo pr create'
+  vim.cmd 'Octo pr create -d'
   local group = vim.api.nvim_create_augroup('OctoAssignMeOnCreate', { clear = true })
   vim.api.nvim_create_autocmd('FileType', {
     group = group,
