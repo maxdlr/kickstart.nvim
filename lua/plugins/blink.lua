@@ -10,7 +10,16 @@ local blink_deps = {
 vim.pack.add(blink_deps)
 vim.pack.add { { src = Gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
 
+-- Agentic's prompt/chat buffers ship their own @-file and /-slash-command
+-- completion; blink's LSP/snippet/buffer sources are irrelevant noise there.
+local blink_disabled_filetypes = {
+  AgenticInput = true,
+  AgenticChat = true,
+}
+
 require('blink.cmp').setup {
+  enabled = function() return not blink_disabled_filetypes[vim.bo.filetype] end,
+
   keymap = {
 
     -- 'default' (recommended) for mappings similar to built-in completions

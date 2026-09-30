@@ -4,7 +4,13 @@
 -- See the kickstart.nvim README for more information
 
 -- Load snacks first (other plugins may trigger vim.pack confirm which uses Snacks picker)
-require('plugins.snacks')
+require 'plugins.snacks'
+
+vim.pack.add {
+  Gh 'nvim-lua/plenary.nvim',
+  Gh 'nvim-telescope/telescope.nvim',
+  Gh 'maxdlr/honcho.nvim',
+}
 
 -- Iterate over all Lua files in the plugins directory and load them
 local plugins_dir = vim.fs.joinpath(vim.fn.stdpath 'config', 'lua', 'plugins')

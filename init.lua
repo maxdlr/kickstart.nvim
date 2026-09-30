@@ -1,4 +1,3 @@
-require 'utils'
 -- require 'neovide'
 
 -- ============================================================
@@ -14,6 +13,7 @@ do
   -- Set to true if you have a Nerd Font installed and selected in the terminal
   vim.g.have_nerd_font = true
 
+  require 'utils'
   require 'ui.init'
   require 'keymaps.init'
   require 'plugouts.init'
@@ -189,6 +189,7 @@ end
 -- kickstart.plugins.* examples
 -- ============================================================
 do
+  -- require 'plugins.honcho'
   require 'plugins.init'
 end
 

@@ -5,6 +5,10 @@
       "src": "https://github.com/L3MON4D3/LuaSnip",
       "version": "2.0.0 - 3.0.0"
     },
+    "agentic.nvim": {
+      "rev": "81628c1dc07edadd1c2c3c27d8dbcb424da1dea0",
+      "src": "https://github.com/carlos-algms/agentic.nvim"
+    },
     "airtable.nvim": {
       "rev": "79000f1f4399b24fbe7c2294cb829d3edb456bdd",
       "src": "https://github.com/maxdlr/airtable.nvim",
@@ -27,7 +31,7 @@
       "src": "https://github.com/moyiz/blink-emoji.nvim"
     },
     "blink-ripgrep.nvim": {
-      "rev": "0e27566da4f70e61d0c0f2821bb71ae745e71364",
+      "rev": "a7804525b1d52bd9709d7b78ae23d8152f967ae6",
       "src": "https://github.com/mikavilpas/blink-ripgrep.nvim"
     },
     "blink.cmp": {
@@ -43,8 +47,12 @@
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "copilot-lsp": {
+      "rev": "1b6d8273594643f51bb4c0c1d819bdb21b42159d",
+      "src": "https://github.com/copilotlsp-nvim/copilot-lsp"
+    },
     "copilot.lua": {
-      "rev": "f76a0a281de089e27b605ec8017093f1aab73b07",
+      "rev": "9c8b172570105d31ff707cb0d62897f79c2ddb1f",
       "src": "https://github.com/zbirenbaum/copilot.lua"
     },
     "csvview.nvim": {
@@ -68,7 +76,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "13bb178a299f7493dd64427a58e61904c4b58ecb",
+      "rev": "eab53acb3fd36479f084f854b4418d02b5c70382",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
@@ -84,9 +92,8 @@
       "src": "https://github.com/NMAC427/guess-indent.nvim"
     },
     "honcho.nvim": {
-      "rev": "bf1fe8a74401f8f29649c21b38a1d795973988fa",
-      "src": "https://github.com/maxdlr/honcho.nvim",
-      "version": "'main'"
+      "rev": "f19751db544c5cf74c8132aafcb9d36277cc70c8",
+      "src": "https://github.com/maxdlr/honcho.nvim"
     },
     "indent-blankline.nvim": {
       "rev": "f1e186e44d3b7f9ae918008e2c28ce37c6023d2d",
@@ -100,12 +107,16 @@
       "rev": "221ce6b2d999187044529f49da6554a92f740a96",
       "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
+    "luarocks.nvim": {
+      "rev": "1db9093915eb16ba2473cfb8d343ace5ee04130a",
+      "src": "https://github.com/vhyrro/luarocks.nvim"
+    },
     "marker-groups.nvim": {
       "rev": "bc2b34abfc041143fdf423aad64cb8fcf80ef279",
       "src": "https://github.com/jameswolensky/marker-groups.nvim"
     },
     "mason-lspconfig.nvim": {
-      "rev": "137bd0feba2c1885545b6934d36f5e5aa6adb486",
+      "rev": "b3298993d55fa194279b5eb9dbfb3a43da65cadf",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
     },
     "mason-tool-installer.nvim": {
@@ -125,7 +136,7 @@
       "src": "https://github.com/jake-stewart/multicursor.nvim"
     },
     "neo-tree.nvim": {
-      "rev": "162f9b953a692b559afe43e38d60afee81e8e79b",
+      "rev": "020e50ff7fdaa0d76de23cfe5c485504729483b0",
       "src": "https://github.com/nvim-neo-tree/neo-tree.nvim"
     },
     "neon.nvim": {
@@ -161,11 +172,11 @@
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lsp-file-operations": {
-      "rev": "0b939aff068c859b6f8cdbc3b3e676d038e6e15d",
+      "rev": "b1168a921c1648143ae5bb02dc0c1462240caeba",
       "src": "https://github.com/antosha417/nvim-lsp-file-operations"
     },
     "nvim-lspconfig": {
-      "rev": "046b1a797af1effe8e0474b9af9657a3761ec58a",
+      "rev": "3e8d598d3b5f8338a41699c436e5fa11d2666cf0",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-notify": {
@@ -181,7 +192,7 @@
       "src": "https://github.com/chrisgrieser/nvim-spider"
     },
     "nvim-treesitter": {
-      "rev": "f603a2f4da48728f80257fb5fbb90145fd1dc173",
+      "rev": "910fdf6f49e9dee7e7257c7d11a76b040fdfb9de",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -221,10 +232,6 @@
       "rev": "889b9a7515db477f4cb6808bef1769e53493c578",
       "src": "https://github.com/rust-lang/rust.vim"
     },
-    "sidekick.nvim": {
-      "rev": "3d80a47e6375f6d647c9695d3afea6fa1b3275df",
-      "src": "https://github.com/folke/sidekick.nvim"
-    },
     "skipper.nvim": {
       "rev": "f8780c5e6b74202f83007162f5881ff20be1966e",
       "src": "https://github.com/beargruug/skipper.nvim"
@@ -234,7 +241,7 @@
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
     "smear-cursor.nvim": {
-      "rev": "f63ff221158b5b0ca9de1d7d1ff2e0dce5649614",
+      "rev": "9f42dd38bea7f00cee52544b168a81dc2fbf57c3",
       "src": "https://github.com/sphamba/smear-cursor.nvim"
     },
     "snacks.nvim": {

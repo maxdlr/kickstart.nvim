@@ -1,3 +1,5 @@
+local picker = require('honcho').honcho_picker
+
 ---@param snippet string|function
 ---@param opts {prompt: string, from_register: string?}
 ---@return nil
@@ -24,35 +26,41 @@ end
 
 local cmds = {
   {
-    'const fn = () => {}; export;',
-    function()
+    icon = '󰞷',
+    label = 'const fn = () => {}; export;',
+    action = function()
       snippet_maker("const %s = () => {\n  return '%s';\n}\nexport default %s;", {
         prompt = 'Function name: ',
       })
     end,
+    color = '#ff9e64',
   },
   {
-    'export { default } from "./";',
-    function()
+    icon = '󰞷',
+    label = 'export { default } from "./";',
+    action = function()
       snippet_maker("export { default } from './%s';", {
         prompt = 'default as: ',
       })
     end,
+    color = '#ff9e64',
   },
   {
-    '󱞩 console.log({ <  > });',
-    function()
+    icon = '󰞷',
+    label = '󱞩 console.log({ <  > });',
+    action = function()
       snippet_maker('console.log({%s})', {
         from_register = '"',
       })
     end,
+    color = '#ff9e64',
   },
 }
 
 vim.keymap.set(
   'n',
   '<leader>h',
-  Command_picker('Macros', cmds, {
+  picker('Macros', cmds, {
     border_color = '#ff9e64',
   }),
   { desc = '󰩤 Macros' }

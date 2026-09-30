@@ -180,7 +180,10 @@ require('lualine').setup {
       },
       { 'diagnostics' },
     },
-    lualine_x = { { 'searchcount' }, { 'diff' } },
+    lualine_x = {
+      { 'searchcount', color = { fg = yellow, gui = 'italic,bold' } },
+      { 'diff', symbols = symbols },
+    },
     lualine_y = {},
     lualine_z = {},
   },
@@ -201,7 +204,7 @@ require('lualine').setup {
   },
   sections = {
     lualine_a = { { 'mode', icons_enabled = true, color = { gui = 'bold' } } },
-    lualine_b = {},
+    lualine_b = { { 'windows' } },
     lualine_c = {},
     lualine_x = {},
     lualine_y = {},
@@ -210,13 +213,13 @@ require('lualine').setup {
   inactive_sections = {},
 }
 
-vim.api.nvim_set_keymap('n', '<Tab><Tab>', ':$tabnew<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Tab>d', ':tabclose<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Tab>o', ':tabonly<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Tab>]', ':tabn<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Tab>[', ':tabp<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Tab><Tab>', ':$tabnew<CR>', { noremap = true, desc = 'New' })
+vim.api.nvim_set_keymap('n', '<Tab>d', ':tabclose<CR>', { noremap = true, desc = 'Delete' })
+vim.api.nvim_set_keymap('n', '<Tab>o', ':tabonly<CR>', { noremap = true, desc = 'Delete others' })
+vim.api.nvim_set_keymap('n', '<Tab>l', ':tabn<CR>', { noremap = true, desc = 'Previous' })
+vim.api.nvim_set_keymap('n', '<Tab>h', ':tabp<CR>', { noremap = true, desc = 'Next' })
 
 -- move current tab to previous position
-vim.api.nvim_set_keymap('n', '<Tab><PageDown>', ':-tabmove<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Tab><PageDown>', ':-tabmove<CR>', { noremap = true, desc = 'Move tab left' })
 -- move current tab to next position
-vim.api.nvim_set_keymap('n', '<Tab><PageUp>', ':+tabmove<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Tab><PageUp>', ':+tabmove<CR>', { noremap = true, desc = 'Move tab right' })

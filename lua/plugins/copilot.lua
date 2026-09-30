@@ -1,4 +1,5 @@
 vim.pack.add { Gh 'zbirenbaum/copilot.lua' }
+
 require('copilot').setup {
   suggestion = {
     enabled = true,
@@ -7,7 +8,7 @@ require('copilot').setup {
     hide_during_completion = false,
     keymap = {
       accept = '<M-h>',
-      accept_word = '¬',
+      accept_word = '<M-l>',
       -- accept_line = '€',
       -- next = 'Ï',
       -- prev = 'È',

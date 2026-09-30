@@ -3,6 +3,12 @@
 --
 -- See the kickstart.nvim README for more information
 
+vim.pack.add {
+  Gh 'nvim-lua/plenary.nvim',
+  Gh 'nvim-telescope/telescope.nvim',
+  Gh 'maxdlr/honcho.nvim',
+}
+
 -- Iterate over all Lua files plugouts commands directory and load them
 local plugouts_dir = vim.fs.joinpath(vim.fn.stdpath 'config', 'lua', 'plugouts')
 for file_name, type in vim.fs.dir(plugouts_dir) do

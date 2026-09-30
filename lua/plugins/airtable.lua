@@ -5,6 +5,8 @@ vim.pack.add {
   { src = Gh 'maxdlr/airtable.nvim', version = 'main' },
 }
 
+local picker = require('honcho').honcho_picker
+
 local fieldNames = {
   status = 'Status',
   priority = 'Priority',
@@ -153,11 +155,20 @@ require('airtable').setup {
   },
 }
 
-vim.keymap.set('n', '<leader>rr', function() require('airtable').resume() end, { desc = 'Airtable' })
-
-local airtable_menu = {
-  { 'Everyone', function() require('airtable').open 'Everyone' end },
-  { 'Mine', function() require('airtable').open 'Mine' end },
+local menu = {
+  {
+    icon = '🫱',
+    label = 'Mine',
+    action = function() require('airtable').open 'Mine' end,
+    color = '#D1FF1B',
+  },
+  {
+    icon = '🧑‍🤝‍🧑',
+    label = 'Everyone',
+    action = function() require('airtable').open 'Everyone' end,
+    color = '#36FFFF',
+  },
 }
 
-vim.keymap.set('n', '<leader>ra', Command_picker('Airtable', airtable_menu, { border_color = '#D1FF1B' }), { desc = 'Airtable' })
+vim.keymap.set('n', '<leader>rr', function() require('airtable').resume() end, { desc = 'Airtable' })
+vim.keymap.set('n', '<leader>ra', picker('Airtable', menu, { border_color = '#D1FF1B' }), { desc = 'Airtable' })
