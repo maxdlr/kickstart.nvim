@@ -1,12 +1,25 @@
 local picker = require('honcho').honcho_picker
 
+local openPrBuffer = function()
+  local prNb = vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')
+  local repo = vim.fn.system('gh repo view --json nameWithOwner -q .nameWithOwner'):gsub('%s+$', '')
+  vim.cmd.edit(('gh://%s/pr/%s'):format(repo, prNb))
+end
+
 local prCmds = {
   {
     icon = '',
     label = 'Create',
     action = function()
       local title = vim.fn.input 'PR Title: '
-      vim.cmd('!gh pr create --title "' .. title .. '" --draft --assignee @me -e')
+      -- notify the outputs of the following command
+      local output = vim.fn.system('gh pr create --draft --body "" --title "' .. title .. '" --assignee @me')
+      if vim.v.shell_error ~= 0 then
+        vim.notify(output, vim.log.levels.ERROR, { title = 'GH PR Create' })
+        return
+      end
+      vim.notify(output, vim.log.levels.INFO, { title = 'GH PR Create' })
+      openPrBuffer()
     end,
     color = '#7AE35F',
   },
@@ -19,11 +32,7 @@ local prCmds = {
   {
     icon = '',
     label = 'View/Refresh',
-    action = function()
-      local prNb = vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')
-      local repo = vim.fn.system('gh repo view --json nameWithOwner -q .nameWithOwner'):gsub('%s+$', '')
-      return function() Snacks.gh.open { type = 'pr', number = prNb, repo = repo } end
-    end,
+    action = openPrBuffer,
     color = '#86B7FF',
   },
   {
@@ -56,8 +65,12 @@ local prCmds = {
   },
 }
 
-vim.keymap.set(
+vim.keymap.set('n', '<leader>gd', function()
+  local prNb = vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')
+  Snacks.picker.gh_diff { pr = prNb }
+end, { desc = 'Diffs' })
 
+vim.keymap.set(
   'n',
   '<leader>gp',
   picker('Pr', prCmds, {

@@ -85,7 +85,6 @@ vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { de
 vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'LazyGit Log' })
 vim.keymap.set('n', '<leader>g<leader>', function() Snacks.picker.git_files() end, { desc = 'LazyGit Log' })
 
-vim.keymap.set('n', '<leader>go', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
 -- vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr { state = 'all' } end, { desc = 'GitHub Pull Requests (all)' })
 
 -- { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
