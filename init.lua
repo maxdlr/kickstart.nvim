@@ -59,7 +59,9 @@ do
   vim.o.splitbelow = true
 
   -- ou can save and restore tab layout and tab names in session, by adding word tabpages(for layout) and globals(for tab names) to vim.opt.sessionoptions. This is a valid sessionoptions:
+  --
 
+  --
   vim.opt.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
 
   -- Sets how neovim will display certain whitespace characters in the editor.
@@ -71,6 +73,7 @@ do
   --   See `:help lua-options`
   --   and `:help lua-guide-options`
   vim.o.list = true
+
   vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
   -- Preview substitutions live, as you type!

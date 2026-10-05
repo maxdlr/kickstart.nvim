@@ -62,6 +62,7 @@ vim.keymap.set(
   '<leader>h',
   picker('Macros', cmds, {
     border_color = '#ff9e64',
+    width = 40,
   }),
   { desc = '󰩤 Macros' }
 )

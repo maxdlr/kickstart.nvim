@@ -1,0 +1,6 @@
+vim.pack.add { Gh 'NMAC427/guess-indent.nvim' }
+
+require('guess-indent').setup {
+  on_tab_options = { ['expandtab'] = false },
+  on_space_options = { ['expandtab'] = false }, -- force tabs even when spaces are detected
+}

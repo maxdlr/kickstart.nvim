@@ -110,5 +110,26 @@ local repoCmds = {
   },
 }
 
-vim.keymap.set('n', '<leader>gp', picker('Pr', prCmds, { border_color = '#A1C7FF' }), { desc = '󰩤 Pr commands' })
-vim.keymap.set('n', '<leader>gr', picker('Repo', repoCmds, { border_color = '#A1C7FF' }), { desc = '󰩤 Repo commands' })
+-- the prCmpds table's longest label
+-- local maxLabelLen = 0
+-- for _, cmd in ipairs(prCmds) do
+--   if cmd.label:len() > maxLabelLen then maxLabelLen = cmd.label:len() end
+-- end
+
+-- vim.keymap.set(
+--   'n',
+--   '<leader>gp',
+--   picker('Pr', prCmds, {
+--     border_color = '#A1C7FF',
+--   }),
+--   { desc = '󰩤 Pr commands' }
+-- )
+--
+-- vim.keymap.set(
+--   'n',
+--   '<leader>gr',
+--   picker('Repo', repoCmds, {
+--     border_color = '#A1C7FF',
+--   }),
+--   { desc = '󰩤 Repo commands' }
+-- )

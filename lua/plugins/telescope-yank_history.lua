@@ -28,6 +28,7 @@ vim.keymap.set('n', '<leader>p', function()
     layout_config = { width = 0.5, height = 0.3, preview_width = 0.4, preview_cutoff = 1 },
   }
   opts.history_length = #all
+
   require('telescope.pickers')
     .new(opts, {
       prompt_title = 'Yank history',
@@ -38,3 +39,4 @@ vim.keymap.set('n', '<leader>p', function()
     })
     :find()
 end, { desc = 'Yank history' })
+-- vim.keymap.set('n', '<leader>p', function() Snacks.picker.registers() end, { desc = 'Yank history' })

@@ -108,7 +108,7 @@ local nCmds = {
     color = '#51FFFF',
   },
   {
-    label = '--- Hunk --------------------------------',
+    label = '     ----------------Hunk',
     action = false,
   },
   {
@@ -124,7 +124,7 @@ local nCmds = {
     color = '#E35454',
   },
   {
-    label = '--- Buffer ------------------------------',
+    label = '     ----------------Buffer',
     action = false,
   },
   {

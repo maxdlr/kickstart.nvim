@@ -1,9 +1,17 @@
 vim.pack.add { Gh 'carlos-algms/agentic.nvim' }
 
+local picker = require('honcho').honcho_picker
+
 -- - @type agentic.PartialUserConfig
 require('agentic').setup {
   -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp" | "kiro-acp" | "pi-acp"
   provider = 'kiro-acp', -- setting the name here is all you need to get started
+
+  diff_preview = {
+    enabled = true,
+    layout = 'inline', -- "split" or "inline"
+    center_on_navigate_hunks = true,
+  },
 
   windows = {
     position = 'right', -- "right", "left", or "bottom"
@@ -11,11 +19,19 @@ require('agentic').setup {
     height = '30%', -- Panel height (position = "bottom")
 
     chat = { buffer_name = function(parts) return 'AI: ' .. parts.title end },
-    input = { buffer_name = 'Agentic Prompt' },
+    input = { buffer_name = 'Prompt' },
     code = { buffer_name = 'Code Snippets' },
     files = { buffer_name = 'Files' },
     diagnostics = { buffer_name = 'Diagnostics' },
     todos = { buffer_name = 'Tasks' },
+  },
+
+  folding = {
+    tool_calls = {
+      enabled = true,
+      threshold = 30,
+      fold_on_error = false,
+    },
   },
 
   widget = {
@@ -26,14 +42,33 @@ require('agentic').setup {
         mode = { 'i', 'n', 'v' }, -- Specify modes for this keybinding
       },
     },
+
     switch_provider = '<localLeader>s', -- Switch ACP provider
     switch_model = '<localLeader>M', -- Switch model
     change_thought_level = '<localLeader>t', -- Select thought effort level
-    open_options = '<localLeader>o', -- Open options modal
+    -- open_options = '<localLeader>o', -- Open options modal
     select_session = '<localLeader>l', -- List and open a session
     next_session = '<localLeader>]', -- Open the next session
     prev_session = '<localLeader>[', -- Open the previous session
     destroy_session = '<localLeader>D', -- Destroy the current session
+    stop_generation = '<localLeader>x', -- Stop current generation or tool execution
+  },
+
+  prompt = {
+    submit = {
+      '<CR>', -- Normal mode, just Enter
+      {
+        '<C-s>',
+        mode = { 'n', 'v' },
+      },
+    },
+
+    paste_image = {
+      {
+        '<localLeader>p',
+        mode = { 'n' },
+      },
+    },
   },
 }
 
@@ -108,6 +143,26 @@ vim.api.nvim_create_autocmd('WinEnter', {
   group = agentic_nav_augroup,
   callback = function()
     if vim.bo.filetype == 'AgenticInput' then vim.schedule(function() vim.cmd 'startinsert' end) end
+  end,
+})
+
+local cmds = {
+  {
+    icon = '',
+    label = 'Close session',
+    actions = function() require('agentic').destroy_session() end,
+    color = '#FF0000',
+  },
+}
+
+-- create a keymap but only if in one of the Agentic buffers.
+vim.api.nvim_create_autocmd('FileType', {
+  group = agentic_nav_augroup,
+  pattern = 'Agentic*',
+  callback = function(event)
+    vim.keymap.set('n', '<localleader>O', picker('Agentic', cmds, { border_color = '#FFFFFF' }), {
+      desc = 'Agentic options',
+    })
   end,
 })
 

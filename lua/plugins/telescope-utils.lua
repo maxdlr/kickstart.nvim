@@ -16,7 +16,6 @@ local removeOrphanPlugins = function()
 end
 
 local cmds = {
-  { label = '--- Plugins --------------------------------', action = false },
   {
     icon = '󱐥',
     label = 'Update plugins',
@@ -29,18 +28,41 @@ local cmds = {
     action = removeOrphanPlugins,
     color = '#D1FF1B',
   },
-  { label = '--- Files --------------------------------', action = false },
+
+  { label = '--- Files ----------------', action = false },
   {
     icon = '',
-    label = 'Copy Filename',
-    action = function() vim.fn.setreg('+', vim.fn.expand '%:t:r') end,
+    label = 'Copy File Name',
+    action = function()
+      local path = vim.fn.expand '%:t:r'
+      vim.fn.setreg('+', path)
+      vim.notify('Copied: ' .. path, vim.log.levels.INFO)
+    end,
     color = '#FFA41B',
   },
   {
     icon = '',
+    label = 'Copy File Path',
+    action = function()
+      local path = vim.fn.expand '%'
+      vim.fn.setreg('+', path)
+      vim.notify('Copied: ' .. path, vim.log.levels.INFO)
+    end,
+    color = '#FFA41B',
+  },
+
+  { label = '--- Other ----------------', action = false },
+  {
+    icon = '',
     label = 'Toggle CsvView',
     action = function() vim.cmd [[CsvViewToggle delimiter=; display_mode=border header_lnum=1]] end,
-    color = '#FFA41B',
+    color = '#9479FF',
+  },
+  {
+    icon = '',
+    label = 'Digraphs',
+    action = 'digraphs',
+    color = '#9479FF',
   },
 }
 

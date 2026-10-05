@@ -65,12 +65,13 @@ require('airtable').setup {
     -- Map these to your team's actual Airtable field names
     fields = {
       { key = 'Title', field = fieldNames.titre },
+      { key = 'Created By', field = fieldNames.createdBy },
+      { key = 'QA Assignee', field = fieldNames.qaAssignee },
       { key = 'Last update', field = fieldNames.lastStatusChange },
+      { key = 'Reviewers', field = fieldNames.reviewers },
       { key = 'Priority', field = fieldNames.priority },
       { key = 'Status', field = fieldNames.status },
       { key = 'Feature Flag', field = fieldNames.featureFlag },
-      { key = 'QA Assignee', field = fieldNames.qaAssignee },
-      { key = 'Reviewers', field = fieldNames.reviewers },
       { key = 'Lien PR', field = fieldNames.lienPR },
       { key = 'Description', field = fieldNames.description },
       { key = 'Todo Dev', field = fieldNames.todoDev },

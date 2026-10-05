@@ -1,9 +1,9 @@
 ---@diagnostic disable: undefined-global
 vim.pack.add { Gh 'folke/snacks.nvim' }
-require('snacks').setup {
-  dashboard = {
-    preset = {
-      header = [[
+
+local dashboard = {
+  preset = {
+    header = [[
      ___          ___          __
     /  /\        /  /\        |  |\
    /  /::|      /  /::\       |  |:|
@@ -16,22 +16,25 @@ require('snacks').setup {
     /__/:/       /__/:/      |__|:|
     \__\/        \__\/        \__\|
 ]],
-      keys = {
-        -- { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
-        -- { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
-        -- { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
-        -- { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
-        -- { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-        { icon = '🫢', key = 's', desc = 'Restore Session', action = function() require('persistence').load() end },
-        { icon = '🖕', key = 'q', desc = 'Quit', action = ':qa' },
-      },
-    },
-    sections = {
-      { section = 'header' },
-      { section = 'keys', gap = 1, padding = 1 },
-      -- { section = 'recent_files', padding = 1 },
+    keys = {
+      -- { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
+      -- { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+      -- { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
+      -- { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+      -- { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+      { icon = '🫢', key = 's', desc = 'Restore Session', action = function() require('persistence').load() end },
+      { icon = '🖕', key = 'q', desc = 'Quit', action = ':qa' },
     },
   },
+  sections = {
+    { section = 'header' },
+    { section = 'keys', gap = 1, padding = 1 },
+    -- { section = 'recent_files', padding = 1 },
+  },
+}
+
+require('snacks').setup {
+  dashboard = dashboard,
 
   explorer = {
     win = { list = { wo = { number = true } } },
@@ -80,8 +83,9 @@ require('snacks').setup {
 vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'LazyGit' })
 vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = 'LazyGit File History' })
 vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'LazyGit Log' })
+vim.keymap.set('n', '<leader>g<leader>', function() Snacks.picker.git_files() end, { desc = 'LazyGit Log' })
 
--- vim.keymap.set('n', '<leader>gp', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
+vim.keymap.set('n', '<leader>go', function() Snacks.picker.gh_pr() end, { desc = 'GitHub Pull Requests (open)' })
 -- vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr { state = 'all' } end, { desc = 'GitHub Pull Requests (all)' })
 
 -- { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
