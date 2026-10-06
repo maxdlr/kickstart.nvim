@@ -17,11 +17,6 @@ local dashboard = {
     \__\/        \__\/        \__\|
 ]],
     keys = {
-      -- { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
-      -- { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
-      -- { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
-      -- { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
-      -- { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
       { icon = '🫢', key = 's', desc = 'Restore Session', action = function() require('persistence').load() end },
       { icon = '🖕', key = 'q', desc = 'Quit', action = ':qa' },
     },
@@ -56,27 +51,25 @@ require('snacks').setup {
 
   gh = {},
 
-  words = {
-    -- your words configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  },
+  words = {},
 
   -- toggle = {
-  --   -- your toggle configuration comes here
-  --   -- or leave it empty to use the default settings
-  --   -- refer to the configuration section below
   -- },
 
   picker = {
+    layout = {
+      layout = {},
+    },
     sources = {
-      -- gh_issue = {
-      --   -- your gh_issue picker configuration comes here
-      --   -- or leave it empty to use the default settings
-      -- },
-      gh_pr = {},
+      -- gh_issue = {},
+      gh_pr = {
+        sort = { fields = { 'score:desc', 'idx' } },
+      },
     },
   },
+
+  image = {},
+  indent = {},
 }
 
 -- Snacks.lazygit():map '<leader>gg'
@@ -84,13 +77,6 @@ vim.keymap.set('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'Laz
 vim.keymap.set('n', '<leader>gf', function() Snacks.lazygit.log_file() end, { desc = 'LazyGit File History' })
 vim.keymap.set('n', '<leader>gl', function() Snacks.lazygit.log() end, { desc = 'LazyGit Log' })
 vim.keymap.set('n', '<leader>g<leader>', function() Snacks.picker.git_files() end, { desc = 'LazyGit Log' })
-
--- vim.keymap.set('n', '<leader>gP', function() Snacks.picker.gh_pr { state = 'all' } end, { desc = 'GitHub Pull Requests (all)' })
-
--- { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
--- { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
--- { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
--- { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
 
 Snacks.toggle.zoom():map('<leader>wm'):map '<leader>uZ'
 Snacks.toggle.zen():map '<leader>uz'

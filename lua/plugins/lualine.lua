@@ -220,6 +220,6 @@ vim.api.nvim_set_keymap('n', '<Tab>l', ':tabn<CR>', { noremap = true, desc = 'Pr
 vim.api.nvim_set_keymap('n', '<Tab>h', ':tabp<CR>', { noremap = true, desc = 'Next' })
 
 -- move current tab to previous position
-vim.api.nvim_set_keymap('n', '<Tab><PageDown>', ':-tabmove<CR>', { noremap = true, desc = 'Move tab left' })
+vim.api.nvim_set_keymap('n', '<Tab><PageDown>', ':+tabmove<CR>', { noremap = true, desc = 'Move tab left' })
 -- move current tab to next position
-vim.api.nvim_set_keymap('n', '<Tab><PageUp>', ':+tabmove<CR>', { noremap = true, desc = 'Move tab right' })
+vim.api.nvim_set_keymap('n', '<Tab><PageUp>', ':-tabmove<CR>', { noremap = true, desc = 'Move tab right' })

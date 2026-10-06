@@ -43,18 +43,8 @@ local prCmds = {
   },
   {
     icon = '',
-    label = 'List - All',
-    action = function() Snacks.picker.gh_pr() end,
-    color = '#FFB443',
-  },
-  {
-    icon = '',
-    label = 'List - Branch',
-    action = function()
-      Snacks.picker.gh_pr {
-        branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('%s+$', ''),
-      }
-    end,
+    label = 'List',
+    action = function() Snacks.picker.gh_pr { state = 'open', drafts = true } end,
     color = '#FFB443',
   },
   {

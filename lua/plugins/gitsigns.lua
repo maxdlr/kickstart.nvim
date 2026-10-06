@@ -96,6 +96,12 @@ local nCmds = {
     color = '#51FFFF',
   },
   {
+    icon = '',
+    label = 'Blame details',
+    action = function() Snacks.git.blame_line() end,
+    color = '#51FFFF',
+  },
+  {
     icon = '',
     label = 'Preview Hunk',
     action = gitsigns.preview_hunk_inline,

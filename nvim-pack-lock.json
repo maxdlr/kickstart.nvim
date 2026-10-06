@@ -87,6 +87,10 @@
       "rev": "11595bf747edc270bce2069d1020502ad4ae56cf",
       "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
+    "guess-indent.nvim": {
+      "rev": "84a4987ff36798c2fc1169cbaff67960aed9776f",
+      "src": "https://github.com/NMAC427/guess-indent.nvim"
+    },
     "honcho.nvim": {
       "rev": "1ca10603e1a729e97904ce98e01a7b506a0bbf2c",
       "src": "https://github.com/maxdlr/honcho.nvim"
@@ -247,6 +251,10 @@
     "telescope-fzf-native.nvim": {
       "rev": "b25b749b9db64d375d782094e2b9dce53ad53a40",
       "src": "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
+    },
+    "telescope-repo.nvim": {
+      "rev": "1f3d40352891b46ee27c0eea2ece767de7f1adfa",
+      "src": "https://github.com/cljoly/telescope-repo.nvim"
     },
     "telescope-ui-select.nvim": {
       "rev": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2",

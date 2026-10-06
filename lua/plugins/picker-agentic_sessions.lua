@@ -1,5 +1,5 @@
 -- 5cf3aec2-4b0d-4527-9ec4-e47ba8ee1d71
--- Lists Kiro CLI chat sessions for the current directory in a Telescope picker.
+-- Lists Kiro CLI chat sessions for the current directory in a Snacks picker.
 --
 -- `agentic.nvim`'s own session picker (<leader>aR, restore_session()) relies on
 -- the ACP `session/list` capability, which the Kiro ACP agent does not advertise
@@ -7,11 +7,6 @@
 -- `kiro-cli chat --list-sessions --format json`, which has its own session store
 -- independent of ACP, and feeding the session IDs into `restore_session_by_id`,
 -- which only needs `loadSession` support.
-local pickers = require 'telescope.pickers'
-local finders = require 'telescope.finders'
-local conf = require('telescope.config').values
-local actions = require 'telescope.actions'
-local action_state = require 'telescope.actions.state'
 
 --- Runs `kiro-cli chat --list-sessions` for the current cwd and parses its JSON output.
 --- @return table[]|nil sessions list of { sessionId, title, updatedAt, messageCount, ... }
@@ -50,46 +45,40 @@ local function list_agentic_sessions()
   -- Most recently updated first.
   table.sort(sessions, function(a, b) return (a.updatedAt or '') > (b.updatedAt or '') end)
 
-  pickers
-    .new(
-      require('telescope.themes').get_dropdown {
-        winblend = 5,
-        layout_strategy = 'horizontal',
-        layout_config = { prompt_position = 'top', width = 0.8, height = 0.7 },
-        previewer = false,
-        sorting_strategy = 'ascending',
-      },
-      {
-        prompt_title = 'Kiro Sessions',
-        finder = finders.new_table {
-          results = sessions,
-          entry_maker = function(session)
-            local title = session.title or '(no title)'
-            local display = string.format('%s | %3d msgs | %s', format_date(session.updatedAt), session.messageCount or 0, title)
-            return {
-              value = session,
-              display = display,
-              ordinal = title,
-            }
-          end,
-        },
-        sorter = conf.generic_sorter {},
-        attach_mappings = function(prompt_bufnr, _)
-          actions.select_default:replace(function()
-            local entry = action_state.get_selected_entry()
-            actions.close(prompt_bufnr)
-            if entry then require('agentic').restore_session_by_id(entry.value.sessionId) end
-          end)
-          return true
-        end,
+  local items = {}
+  for i, session in ipairs(sessions) do
+    local title = session.title or '(no title)'
+    items[#items + 1] = {
+      idx = i,
+      score = i,
+      text = title,
+      session_id = session.sessionId,
+      title = title,
+      updated_at = session.updatedAt,
+      message_count = session.messageCount or 0,
+    }
+  end
+
+  Snacks.picker {
+    title = 'Kiro Sessions',
+    items = items,
+    format = function(item)
+      return {
+        { format_date(item.updated_at) .. ' ', 'SnacksPickerComment' },
+        { ('%3d msgs '):format(item.message_count), 'SnacksPickerComment' },
+        { item.title, 'SnacksPickerLabel' },
       }
-    )
-    :find()
+    end,
+    confirm = function(picker, item)
+      picker:close()
+      require('agentic').restore_session_by_id(item.session_id)
+    end,
+  }
 end
 
 vim.keymap.set(
   'n',
   '<leader>al', -- ai List sessions
   list_agentic_sessions,
-  { desc = 'Agentic: list and restore Kiro sessions (Telescope)' }
+  { desc = 'Agentic: list and restore Kiro sessions' }
 )
