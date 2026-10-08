@@ -88,7 +88,7 @@
       "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
     "honcho.nvim": {
-      "rev": "272bd5da6546dfc93ce9b23cbe3051503dadb1d3",
+      "rev": "cfa32cfd1832a004d0a4258b4569a1501608bc23",
       "src": "https://github.com/maxdlr/honcho.nvim"
     },
     "lualine.nvim": {
