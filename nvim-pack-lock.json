@@ -31,7 +31,7 @@
       "src": "https://github.com/moyiz/blink-emoji.nvim"
     },
     "blink-ripgrep.nvim": {
-      "rev": "a27358501ceeb2534e6f8729ea5cfd22083e19f2",
+      "rev": "2b75ce98dcaad266d46f6e0fd96c69f1661abdb4",
       "src": "https://github.com/mikavilpas/blink-ripgrep.nvim"
     },
     "blink.cmp": {
@@ -88,12 +88,8 @@
       "src": "https://github.com/MagicDuck/grug-far.nvim"
     },
     "honcho.nvim": {
-      "rev": "530dccd697e8e44e971622b0de6491bf4ba77453",
+      "rev": "272bd5da6546dfc93ce9b23cbe3051503dadb1d3",
       "src": "https://github.com/maxdlr/honcho.nvim"
-    },
-    "kitty-scrollback.nvim": {
-      "rev": "4994c85e0f291598d0748488653c83cb698fd281",
-      "src": "https://github.com/mikesmithgh/kitty-scrollback.nvim"
     },
     "lualine.nvim": {
       "rev": "221ce6b2d999187044529f49da6554a92f740a96",
@@ -120,7 +116,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "6f0cd5049f414932ba55a5d6f3282a59d55c71a3",
+      "rev": "fa9037326e9996381e34a14b6350e18168618532",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "multicursor.nvim": {
@@ -130,10 +126,6 @@
     "neon.nvim": {
       "rev": "fdaea31df2e76f73511d742db87188a7e698b64b",
       "src": "https://github.com/Zeioth/neon.nvim"
-    },
-    "nerdicons.nvim": {
-      "rev": "2d257ff9b00b7d1510704e0a565a6a7ede76b79a",
-      "src": "https://github.com/glepnir/nerdicons.nvim"
     },
     "noice.nvim": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
@@ -156,11 +148,11 @@
       "src": "https://github.com/brenoprata10/nvim-highlight-colors"
     },
     "nvim-lint": {
-      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
+      "rev": "f6230a5c06ba59e6059c14637f1dbe29a7978b9b",
       "src": "https://github.com/mfussenegger/nvim-lint"
     },
     "nvim-lspconfig": {
-      "rev": "910f0c4d46aa186641518395bc7e6fffb4d23baf",
+      "rev": "db68de3575fff9dd9bb78b34c8371759ed35fe34",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-notify": {
@@ -191,10 +183,6 @@
     "nvim-web-devicons": {
       "rev": "58447c1fca354bbf184425e4a8d01deecbd6f3c4",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
-    },
-    "octo.nvim": {
-      "rev": "af2411604b51cb4a0f3e2de50b1b7cacc2581c48",
-      "src": "https://github.com/pwntester/octo.nvim"
     },
     "persistence.nvim": {
       "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
@@ -265,7 +253,7 @@
       "src": "https://github.com/folke/which-key.nvim"
     },
     "yanky.nvim": {
-      "rev": "b50e7b57b9a2296dc4393e024eb0b8235b41c641",
+      "rev": "adcabd8512bead30184916fa9277e73c021ef099",
       "src": "https://github.com/gbprod/yanky.nvim"
     }
   }

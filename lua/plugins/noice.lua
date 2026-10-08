@@ -1,9 +1,8 @@
-local noicePlugins = {
+vim.pack.add {
   Gh 'MunifTanjim/nui.nvim',
   Gh 'rcarriga/nvim-notify',
+  Gh 'folke/noice.nvim',
 }
-vim.pack.add(noicePlugins)
-vim.pack.add { Gh 'folke/noice.nvim' }
 
 require('notify').setup {
   -- How long notifications stay visible (ms)
@@ -49,9 +48,10 @@ require('noice').setup {
   },
   presets = {
     inc_rename = true,
-    bottom_search = true,
+    bottom_search = false,
     command_palette = true,
     long_message_to_split = true,
+    lsp_doc_border = true,
   },
 }
 

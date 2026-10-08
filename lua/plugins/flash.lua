@@ -57,4 +57,5 @@ vim.api.nvim_set_hl(0, 'FlashLabel', { fg = '#ff007c', bg = '#000000', bold = tr
 -- vim.api.nvim_set_hl(0, 'FlashCurrent', { fg = '#000000', bg = '#ff007c' })
 -- vim.api.nvim_set_hl(0, 'FlashBackdrop', { fg = '#545862' })
 
+-- c is
 vim.keymap.set('c', '<c-s>', function() require('flash').toggle() end, { desc = 'Toggle Flash Search' })

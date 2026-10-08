@@ -15,7 +15,7 @@ local function snippet_maker(snippet, opts)
     local value = vim.fn.getreg(opts.from_register)
     insert((snippet:gsub('%%s', value)))
   elseif opts.prompt then
-    vim.ui.input({ prompt = opts.prompt }, function(input)
+    Snacks.input({ prompt = opts.prompt }, function(input)
       if input == nil or input == '' then return end
       insert((snippet:gsub('%%s', input)))
     end)
