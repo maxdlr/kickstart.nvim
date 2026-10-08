@@ -23,7 +23,7 @@ local prCmds = {
         if title == '' then
           fillings = '--fill --template "pull_request_template.md"'
         else
-          fillings = '--body "" --title "' .. title .. '"'
+          fillings = '--template "pull_request_template.md" --title "' .. title .. '"'
         end
 
         local output = vim.fn.system('gh pr create --draft --assignee @me ' .. fillings)
@@ -48,13 +48,13 @@ local prCmds = {
   },
   {
     icon = '',
-    label = 'View/Refresh',
+    label = 'View',
     action = openPrBuffer,
     color = '#86B7FF',
   },
   {
     icon = '',
-    label = 'Url - Copy',
+    label = 'Url',
     action = function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end,
     color = '#D7FF36',
   },
@@ -66,7 +66,7 @@ local prCmds = {
   },
   {
     icon = '',
-    label = 'Open repo',
+    label = 'OpenRepo',
     action = 'silent !gh browse',
     color = '#6BFFFF',
   },
