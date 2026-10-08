@@ -80,7 +80,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>aR', function() agentic.restore_session() 
 vim.keymap.set('n', '<leader>ad', function() agentic.add_current_line_diagnostics() end, { desc = 'Add current line diagnostic to Agentic' })
 vim.keymap.set('n', '<leader>aD', function() agentic.add_buffer_diagnostics() end, { desc = 'Add all buffer diagnostics to Agentic' })
 vim.keymap.set('n', '<leader>ar', function()
-  vim.ui.input({ prompt = 'Session ID: ' }, function(session_id)
+  Snacks.input({ prompt = 'Session ID: ' }, function(session_id)
     if session_id and session_id ~= '' then agentic.restore_session_by_id(session_id) end
   end)
 end, { desc = 'Agentic restore session by id' })

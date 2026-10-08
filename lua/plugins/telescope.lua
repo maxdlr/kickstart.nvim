@@ -1,27 +1,3 @@
--- [[ Fuzzy Finder (files, lsp, etc) ]]
---
--- Telescope is a fuzzy finder that comes with a lot of different things that
--- it can fuzzy find! It's more than just a "file finder", it can search
--- many different aspects of Neovim, your workspace, LSP, and more!
---
--- There are lots of other alternative pickers (like snacks.picker, or fzf-lua)
--- so feel free to experiment and see what you like!
---
--- The easiest way to use Telescope, is to start by doing something like:
---  :Telescope help_tags
---
--- After running this command, a window will open up and you're able to
--- type in the prompt window. You'll see a list of `help_tags` options and
--- a corresponding preview of the help.
---
--- Two important keymaps to use while in Telescope are:
---  - Insert mode: <c-/>
---  - Normal mode: ?
---
--- This opens a window that shows you all of the keymaps for the current
--- Telescope picker. This is really useful to discover what Telescope can
--- do as well as how to actually do it!
-
 ---@type (string|vim.pack.Spec)[]
 local telescope_plugins = {
   Gh 'nvim-lua/plenary.nvim',
@@ -139,14 +115,14 @@ pcall(require('telescope').load_extension, 'repo')
 
 -- See `:help telescope.builtin`
 local builtin = require 'telescope.builtin'
-vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
-vim.keymap.set('n', '<leader>sH', builtin.highlights, { desc = 'Telescope highlights' })
-vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
-vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
-vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
-vim.keymap.set('n', '<leader>s:', builtin.commands, { desc = 'Commands' })
-vim.keymap.set('n', '<leader>cD', builtin.diagnostics, { desc = 'Diagnostics' })
-vim.keymap.set('n', '<leader>uC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
+-- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
+-- vim.keymap.set('n', '<leader>sH', builtin.highlights, { desc = 'Telescope highlights' })
+-- vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
+-- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Select Telescope' })
+-- vim.keymap.set('n', '<leader>sR', builtin.resume, { desc = 'Resume' })
+-- vim.keymap.set('n', '<leader>s:', builtin.commands, { desc = 'Commands' })
+-- vim.keymap.set('n', '<leader>cD', builtin.diagnostics, { desc = 'Diagnostics' })
+-- vim.keymap.set('n', '<leader>uC', function() builtin.colorscheme({ enable_preview = true, ignore_builtins = true }) end, { desc = 'Colorscheme' })
 
 -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
 -- If you later switch picker plugins, this is where to update these mappings.
@@ -210,7 +186,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- end, { desc = 'Jumps' })
 
 -- Shortcut for searching your Neovim configuration files
-vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
+-- vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })
 
 vim.keymap.set('n', '<leader>\\', function() builtin.grep_string{
   entry_maker = telescope_entry_maker.grep_entry_maker { cwd = vim.fn.expand '%:p:h' },

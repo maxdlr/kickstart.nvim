@@ -5,6 +5,8 @@ require('trouble').setup {
   -- },
 }
 
-vim.keymap.set('n', '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Global' })
-vim.keymap.set('n', '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', { desc = 'Buffer' })
-vim.keymap.set('n', '<leader>xq', '<cmd>Trouble qflist toggle<cr>', { desc = 'Quickfix' })
+-- vim.keymap.set('n', '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', { desc = 'Global' })
+vim.keymap.set('n', '<leader>xX', function() Snacks.picker.diagnostics() end, { desc = 'Global' })
+-- vim.keymap.set('n', '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', { desc = 'Buffer' })
+vim.keymap.set('n', '<leader>xx', function() Snacks.picker.diagnostics_buffer() end, { desc = 'Buffer' })
+-- vim.keymap.set('n', '<leader>xq', '<cmd>Trouble qflist toggle<cr>', { desc = 'Quickfix' })

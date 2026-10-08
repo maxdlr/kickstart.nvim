@@ -11,15 +11,32 @@ local prCmds = {
     icon = '',
     label = 'Create',
     action = function()
-      local title = vim.fn.input 'PR Title: '
-      -- notify the outputs of the following command
-      local output = vim.fn.system('gh pr create --draft --body "" --title "' .. title .. '" --assignee @me')
-      if vim.v.shell_error ~= 0 then
-        vim.notify(output, vim.log.levels.ERROR, { title = 'GH PR Create' })
-        return
-      end
-      vim.notify(output, vim.log.levels.INFO, { title = 'GH PR Create' })
-      openPrBuffer()
+      Snacks.input({ prompt = 'PR Title: ', default = '' }, function(title)
+        vim.keymap.set({ 'n', 'i' }, '<Esc>', function() vim.cmd.stopinsert() end, { buffer = 0, desc = 'Stop insert mode' })
+        local fillings = ''
+
+        if title == nil then
+          vim.notify('PR creation cancelled', vim.log.levels.INFO, { title = 'GH PR Create' })
+          return
+        end
+
+        if title == '' then
+          fillings = '--fill --template "pull_request_template.md"'
+        else
+          fillings = '--body "" --title "' .. title .. '"'
+        end
+
+        local output = vim.fn.system('gh pr create --draft --assignee @me ' .. fillings)
+
+        if vim.v.shell_error ~= 0 then
+          vim.notify(output, vim.log.levels.ERROR, { title = 'GH PR Create' })
+          return
+        end
+
+        vim.notify(output, vim.log.levels.INFO, { title = 'GH PR Create' })
+
+        openPrBuffer()
+      end)
     end,
     color = '#7AE35F',
   },
@@ -68,12 +85,3 @@ vim.keymap.set(
   }),
   { desc = '󰩤 Pr commands' }
 )
-
--- vim.keymap.set(
---   'n',
---   '<leader>gr',
---   picker('Repo', repoCmds, {
---     border_color = '#A1C7FF',
---   }),
---   { desc = '󰩤 Repo commands' }
--- )

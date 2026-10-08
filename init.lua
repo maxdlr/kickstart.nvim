@@ -1,9 +1,5 @@
--- require 'neovide'
+vim.keymap.set('n', 'q', '<nop>')
 
--- ============================================================
--- SECTION 1: FOUNDATION
--- Core Neovim settings, leaders, options, basic keymaps, basic autocmds
--- ============================================================
 do
   -- Enable faster startup by caching compiled Lua modules
   vim.loader.enable()
@@ -17,6 +13,7 @@ do
   require 'ui.init'
   require 'keymaps.init'
   require 'plugouts.init'
+
   -- Enable mouse mode, can be useful for resizing splits for example!
   vim.o.mouse = 'a'
 
@@ -135,10 +132,6 @@ do
   })
 end
 
--- ============================================================
--- SECTION 2: PLUGIN MANAGER INTRO
--- vim.pack intro, build hooks
--- ============================================================
 do
   --  In this section we set up some autocommands to run build
   --  steps for certain plugins after they are installed or updated.
@@ -187,12 +180,8 @@ do
     end,
   })
 end
--- ============================================================
--- SECTION 9: OPTIONAL EXAMPLES / NEXT STEPS
--- kickstart.plugins.* examples
--- ============================================================
+
 do
-  -- require 'plugins.honcho'
   require 'plugins.init'
 end
 
