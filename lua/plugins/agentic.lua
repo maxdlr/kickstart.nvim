@@ -1,9 +1,10 @@
 vim.pack.add { Gh 'carlos-algms/agentic.nvim' }
 
 local picker = require('honcho').honcho_picker
+local agentic = require 'agentic'
 
 -- - @type agentic.PartialUserConfig
-require('agentic').setup {
+agentic.setup {
   -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp" | "kiro-acp" | "pi-acp"
   provider = 'kiro-acp', -- setting the name here is all you need to get started
 
@@ -43,15 +44,15 @@ require('agentic').setup {
       },
     },
 
-    switch_provider = '<localLeader>s', -- Switch ACP provider
-    switch_model = '<localLeader>M', -- Switch model
-    change_thought_level = '<localLeader>t', -- Select thought effort level
-    -- open_options = '<localLeader>o', -- Open options modal
-    select_session = '<localLeader>l', -- List and open a session
+    -- switch_provider = '<localLeader>s', -- Switch ACP provider
+    -- switch_model = '<localLeader>M', -- Switch model
+    -- change_thought_level = '<localLeader>t', -- Select thought effort level
+    open_options = '', -- Open options modal
+    -- select_session = '<localLeader>l', -- List and open a session
     next_session = '<localLeader>]', -- Open the next session
     prev_session = '<localLeader>[', -- Open the previous session
-    destroy_session = '<localLeader>D', -- Destroy the current session
-    stop_generation = '<localLeader>x', -- Stop current generation or tool execution
+    -- destroy_session = '<localLeader>D', -- Destroy the current session
+    -- stop_generation = '<localLeader>x', -- Stop current generation or tool execution
   },
 
   prompt = {
@@ -72,52 +73,18 @@ require('agentic').setup {
   },
 }
 
-vim.keymap.set({ 'n', 'v' }, '<leader>aa', function() require('agentic').toggle() end, { desc = 'Toggle Agentic Chat' })
+vim.keymap.set({ 'n', 'v' }, '<leader>aa', function() agentic.toggle() end, { desc = 'Toggle Agentic Chat' })
+vim.keymap.set({ 'n', 'v' }, '<leader>af', function() agentic.add_selection_or_file_to_context() end, { desc = 'Add file or selection to Agentic to Context' })
+vim.keymap.set({ 'n', 'v' }, '<leader>an', function() agentic.new_session() end, { desc = 'New Agentic Session' })
+vim.keymap.set({ 'n', 'v' }, '<leader>aR', function() agentic.restore_session() end, { desc = 'Agentic Restore session', silent = true })
+vim.keymap.set('n', '<leader>ad', function() agentic.add_current_line_diagnostics() end, { desc = 'Add current line diagnostic to Agentic' })
+vim.keymap.set('n', '<leader>aD', function() agentic.add_buffer_diagnostics() end, { desc = 'Add all buffer diagnostics to Agentic' })
+vim.keymap.set('n', '<leader>ar', function()
+  vim.ui.input({ prompt = 'Session ID: ' }, function(session_id)
+    if session_id and session_id ~= '' then agentic.restore_session_by_id(session_id) end
+  end)
+end, { desc = 'Agentic restore session by id' })
 
-vim.keymap.set(
-  { 'n', 'v' },
-  '<leader>af',
-  function() require('agentic').add_selection_or_file_to_context() end,
-  { desc = 'Add file or selection to Agentic to Context' }
-)
-
-vim.keymap.set({ 'n', 'v' }, '<leader>an', function() require('agentic').new_session() end, { desc = 'New Agentic Session' })
-
-vim.keymap.set(
-  { 'n', 'v' },
-  '<leader>aR', -- ai Restore
-  function() require('agentic').restore_session() end,
-  { desc = 'Agentic Restore session', silent = true }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>ad', -- ai Diagnostics
-  function() require('agentic').add_current_line_diagnostics() end,
-  { desc = 'Add current line diagnostic to Agentic' }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>aD', -- ai all Diagnostics
-  function() require('agentic').add_buffer_diagnostics() end,
-  { desc = 'Add all buffer diagnostics to Agentic' }
-)
-
-vim.keymap.set(
-  'n',
-  '<leader>ar', -- ai Restore by id
-  function()
-    vim.ui.input({ prompt = 'Session ID: ' }, function(session_id)
-      if session_id and session_id ~= '' then require('agentic').restore_session_by_id(session_id) end
-    end)
-  end,
-  { desc = 'Agentic restore session by id' }
-)
-
--- Let <C-h/j/k/l> move focus out of the prompt buffer without leaving insert mode
--- first, and restore insert mode automatically when navigation brings focus back
--- to it. Other buffers are unaffected: they keep whatever mode they were left in.
 local agentic_nav_augroup = vim.api.nvim_create_augroup('agentic-insert-nav', { clear = true })
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -147,11 +114,31 @@ vim.api.nvim_create_autocmd('WinEnter', {
 })
 
 local cmds = {
+  { label = '------ Chat ------', action = false },
+  {
+    icon = '',
+    label = 'Stop generation',
+    action = function() agentic.stop_generation() end,
+    color = '#FFA41B',
+  },
+  {
+    icon = '',
+    label = 'Switch model',
+    action = function() agentic.switch_model() end,
+    color = '#438EFF',
+  },
+  { label = '------ Sessions ------', action = false },
   {
     icon = '',
     label = 'Close session',
-    actions = function() require('agentic').destroy_session() end,
+    action = function() agentic.destroy_session() end,
     color = '#FF0000',
+  },
+  {
+    icon = '',
+    label = 'Select session',
+    action = function() agentic.select_session() end,
+    color = '#438EFF',
   },
 }
 
@@ -160,7 +147,7 @@ vim.api.nvim_create_autocmd('FileType', {
   group = agentic_nav_augroup,
   pattern = 'Agentic*',
   callback = function(event)
-    vim.keymap.set('n', '<localleader>O', picker('Agentic', cmds, { border_color = '#FFFFFF' }), {
+    vim.keymap.set('n', '<leader>ao', picker('Agentic', cmds, { border_color = '#FFFFFF' }), {
       desc = 'Agentic options',
     })
   end,

@@ -10,6 +10,7 @@ vim.pack.add {
   Gh 'nvim-lua/plenary.nvim',
   Gh 'nvim-telescope/telescope.nvim',
   Gh 'maxdlr/honcho.nvim',
+  Gh 'mrjones2014/smart-splits.nvim',
 }
 
 -- Iterate over all Lua files in the plugins directory and load them

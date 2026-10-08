@@ -159,7 +159,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local buf = event.buf
 
     -- Find references for the word under your cursor.
-    vim.keymap.set('n', 'gr', builtin.lsp_references , { buffer = buf, desc = 'References' })
+    -- vim.keymap.set('n', 'gr', builtin.lsp_references , { buffer = buf, desc = 'References' })
+    vim.keymap.set('n', 'gr', function ()
+      Snacks.picker.lsp_references()
+    end , { buffer = buf, desc = 'References' })
 
     vim.keymap.set('n', 'gR', function () builtin.lsp_references { jump_type ='vsplit' } end, { buffer = buf, desc = 'References' })
 
@@ -172,12 +175,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Jump to the definition of the word under your cursor.
     -- This is where a variable was first declared, or where a function is defined, etc.
     -- To jump back, press <C-t>.
-    vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = 'Definition' })
-    vim.keymap.set('n', 'gD', function() builtin.lsp_definitions { jump_type = 'vsplit' } end, { buffer = buf, desc = 'Definition (split)' })
+    -- vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = 'Definition' })
+    -- vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = 'Definition' })
+
+    vim.keymap.set('n', 'gd', function () Snacks.picker.lsp_definitions { jump = { tagstack = true, reuse_win = true}} end, { buffer = buf, desc = 'Definition' })
+    vim.keymap.set('n', 'gD', function () Snacks.picker.lsp_definitions { confirm = 'edit_vsplit' } end, { buffer = buf, desc = 'Definition (split)' })
+
+    -- vim.keymap.set('n', 'gD', function() builtin.lsp_definitions { jump_type = 'vsplit' } end, { buffer = buf, desc = 'Definition (split)' })
 
     -- Fuzzy find all the symbols in your current document.
     -- Symbols are things like variables, functions, types, etc.
-    vim.keymap.set('n', '<leader>cs', builtin.lsp_document_symbols, { buffer = buf, desc = 'Symbols' })
+    -- vim.keymap.set('n', '<leader>cs', builtin.lsp_document_symbols, { buffer = buf, desc = 'Symbols' })
 
     -- Fuzzy find all the symbols in your current workspace.
     -- Similar to document symbols, except searches over your entire project.
@@ -190,16 +198,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-vim.keymap.set('n', '<leader>sj', function () builtin.jumplist {
-  winblend = 5,
-  previewer = true,
-  layout_config = {
-    width = 0.7,
-    height = 0.3,
-    preview_cutoff = 1
-  },
-}
-end, { desc = 'Jumps' })
+-- vim.keymap.set('n', '<leader>sj', function () builtin.jumplist {
+--   winblend = 5,
+--   previewer = true,
+--   layout_config = {
+--     width = 0.7,
+--     height = 0.3,
+--     preview_cutoff = 1
+--   },
+-- }
+-- end, { desc = 'Jumps' })
 
 -- Shortcut for searching your Neovim configuration files
 vim.keymap.set('n', '<leader>sC', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = ' Nvim [C]onfiguration files' })

@@ -34,14 +34,14 @@ ai.setup {
 }
 
 -- Indent scope motions: ]i / [i to jump to start/end of scope
-require('mini.indentscope').setup {
-  symbol = '│',
-  options = { try_as_border = true },
-  mappings = {
-    goto_top = '[i',
-    goto_bottom = ']i',
-  },
-}
+-- require('mini.indentscope').setup {
+--   symbol = '│',
+--   options = { try_as_border = true },
+--   mappings = {
+--     goto_top = '[i',
+--     goto_bottom = ']i',
+--   },
+-- }
 
 require('mini.animate').setup {
   cursor = { enable = false },
