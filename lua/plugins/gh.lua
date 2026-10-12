@@ -1,43 +1,83 @@
 local picker = require('honcho').honcho_picker
 
+local function ghPrUrl() return vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '') end
+local function ghPrNumber() return vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '') end
+local function ghRepoName() return vim.fn.system('gh repo view --json nameWithOwner -q .nameWithOwner'):gsub('%s+$', '') end
+local function ghCurrentBranchName() return vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('%s+$', '') end
+
 local openPrBuffer = function()
-  local prNb = vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')
-  local repo = vim.fn.system('gh repo view --json nameWithOwner -q .nameWithOwner'):gsub('%s+$', '')
-  vim.cmd.edit(('gh://%s/pr/%s'):format(repo, prNb))
+  local repo = ghRepoName()
+  local prNb = ghPrNumber()
+
+  if (ghCurrentBranchName() == 'main' or ghCurrentBranchName() == 'master' or ghCurrentBranchName() == 'gedeon-v2') and prNb == '' then
+    vim.notify("You're on " .. ghCurrentBranchName(), vim.log.levels.INFO, { title = 'GH PR View' })
+    return
+  end
+
+  local file = ('gh://%s/pr/%s'):format(repo, prNb)
+
+  vim.cmd.edit(file)
+  -- if file ~= vim.api.nvim_buf_get_name(0) then
+  --   Snacks.win {
+  --     file = file,
+  --     position = 'float',
+  --     backdrop = 60,
+  --     height = 0.9,
+  --     width = 0.9,
+  --     zindex = 50,
+  --     wo = {
+  --       spell = false,
+  --       wrap = true,
+  --       -- signcolumn = 'yes',
+  --       -- statuscolumn = ' ',
+  --       -- conceallevel = 3,
+  --       number = true,
+  --       relativenumber = true,
+  --     },
+  --     bo = {
+  --       bufhidden = 'hide',
+  --     },
+  --   }
+  -- end
+end
+
+local function ghLastCommitSubject() return vim.fn.system('git log -1 --pretty=%s'):gsub('%s+$', '') end
+
+local createAutoPr = function()
+  local templatePath = './.github/pull_request_template.md'
+  local title = ghLastCommitSubject()
+  local cmd
+
+  if vim.fn.filereadable(templatePath) == 1 then
+    cmd = 'gh pr create --draft --assignee @me --title ' .. vim.fn.shellescape(title) .. ' --body-file ' .. vim.fn.shellescape(templatePath)
+  else
+    cmd = 'gh pr create --draft --assignee @me --title ' .. vim.fn.shellescape(title) .. ' --fill'
+  end
+
+  local output = vim.fn.system(cmd)
+
+  if vim.v.shell_error ~= 0 then
+    -- a pull request for branch "test-pr" into branch "master" already exists:
+    if output:match 'already exists:' then
+      vim.notify('PR already exists: ' .. ghPrNumber(), vim.log.levels.INFO, { title = 'GH PR Create' })
+      openPrBuffer()
+      return
+    end
+
+    vim.notify(output, vim.log.levels.ERROR, { title = 'GH PR Create' })
+    return
+  end
+
+  vim.notify(output, vim.log.levels.INFO, { title = 'GH PR Create' })
+
+  openPrBuffer()
 end
 
 local prCmds = {
   {
     icon = '',
     label = 'Create',
-    action = function()
-      Snacks.input({ prompt = 'PR Title: ', default = '' }, function(title)
-        vim.keymap.set({ 'n', 'i' }, '<Esc>', function() vim.cmd.stopinsert() end, { buffer = 0, desc = 'Stop insert mode' })
-        local fillings = ''
-
-        if title == nil then
-          vim.notify('PR creation cancelled', vim.log.levels.INFO, { title = 'GH PR Create' })
-          return
-        end
-
-        if title == '' then
-          fillings = '--fill --template "pull_request_template.md"'
-        else
-          fillings = '--template "pull_request_template.md" --title "' .. title .. '"'
-        end
-
-        local output = vim.fn.system('gh pr create --draft --assignee @me ' .. fillings)
-
-        if vim.v.shell_error ~= 0 then
-          vim.notify(output, vim.log.levels.ERROR, { title = 'GH PR Create' })
-          return
-        end
-
-        vim.notify(output, vim.log.levels.INFO, { title = 'GH PR Create' })
-
-        openPrBuffer()
-      end)
-    end,
+    action = createAutoPr,
     color = '#7AE35F',
   },
   {
@@ -55,7 +95,7 @@ local prCmds = {
   {
     icon = '',
     label = 'Url',
-    action = function() vim.fn.setreg('+', vim.fn.system('gh pr view --json url -q .url'):gsub('%s+$', '')) end,
+    action = function() vim.fn.setreg('+', ghPrUrl()) end,
     color = '#D7FF36',
   },
   {
@@ -72,10 +112,7 @@ local prCmds = {
   },
 }
 
-vim.keymap.set('n', '<leader>gd', function()
-  local prNb = vim.fn.system('gh pr view --json number -q .number'):gsub('%s+$', '')
-  Snacks.picker.gh_diff { pr = prNb }
-end, { desc = 'Diffs' })
+vim.keymap.set('n', '<leader>gd', function() Snacks.picker.gh_diff { pr = ghPrNumber() } end, { desc = 'Diffs' })
 
 vim.keymap.set(
   'n',

@@ -161,7 +161,12 @@ require('snacks').setup {
           list = {
             keys = {
               ['<C-p>'] = 'focus_preview',
-              ['<C-l>'] = '<C-w><C-l>',
+              -- the explorer list is a floating window, so smart-splits can't walk out of it
+              -- on its own; call it directly to keep <C-h/j/k/l> consistent with split navigation
+              ['<C-h>'] = function() require('smart-splits').move_cursor_left() end,
+              ['<C-j>'] = function() require('smart-splits').move_cursor_down() end,
+              ['<C-k>'] = function() require('smart-splits').move_cursor_up() end,
+              ['<C-l>'] = function() require('smart-splits').move_cursor_right() end,
             },
           },
         },
